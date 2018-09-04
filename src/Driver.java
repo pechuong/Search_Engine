@@ -50,6 +50,9 @@ public class Driver {
 	 * @return true if the given argument is a directory
 	 */
 	public static boolean isDir(String arg) {
+		if (arg == null) {
+			return false;
+		}
 		return !isText(arg);
 	}
 	
@@ -65,5 +68,6 @@ public class Driver {
 		}
 		return arg.matches("^-\\S+");
 	}
+	
 
 }
