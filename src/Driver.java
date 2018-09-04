@@ -53,6 +53,12 @@ public class Driver {
 		return !isText(arg);
 	}
 	
+	/**
+	 * Figures out if given argument is a flag or not
+	 * 
+	 * @param arg the command-line argument given
+	 * @return true if it is a flag
+	 */
 	public static boolean isFlag(String arg) {
 		if (arg == null) {
 			return false;
