@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.nio.file.Files;
+
 
 /**
  * TODO Fill in your own comments!
@@ -49,6 +51,13 @@ public class Driver {
 	 */
 	public static boolean isDir(String arg) {
 		return !isText(arg);
+	}
+	
+	public static boolean isFlag(String arg) {
+		if (arg == null) {
+			return false;
+		}
+		return arg.matches("^-\\S+");
 	}
 
 }
