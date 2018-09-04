@@ -19,5 +19,18 @@ public class Driver {
 		
 		// Start of lab
 	}
+	
+	/**
+	 * Determines if given argument is a text file or a directory
+	 * (if ends w/ .text or .txt)
+	 * 
+	 * @param arg the command-line argument given
+	 * @return true if the given argument is a text file
+	 */
+	public static boolean isText(String arg) {
+		return arg.endsWith(".text") || arg.endsWith(".txt");
+	}
+	
+	
 
 }
