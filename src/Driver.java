@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * TODO Fill in your own comments!
@@ -20,6 +21,13 @@ public class Driver {
 		return 0;
 		
 		// Start of lab
+	}
+	
+	/**
+	 * Initializes the inverted index
+	 */
+	public Driver(){
+		this.invertedIndex = new HashMap<>();
 	}
 	
 	/**
