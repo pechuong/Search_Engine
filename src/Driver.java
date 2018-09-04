@@ -4,6 +4,8 @@ import java.util.Arrays;
  * TODO Fill in your own comments!
  */
 public class Driver {
+	
+	private HashMap<String, HashMap<String, Integer>> invertedIndex;
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
