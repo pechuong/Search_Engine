@@ -21,7 +21,7 @@ public class Driver {
 	}
 	
 	/**
-	 * Determines if given argument is a text file or a directory
+	 * Determines if given argument is a text file
 	 * (if ends w/ .text or .txt)
 	 * 
 	 * @param arg the command-line argument given
@@ -31,6 +31,14 @@ public class Driver {
 		return arg.endsWith(".text") || arg.endsWith(".txt");
 	}
 	
-	
+	/**
+	 * Determines if given argument is a directory
+	 * 
+	 * @param arg the command-line argument given
+	 * @return true if the given argument is a directory
+	 */
+	public static boolean isDir(String arg) {
+		return !isText(arg);
+	}
 
 }
