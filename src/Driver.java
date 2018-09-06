@@ -83,6 +83,7 @@ public class Driver {
 				}
 			}
 		}
+		return null;
 		/*for (String arg : args) {
 			if (arg.matches("^-index")) {
 				return true;
