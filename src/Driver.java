@@ -9,6 +9,7 @@ import java.nio.file.Files;
 public class Driver {
 	
 	private HashMap<String, HashMap<String, Integer>> invertedIndex;
+	private HashMap<String, String> ArgMap;
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
@@ -20,7 +21,7 @@ public class Driver {
 	public static void main(String[] args) {
 		// TODO Fill in
 		System.out.println(Arrays.toString(args));
-		return 0;
+		parseArgs(args);
 	}
 	
 	/**
@@ -28,15 +29,26 @@ public class Driver {
 	 */
 	public Driver(){
 		this.invertedIndex = new HashMap<>();
+		this.ArgMap = new HashMap<>();
 	}
 	
 	/**
 	 * 
 	 * @param args
 	 */
-	public void parseArgs(String[] args) {
+	public static void parseArgs(String[] args) {
+		//TODO detect flag / value and pair them in argMap
+		
+		//TODO 
+		
+		//TODO turn the paths into Path objects w/ get(String path)
+		//(maybe in another method)
 		
 	}
+	//TODO Make a method for traversing a directory and listing all text files
+	
+	
+	
 	
 	/**
 	 * Determines if given argument is a text file
