@@ -17,12 +17,10 @@ public class Driver {
 	 * @param args the command-line arguments to parse
 	 * @return 0 if everything went well
 	 */
-	public static int main(String[] args) {
+	public static void main(String[] args) {
 		// TODO Fill in
 		System.out.println(Arrays.toString(args));
 		return 0;
-		
-		// Start of lab
 	}
 	
 	/**
@@ -30,6 +28,14 @@ public class Driver {
 	 */
 	public Driver(){
 		this.invertedIndex = new HashMap<>();
+	}
+	
+	/**
+	 * 
+	 * @param args
+	 */
+	public void parseArgs(String[] args) {
+		
 	}
 	
 	/**
