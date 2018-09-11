@@ -140,7 +140,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(TreeMap<String, Integer> elements) {
+	public static String asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -162,7 +162,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(TreeMap<String, Integer> elements, Path path)
+	public static void asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements, Path path)
 			throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
