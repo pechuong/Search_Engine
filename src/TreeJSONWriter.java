@@ -137,7 +137,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(TreeMap<String, Integer> elements) {
+	public static String asObject(HashMap<String, TreeSet<Integer>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -159,7 +159,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(TreeMap<String, Integer> elements, Path path)
+	public static void asObject(HashMap<String, TreeSet<Integer>> elements, Path path)
 			throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
@@ -185,7 +185,7 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(TreeMap<String, Integer> elements, Writer writer,
+	public static void asObject(HashMap<String, TreeSet<Integer>> elements, Writer writer,
 			int level) throws IOException {
 		// TODO Fill in!
 		indent(level, writer);
@@ -266,10 +266,11 @@ public class TreeJSONWriter {
 		
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String key : elements.keySet()) {
+		for (String word : elements.keySet()) {
 			indent(level + 1, writer);
 			quote(key, writer);
 			writer.write(": ");
+			asObject(elements.get(word));
 			asArray(elements.get(key), writer, level + 1);
 			if (elements.lastKey() != key) {
 				writer.write(",");
