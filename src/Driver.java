@@ -24,6 +24,16 @@ public class Driver {
 		// TODO Fill in
 		System.out.println(Arrays.toString(args));
 		Driver test1 = new Driver(args);
+		//TODO traverse Directory
+		
+		
+		//TODO parse the file and stem words into index
+		
+		
+		//TODO format the inverted index into JSON file if output is true
+		
+		
+		
 		//test1.ArgMap.put("-path", "test/path");
 		System.out.println(test1.ArgMap.toString());
 		//parseArgs(args);
