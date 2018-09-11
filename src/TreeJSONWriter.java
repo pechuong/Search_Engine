@@ -214,7 +214,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static String asNestedObject(HashMap<String, TreeSet<Integer>> elements) {
+	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
