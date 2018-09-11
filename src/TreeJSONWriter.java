@@ -267,8 +267,6 @@ public class TreeJSONWriter {
 	 */
 	public static void asNestedObject(HashMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
-		// TODO Fill this in!
-		// TODO Reuse the asArray(...) method here!
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
 		for (String key : elements.keySet()) {
