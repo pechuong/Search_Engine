@@ -6,6 +6,7 @@ import java.util.Map;
 public class ArgumentMap {
 
 	private final Map<String, String> map;
+	private static boolean output = false;
 
 	/**
 	 * Initializes this argument map.
@@ -46,6 +47,9 @@ public class ArgumentMap {
 					this.map.put(args[i], null);
 				}
 			}
+		}
+		if (this.map.containsKey("-index")) {
+			output = true;
 		}
 		// DONE Fill in this method. 
 	}

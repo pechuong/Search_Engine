@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,9 +11,8 @@ import java.nio.file.Paths;
  */
 public class Driver {
 	
-	private final HashMap<String, HashMap<String, Integer>> invertedIndex;
-	private HashMap<String, String> ArgMap;
-	private static boolean outputting = false;
+	private HashMap<String, TreeMap<String, Integer>> invertedIndex;
+	private ArgumentMap ArgMap;
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
@@ -23,17 +23,20 @@ public class Driver {
 	public static void main(String[] args) {
 		// TODO Fill in
 		System.out.println(Arrays.toString(args));
+		Driver test1 = new Driver(args);
+		//test1.ArgMap.put("-path", "test/path");
+		System.out.println(test1.ArgMap.toString());
 		//parseArgs(args);
 	}
 	
 	/**
 	 * Initializes the inverted index
 	 */
-	public Driver(){
+	public Driver(String[] args){
 		this.invertedIndex = new HashMap<>();
-		this.ArgMap = new HashMap<>();
+		this.ArgMap = new ArgumentMap(args);
 	}
-	
+	// start of lab04 
 	
 	
 	
