@@ -11,7 +11,7 @@ import java.nio.file.Paths;
  */
 public class Driver {
 	
-	private HashMap<String, TreeMap<String, Integer>> invertedIndex;
+	private static HashMap<String, TreeMap<String, Integer>> invertedIndex = new HashMap<>();
 	private ArgumentMap ArgMap;
 
 	/**
@@ -31,7 +31,7 @@ public class Driver {
 		
 		
 		//TODO format the inverted index into JSON file if output is true
-		
+		asNestedObject(invertedIndex);
 		
 		
 		//test1.ArgMap.put("-path", "test/path");
