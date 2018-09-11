@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,7 +12,7 @@ import java.nio.file.Paths;
  */
 public class Driver {
 	
-	private static HashMap<String, TreeMap<String, Integer>> invertedIndex = new HashMap<>();
+	private static TreeMap<String, HashMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
 	private ArgumentMap ArgMap;
 
 	/**
