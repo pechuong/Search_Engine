@@ -197,7 +197,7 @@ public class TreeJSONWriter {
 			indent(level + 1, writer);
 			quote(word, writer);
 			writer.write(": ");
-			asNestedObject(elements.get(word), writer);
+			asNestedObject(elements.get(word), writer, level);
 			if (word != elements.lastKey()) {
 				writer.write("," + System.lineSeparator());
 			}
