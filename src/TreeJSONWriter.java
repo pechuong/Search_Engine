@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -187,19 +188,19 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(TreeMap<String, Integer> elements, Writer writer,
+	public static void asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
 		// TODO Fill in!
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String key: elements.keySet()) {
+		for (String word: elements.keySet()) {
 			indent(level + 1, writer);
-			quote(key,writer);
-			writer.write(": " + elements.get(key));
-			if (elements.lastKey() != key) {
-				writer.write(",");
+			quote(word, writer);
+			writer.write(": ");
+			asNestedObject(elements.get(word));
+			if (word != elements.lastKey()) {
+				writer.write("," + System.lineSeparator());
 			}
-			writer.write(System.lineSeparator());
 		}
 		indent(level, writer);
 		writer.write("}");
@@ -213,7 +214,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
+	public static String asNestedObject(HashMap<String, TreeSet<Integer>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -302,6 +303,7 @@ public class TreeJSONWriter {
 		System.out.println(asObject(test1));
 		*/
 		
+		/*
 		TreeMap<String, TreeSet<Integer>> test2 = new TreeMap<>();
 		test2.put("hello", new TreeSet<>());
 		Collections.addAll(test2.get("hello"), 10, 2, 4, -1);
@@ -311,5 +313,6 @@ public class TreeJSONWriter {
 		test2.put("!!!", new TreeSet<>());
 		Collections.addAll(test2.get("!!!"), -8, 9);
 		System.out.println(asNestedObject(test2));
+		*/
 	}
 }
