@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -94,7 +93,10 @@ public class TreeJSONWriter {
 	 */
 	public static void asArray(TreeSet<Integer> elements, Writer writer,
 			int level) throws IOException {
-
+		// TODO We fill this in during class!
+		// TODO Make sure to use Integer.toString() to avoid weird bugs!
+		
+		//System.out.println(elements.isEmpty());
 		if (elements.isEmpty()) {
 			writer.write("[" + System.lineSeparator());
 			indent(level, writer);
@@ -137,7 +139,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(HashMap<String, TreeSet<Integer>> elements) {
+	public static String asObject(TreeMap<String, Integer> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -159,7 +161,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(HashMap<String, TreeSet<Integer>> elements, Path path)
+	public static void asObject(TreeMap<String, Integer> elements, Path path)
 			throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
@@ -185,7 +187,7 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(HashMap<String, TreeSet<Integer>> elements, Writer writer,
+	public static void asObject(TreeMap<String, Integer> elements, Writer writer,
 			int level) throws IOException {
 		// TODO Fill in!
 		indent(level, writer);
@@ -194,7 +196,9 @@ public class TreeJSONWriter {
 			indent(level + 1, writer);
 			quote(key,writer);
 			writer.write(": " + elements.get(key));
-			asArray(elements.get(key));
+			if (elements.lastKey() != key) {
+				writer.write(",");
+			}
 			writer.write(System.lineSeparator());
 		}
 		indent(level, writer);
@@ -209,7 +213,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static String asNestedObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements) {
+	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -231,7 +235,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static void asNestedObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements,
+	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Path path) throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
@@ -259,16 +263,16 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asArray(TreeSet, Writer, int)
 	 */
-	public static void asNestedObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements,
+	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
-		
+		// TODO Fill this in!
+		// TODO Reuse the asArray(...) method here!
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String word : elements.keySet()) {
+		for (String key : elements.keySet()) {
 			indent(level + 1, writer);
 			quote(key, writer);
 			writer.write(": ");
-			asObject(elements.get(word));
 			asArray(elements.get(key), writer, level + 1);
 			if (elements.lastKey() != key) {
 				writer.write(",");
@@ -298,7 +302,6 @@ public class TreeJSONWriter {
 		System.out.println(asObject(test1));
 		*/
 		
-		/*
 		TreeMap<String, TreeSet<Integer>> test2 = new TreeMap<>();
 		test2.put("hello", new TreeSet<>());
 		Collections.addAll(test2.get("hello"), 10, 2, 4, -1);
@@ -308,6 +311,5 @@ public class TreeJSONWriter {
 		test2.put("!!!", new TreeSet<>());
 		Collections.addAll(test2.get("!!!"), -8, 9);
 		System.out.println(asNestedObject(test2));
-		*/
 	}
 }
