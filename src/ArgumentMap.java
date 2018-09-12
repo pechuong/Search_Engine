@@ -52,7 +52,6 @@ public class ArgumentMap {
 		if (this.map.containsKey("-index")) {
 			this.output = true;
 		}
-		// DONE Fill in this method. 
 	}
 
 	/**
@@ -92,8 +91,6 @@ public class ArgumentMap {
 			return false;
 		}
 		return arg.matches("[^-\\s]+.*");
-
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -103,7 +100,6 @@ public class ArgumentMap {
 	 */
 	public int numFlags() {
 		return this.map.keySet().size();
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -138,7 +134,6 @@ public class ArgumentMap {
 	public String getString(String flag) {
 		//System.out.printf("My flag is %s and value is %s\n", flag, this.map.get(flag));  //testing values
 		return this.map.get(flag);
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -154,7 +149,6 @@ public class ArgumentMap {
 	public String getString(String flag, String defaultValue) {
 		String myValue = getString(flag);
 		return (myValue != null)?myValue:defaultValue;
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -175,7 +169,6 @@ public class ArgumentMap {
 		var myValue = getString(flag);
 		//System.out.printf("myValue is %d\n", myValue);
 		return (myValue != null)?Paths.get(myValue):null;
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -195,7 +188,6 @@ public class ArgumentMap {
 	public Path getPath(String flag, Path defaultValue) {
 		var myPath = getPath(flag);
 		return (myPath != null)?myPath:defaultValue;
-		//DONE Fill in this method and fix the return. 
 	}
 
 	@Override
