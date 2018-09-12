@@ -54,43 +54,8 @@ public class Driver {
 	public Driver(String[] args){
 		this.ArgMap = new ArgumentMap(args);
 	}
-	// start of lab04 
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//TODO Make a method for traversing a directory and listing all text files
-	public void listFiles(Path dir) {
-		
-	}
 	
-	/**
-	 * Determines if given argument is a text file
-	 * (if ends w/ .text or .txt)
-	 * 
-	 * @param arg the command-line argument given
-	 * @return true if the given argument is a text file
-	 */
-	public static boolean isText(String path) {
-		return path.endsWith(".text") || path.endsWith(".txt");
-	}
-	
-	/**
-	 * Determines if given argument is a directory
-	 * 
-	 * @param arg the command-line argument given
-	 * @return true if the given argument is a directory
-	 */
-	public static boolean isDir(String path) {
-		if (path == null) {
-			return false;
-		}
-		return !isText(path);
-	}
 
 }
