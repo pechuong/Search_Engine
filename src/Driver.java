@@ -28,11 +28,11 @@ public class Driver {
 		//TODO traverse Directory
 		
 		
-		//TODO parse the file and stem words into index
+		//TODO parse the file and stem words into index (stem hw)
 		
 		
 		//TODO format the inverted index into JSON file if output is true
-		asNestedObject(invertedIndex);
+		TreeJSONWriter.asObject(invertedIndex, (test1.ArgMap.output = true)?test1.ArgMap.get("-index"));
 		
 		
 		//test1.ArgMap.put("-path", "test/path");
@@ -44,7 +44,6 @@ public class Driver {
 	 * Initializes the inverted index
 	 */
 	public Driver(String[] args){
-		this.invertedIndex = new HashMap<>();
 		this.ArgMap = new ArgumentMap(args);
 	}
 	// start of lab04 
@@ -69,8 +68,8 @@ public class Driver {
 	 * @param arg the command-line argument given
 	 * @return true if the given argument is a text file
 	 */
-	public static boolean isText(String arg) {
-		return arg.endsWith(".text") || arg.endsWith(".txt");
+	public static boolean isText(String path) {
+		return path.endsWith(".text") || path.endsWith(".txt");
 	}
 	
 	/**
@@ -79,8 +78,8 @@ public class Driver {
 	 * @param arg the command-line argument given
 	 * @return true if the given argument is a directory
 	 */
-	public static boolean isDir(String arg) {
-		if (arg == null) {
+	public static boolean isDir(String path) {
+		if (path == null) {
 			return false;
 		}
 		return !isText(arg);

@@ -106,20 +106,6 @@ public class TreeJSONWriter {
 			return;
 		}
 		writer.write("[" + System.lineSeparator());
-		/*//System.out.println(elements);
-		for (int num : elements.headSet(elements.last())) {
-			indent(level + 1, writer);
-			writer.write(Integer.toString(num));
-			writer.write("," + System.lineSeparator());
-		}
-		//writes last element
-		indent(level + 1, writer);
-		writer.write(Integer.toString(elements.last()));
-		//writes the last bracket
-		writer.write(System.lineSeparator());
-		indent(level, writer);
-		writer.write("]");
-		*/
 		for (int num : elements) {
 			indent(level + 1, writer);
 			writer.write(Integer.toString(num));
@@ -190,14 +176,13 @@ public class TreeJSONWriter {
 	 */
 	public static void asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
-		// TODO Fill in!
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
 		for (String word: elements.keySet()) {
 			indent(level + 1, writer);
 			quote(word, writer);
 			writer.write(": ");
-			asNestedObject(elements.get(word), writer, level);
+			asNestedObject(elements.get(word), writer, level + 1);
 			if (word != elements.lastKey()) {
 				writer.write(",");
 			}
@@ -267,17 +252,18 @@ public class TreeJSONWriter {
 	 */
 	public static void asNestedObject(HashMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
-		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
+		int iterator = 0;
 		for (String key : elements.keySet()) {
 			indent(level + 1, writer);
 			quote(key, writer);
 			writer.write(": ");
 			asArray(elements.get(key), writer, level + 1);
-			if (elements.lastKey() != key) {
+			if (iterator < elements.keySet().size()) {
 				writer.write(",");
 			}
 			writer.write(System.lineSeparator());
+			iterator++;
 		}
 		indent(level, writer);
 		writer.write("}");
