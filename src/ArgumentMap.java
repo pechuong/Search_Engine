@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -37,9 +39,9 @@ public class ArgumentMap {
 	 */
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
-			if (isValidFlag(args[i]) || hasFlag(args[i])) {
+			if (isValidFlag(args[i])) {
 				try {
-					if (isValue(args[i+1])) {
+					if (isValue(args[i+1]) && isValidPath(args[i+1])) {
 						this.map.put(args[i], args[i+1]);
 					} else {
 						this.map.put(args[i], null);
@@ -53,6 +55,7 @@ public class ArgumentMap {
 			this.output = true;
 		}
 	}
+
 
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
@@ -93,6 +96,16 @@ public class ArgumentMap {
 		return arg.matches("[^-\\s]+.*");
 	}
 
+	/**
+	 * Checks if the string provided is a valid path object
+	 * 
+	 * @return true if string provided is a valid path
+	 */
+	private boolean isValidPath(String arg) {
+		Path currPath = Paths.get(arg);
+		return (Files.isDirectory(currPath) | Files.exists(currPath))?true:false;
+	}
+	
 	/**
 	 * Returns the number of unique flags.
 	 *
