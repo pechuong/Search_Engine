@@ -56,6 +56,5 @@ public class Driver {
 	}
 	
 	//TODO Make a method for traversing a directory and listing all text files
-	
 
 }
