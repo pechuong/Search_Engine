@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +25,7 @@ public class Driver {
 	public static void main(String[] args) {
 		// TODO Fill in
 		System.out.println(Arrays.toString(args));
+		// also parses args
 		Driver test1 = new Driver(args);
 		//TODO traverse Directory
 		
@@ -32,12 +34,18 @@ public class Driver {
 		
 		
 		//TODO format the inverted index into JSON file if output is true
-		TreeJSONWriter.asObject(invertedIndex, (test1.ArgMap.output = true)?test1.ArgMap.get("-index"));
-		
+		if (test1.ArgMap.output = true) {
+			try {
+				TreeJSONWriter.asObject(invertedIndex, Paths.get(test1.ArgMap.getString("index")));
+			} catch (IOException e) {
+				System.out.println("Error in opening Path given to 'asObject' method");
+			}
+		} else {
+			TreeJSONWriter.asObject(invertedIndex);
+		}		
 		
 		//test1.ArgMap.put("-path", "test/path");
 		System.out.println(test1.ArgMap.toString());
-		//parseArgs(args);
 	}
 	
 	/**
@@ -82,7 +90,7 @@ public class Driver {
 		if (path == null) {
 			return false;
 		}
-		return !isText(arg);
+		return !isText(path);
 	}
 
 }

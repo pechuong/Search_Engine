@@ -6,7 +6,7 @@ import java.util.Map;
 public class ArgumentMap {
 
 	private final Map<String, String> map;
-	private boolean output;
+	public boolean output;
 
 	/**
 	 * Initializes this argument map.
