@@ -178,7 +178,7 @@ public class ArgumentMap {
 	 *
 	 * @see Paths#get(String, String...)
 	 */
-	public Path getPath(String flag) {
+	public Path getPath(String flag) throws IOException {
 		var myValue = getString(flag);
 		//System.out.printf("myValue is %d\n", myValue);
 		return (myValue != null)?Paths.get(myValue):null;
@@ -198,7 +198,7 @@ public class ArgumentMap {
 	 * @return the value to which the specified flag is mapped as a {@link Path},
 	 *         or the default value if there is no mapping for the flag
 	 */
-	public Path getPath(String flag, Path defaultValue) {
+	public Path getPath(String flag, Path defaultValue) throws IOException {
 		var myPath = getPath(flag);
 		return (myPath != null)?myPath:defaultValue;
 	}
