@@ -26,7 +26,7 @@ public class Driver {
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(args));
 		
-		// also parses args
+		// TODO Parses args
 		Driver test1 = new Driver(args);
 		
 		//TODO traverse Directory
