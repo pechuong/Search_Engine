@@ -70,29 +70,21 @@ public class TextFileStemmer {
 				for (String word : stemmed) {
 					// Does the index have the word?
 					if (!Driver.invertedIndex.containsKey(word)) {
-						// Does index have file?
-						if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
 							Driver.invertedIndex.put(word, new HashMap<String, TreeSet<Integer>>());
 							Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
-						}
-						Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
-						wordCount++;
 					} // Does index have file?
 					else if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
 						// Add word w/ new file placement
 						Driver.invertedIndex.put(word, new HashMap<String, TreeSet<Integer>>());
 						// Add set of integer positions of word in this file
 						Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
-						// Add the position of word
-						Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
-					} else {
-						Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
-					}
+					} 
+					Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
+					wordCount++;
 				}
 			}
-				
-		}
-	}
+		}	
+	}	
 
 	/**
 	 * Uses {@link #stemFile(Path, Path)} to stem a single hard-coded file. Useful
