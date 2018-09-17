@@ -14,8 +14,8 @@ import java.nio.file.Paths;
  */
 public class Driver {
 	
-	private static TreeMap<String, HashMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
-	private ArgumentMap ArgMap;
+	public static TreeMap<String, HashMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
+	public ArgumentMap ArgMap;
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search

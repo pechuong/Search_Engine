@@ -4,9 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -25,7 +25,6 @@ public class TextFileStemmer {
 	 * @see #stemLine(String, Stemmer)
 	 */
 	public static List<String> stemLine(String line) {
-		// This is provided for you.
 		return stemLine(line, new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH));
 	}
 
@@ -59,25 +58,24 @@ public class TextFileStemmer {
 	 * @see #stemLine(String)
 	 * @see TextParser#parse(String)
 	 */
-	public static void stemFile(Path inputFile, Path outputFile) throws IOException {
+	public static void stemFile(Path inputFile) throws IOException {
 		// TODO Use try-with-resources, buffered readers and writers, and UTF-8 encoding.
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-				var writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)
 			) {
 			String line = null;
+			int wordCount = 0;
 			while ((line = reader.readLine()) != null) {
 				List<String> stemmed = stemLine(line);
-				if (stemmed.size() >= 1) {
-					for (String word : stemmed) {
-						writer.write(word + " ");
-
+				for (String word : stemmed) {
+					if (!Driver.invertedIndex.containsKey(word)) {
+						if (!Driver.invertedIndex.get(word).containsKey(inputFile)) {
+							Driver.invertedIndex.put(word, new HashMap<String, TreeSet<Integer>>());
+							Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
+							Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
+						}
+						Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
 					}
-					writer.newLine();
-				} else {
-					for (String word : stemmed)
-					writer.write(word);
-					writer.newLine();
 				}
 			}
 				
@@ -97,8 +95,22 @@ public class TextFileStemmer {
 
 		Files.createDirectories(Paths.get("out"));
 		
+		// Start of lab 5
 		System.out.println(inputPath);
-		stemFile(inputPath, outputPath);
-						
+		stemFile(inputPath);
+		
+		/*
+		System.out.println(stemLine("antelope\n" + 
+									"an+telope\n" + 
+									"a-n-t-e-l-o-p-e\n" + 
+									"=>antelope<=\n" + 
+									"ante@lope\n" + 
+									"an%te&lo#pe\n" + 
+									"an:tel:ope\n" + 
+									"ante~~~~lope\n" + 
+									"antelope\n" + 
+									"antelöpé\n" + 
+									""));
+		*/				
 	}
 }
