@@ -29,12 +29,12 @@ public class Driver {
 		// TODO Parses args and creates an arg map
 		Driver test1 = new Driver(args);
 		
-		System.out.println("Arg Map: " + test1.ArgMap.toString());
+		System.out.println("Arg Map:        " + test1.ArgMap.toString());
 		try {
-			System.out.println("-path mapping: " + test1.ArgMap.getPath("-path"));
-			System.out.println("-index mapping test: " + test1.ArgMap.getPath("-index"));
+			System.out.println("-path mapping:  " + test1.ArgMap.getPath("-path"));
+			System.out.println("-index mapping: " + test1.ArgMap.getPath("-index"));
 		} catch (Exception e) {
-			System.out.println("Error");
+			System.out.println("Error getting paths of flags");
 		}
 		
 		//TODO traverse Directories and makes inverted index
@@ -109,7 +109,7 @@ public class Driver {
 			for (Path file : listing) {
 				// Print the name with the proper padding/prefix.
 				System.out.print(prefix + file.getFileName());
-
+				
 				// Check if this is a subdirectory
 				if (Files.isDirectory(file)) {
 					// Add a slash so we can tell it is a directory
@@ -121,7 +121,9 @@ public class Driver {
 					traverse("  " + prefix, file);
 				} else {
 					System.out.printf(" (%d bytes)%n", Files.size(file));
+					System.out.println("I'm about to stemFile");
 					TextFileStemmer.stemFile(path);
+					//System.out.println("Hi I successfully made an inverted index");
 				}
 			}
 		}
@@ -135,9 +137,12 @@ public class Driver {
 	 * @throws IOException
 	 */
 	public static void traverse(Path directory) throws IOException {
+		System.out.println("Hi I got into traverse");
 		if (Files.isDirectory(directory)) {
+			System.out.println("Directory: " + directory);
 			traverse("- ", directory);
 		} else {
+			System.out.println("File: " + directory);
 			System.out.println(directory.getFileName());
 		}
 	}
