@@ -14,7 +14,7 @@ import java.nio.file.Paths;
  */
 public class Driver {
 	
-	public static TreeMap<String, HashMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
+	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
 	public ArgumentMap ArgMap;
 
 	/**
@@ -131,7 +131,9 @@ public class Driver {
 				} else {
 					System.out.printf(" (%d bytes)%n", Files.size(file));
 					//System.out.println("I'm about to stemFile");
-					TextFileStemmer.stemFile(file);
+					if (file.toString().matches(".*[tT][eE][xX][tT]$") || file.toString().matches(".*[tT][xX][tT]$")) {
+						TextFileStemmer.stemFile(file);
+					}
 					//System.out.println("Hi I successfully made an inverted index");
 				}
 			}

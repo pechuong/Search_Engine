@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -74,7 +75,7 @@ public class TextFileStemmer {
 				for (String word : stemmed) {
 					// Does the index have the word?
 					if (!Driver.invertedIndex.containsKey(word)) {
-							Driver.invertedIndex.put(word, new HashMap<String, TreeSet<Integer>>());
+							Driver.invertedIndex.put(word, new TreeMap<String, TreeSet<Integer>>());
 							Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
 					} // Does index have file?
 					else if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {

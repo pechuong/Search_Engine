@@ -123,7 +123,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements) {
+	public static String asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -145,7 +145,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements, Path path)
+	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Path path)
 			throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
@@ -171,7 +171,7 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(TreeMap<String, HashMap<String, TreeSet<Integer>>> elements, Writer writer,
+	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
@@ -197,7 +197,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static String asNestedObject(HashMap<String, TreeSet<Integer>> elements) {
+	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
@@ -219,7 +219,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
-	public static void asNestedObject(HashMap<String, TreeSet<Integer>> elements,
+	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Path path) throws IOException {
 		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
@@ -247,7 +247,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asArray(TreeSet, Writer, int)
 	 */
-	public static void asNestedObject(HashMap<String, TreeSet<Integer>> elements,
+	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
 		writer.write("{" + System.lineSeparator());
 		int iterator = 0;
