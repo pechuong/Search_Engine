@@ -79,7 +79,7 @@ public class Driver {
 				//System.out.print(prefix + file.getFileName());
 				if (Files.isDirectory(file)) {
 					// Add a slash so we can tell it is a directory
-					System.out.println("/");
+					//System.out.println("/");
 					traverse("  " + prefix, file);
 				} else {
 					if (file.toString().matches(".*[tT][eE][xX][tT]$") || file.toString().matches(".*[tT][xX][tT]$")) {

@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -40,7 +39,6 @@ public class TextFileStemmer {
 	 * @see TextParser#parse(String)
 	 */
 	public static List<String> stemLine(String line, Stemmer stemmer) {
-		// TODO Try to use streams and lambda functions (optional)!
 		ArrayList<String> wordList = new ArrayList<>();				
 		for (String word : TextParser.parse(line)) {
 			wordList.add(stemmer.stem(word).toString());
@@ -60,25 +58,20 @@ public class TextFileStemmer {
 	 * @see TextParser#parse(String)
 	 */
 	public static void stemFile(Path inputFile) throws IOException {
-		// TODO Use try-with-resources, buffered readers and writers, and UTF-8 encoding.
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 			) {
-			//System.out.println("Hi I'm in the stemFile");
-			//System.out.println("Input File: " + inputFile);
 			String line = null;
 			int wordCount = 1;
-			//System.out.println(reader.readLine());
 			while ((line = reader.readLine()) != null) {
-				//System.out.println("I'm about to read my first line");
 				List<String> stemmed = stemLine(line);
 				for (String word : stemmed) {
 					// Does the index have the word?
 					if (!Driver.invertedIndex.containsKey(word)) {
 							Driver.invertedIndex.put(word, new TreeMap<String, TreeSet<Integer>>());
-							Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
-					} // Does index have file?
-					else if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
+					} 
+					// Does index have file?
+					if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
 						// Add word w/ new file placement
 						Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
 					} 

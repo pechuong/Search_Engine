@@ -5,8 +5,6 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -48,7 +46,6 @@ public class TreeJSONWriter {
 	 * @see #asArray(TreeSet, Writer, int)
 	 */
 	public static String asArray(TreeSet<Integer> elements) {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
 			asArray(elements, writer, 0);
@@ -69,7 +66,6 @@ public class TreeJSONWriter {
 	 */
 	public static void asArray(TreeSet<Integer> elements, Path path)
 			throws IOException {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
 				StandardCharsets.UTF_8)) {
 			asArray(elements, writer, 0);
@@ -124,7 +120,6 @@ public class TreeJSONWriter {
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
 	public static String asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements) {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
 			asObject(elements, writer, 0);
@@ -147,7 +142,6 @@ public class TreeJSONWriter {
 	 */
 	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Path path)
 			throws IOException {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
 				StandardCharsets.UTF_8)) {
 			asObject(elements, writer, 0);
@@ -198,7 +192,6 @@ public class TreeJSONWriter {
 	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
 	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try {
 			StringWriter writer = new StringWriter();
 			asNestedObject(elements, writer, 0);
@@ -221,7 +214,6 @@ public class TreeJSONWriter {
 	 */
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Path path) throws IOException {
-		// THIS METHOD IS PROVIDED FOR YOU. DO NOT MODIFY.
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
 				StandardCharsets.UTF_8)) {
 			asNestedObject(elements, writer, 0);
