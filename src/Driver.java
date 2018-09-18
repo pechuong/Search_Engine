@@ -30,11 +30,16 @@ public class Driver {
 		Driver test1 = new Driver(args);
 		
 		System.out.println("Arg Map: " + test1.ArgMap.toString());
-		System.out.println("-path mapping: " + test1.ArgMap.getString("-path"));
+		try {
+			System.out.println("-path mapping: " + test1.ArgMap.getPath("-path"));
+			System.out.println("-index mapping test: " + test1.ArgMap.getPath("-index"));
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
+		
 		//TODO traverse Directories and makes inverted index
 		try {
 			if (test1.ArgMap.getPath("-path") != null) {
-				System.out.println(test1.ArgMap.getPath("-path").getRoot().toString());
 				traverse(test1.ArgMap.getPath("-path"));
 			} else 
 				System.out.println("Didn't traverse path");
@@ -48,8 +53,13 @@ public class Driver {
 		//TODO format the inverted index into JSON file if output is true
 		if (test1.ArgMap.output == true) {
 			try {
-				if (test1.ArgMap.getString("-index") != null)
+				if (test1.ArgMap.getString("-index") != null) {
+					if (!Files.exists(test1.ArgMap.getPath("-index"))) {
+						Files.createFile(test1.ArgMap.getPath("-index"));
+					}
 					TreeJSONWriter.asObject(invertedIndex, Paths.get(test1.ArgMap.getString("-index")));
+
+				}
 				else 
 					System.out.println("Didn't format inverted index... no output found");
 			} catch (IOException e) {
