@@ -94,10 +94,7 @@ public class TreeJSONWriter {
 	 */
 	public static void asArray(TreeSet<Integer> elements, Writer writer,
 			int level) throws IOException {
-		// TODO We fill this in during class!
-		// TODO Make sure to use Integer.toString() to avoid weird bugs!
 		
-		//System.out.println(elements.isEmpty());
 		if (elements.isEmpty()) {
 			writer.write("[" + System.lineSeparator());
 			indent(level, writer);
