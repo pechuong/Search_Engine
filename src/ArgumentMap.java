@@ -40,7 +40,7 @@ public class ArgumentMap {
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			if (isValidFlag(args[i])) {
-				if (!isIndexFlag(args[i])) {
+				if (isIndexFlag(args[i])) {
 					try {
 						if (isValue(args[i+1]) && args[i+1].matches(".*[jJ][sS][oO][nN]")) {
 							this.map.put(args[i], args[i+1]);
@@ -49,19 +49,20 @@ public class ArgumentMap {
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
 						System.out.println("End of args reached");
+						this.map.put(args[i], "index.json");
 					}
-				}
-				/*
-				try {
-					if (isValue(args[i+1]) && isValidPath(args[i+1])) {
-						this.map.put(args[i], args[i+1]);
-					} else {
+				} else {
+					try {
+						if (isValue(args[i+1])) {
+							this.map.put(args[i], args[i+1]);
+						} else {
+							this.map.put(args[i], null);
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("End of args reached");
 						this.map.put(args[i], null);
 					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					this.map.put(args[i], null);
 				}
-				*/
 			}
 		}
 		if (this.map.containsKey("-index")) {
