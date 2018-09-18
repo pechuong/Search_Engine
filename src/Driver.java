@@ -48,17 +48,20 @@ public class Driver {
 		} catch (IOException e) {
 			System.out.println("File doesn't exist");
 		}
+		System.out.println(invertedIndex);
 		
 		System.out.println("Outputting: " + test1.ArgMap.output);
 		//TODO format the inverted index into JSON file if output is true
 		if (test1.ArgMap.output == true) {
 			try {
 				if (test1.ArgMap.getString("-index") != null) {
+					//System.out.println(Files.exists(test1.ArgMap.getPath("-index")));
 					if (!Files.exists(test1.ArgMap.getPath("-index"))) {
 						Files.createFile(test1.ArgMap.getPath("-index"));
 					}
-					TreeJSONWriter.asObject(invertedIndex, Paths.get(test1.ArgMap.getString("-index")));
-
+					//System.out.println(Files.exists(test1.ArgMap.getPath("-index")));
+					TreeJSONWriter.asObject(invertedIndex, test1.ArgMap.getPath("-index"));
+					System.out.println("Finished making inverted index");
 				}
 				else 
 					System.out.println("Didn't format inverted index... no output found");
@@ -66,6 +69,7 @@ public class Driver {
 				System.out.println("Error in opening Path given to 'asObject' method");
 			}
 		} else {
+			//System.out.println("Making index w/o output");
 			TreeJSONWriter.asObject(invertedIndex);
 		}		
 	}
@@ -139,12 +143,12 @@ public class Driver {
 	 * @throws IOException
 	 */
 	public static void traverse(Path directory) throws IOException {
-		System.out.println("Hi I got into traverse");
+		//System.out.println("Hi I got into traverse");
 		if (Files.isDirectory(directory)) {
-			System.out.println("Directory: " + directory);
+			//System.out.println("Directory: " + directory);
 			traverse("- ", directory);
 		} else {
-			System.out.println("File: " + directory);
+			//System.out.println("File: " + directory);
 			System.out.println(directory.getFileName());
 		}
 	}
