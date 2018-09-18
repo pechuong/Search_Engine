@@ -1,17 +1,10 @@
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
-
-/**
- * TODO Fill in your own comments!
- */
 public class Driver {
 	
 	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
@@ -24,22 +17,10 @@ public class Driver {
 	 * @param args the command-line arguments to parse
 	 */
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(args));
-		
-		// TODO Parses args and creates an arg map
+		// parses args
 		Driver test1 = new Driver(args);
 		
-		/*
-		System.out.println("Arg Map:        " + test1.ArgMap.toString());
-		try {
-			System.out.println("-path mapping:  " + test1.ArgMap.getPath("-path"));
-			System.out.println("-index mapping: " + test1.ArgMap.getPath("-index"));
-		} catch (Exception e) {
-			System.out.println("Error getting paths of flags");
-		}
-		*/
-		
-		//TODO traverse Directories and makes inverted index
+		// traverses and makes inverted index
 		try {
 			if (test1.ArgMap.getPath("-path") != null) {
 				traverse(test1.ArgMap.getPath("-path"));
@@ -50,29 +31,21 @@ public class Driver {
 		} catch (IOException e) {
 			System.out.println("File doesn't exist");
 		}
-		//System.out.println(invertedIndex);
-				
-		//System.out.println("Outputting: " + test1.ArgMap.output);
-		//TODO format the inverted index into JSON file if output is true
+		
+		// outputs inverted index to json
 		if (test1.ArgMap.output == true) {
 			try {
 				if (test1.ArgMap.getString("-index") != null) {
-					//System.out.println(Files.exists(test1.ArgMap.getPath("-index")));
 					if (!Files.exists(test1.ArgMap.getPath("-index"))) {
 						Files.createFile(test1.ArgMap.getPath("-index"));
 					}
-					//System.out.println(Files.exists(test1.ArgMap.getPath("-index")));
 					TreeJSONWriter.asObject(invertedIndex, test1.ArgMap.getPath("-index"));
-					System.out.println("Finished making inverted index");
 				}
 				else 
 					System.out.println("Didn't format inverted index... no output found");
 			} catch (IOException e) {
 				System.out.println("Error in opening Path given to 'asObject' method");
 			}
-		} else {
-			//System.out.println("Making index w/o output");
-			TreeJSONWriter.asObject(invertedIndex);
 		}
 		invertedIndex.clear();
 	}
@@ -84,13 +57,11 @@ public class Driver {
 		this.ArgMap = new ArgumentMap(args);
 	}
 	
-	//TODO Make a method for traversing a directory and listing all text files
-	// The below methods are given from lecture
-	
 	/**
 	 * Outputs the name of the file or subdirectory, with proper indentation to
 	 * help indicate the hierarchy. If a subdirectory is encountered, will
-	 * recursively list all the files in that subdirectory.
+	 * recursively list all the files in that subdirectory. For each file found,
+	 * the function will stem that file into an inverted index
 	 *
 	 * The recursive version of this method is private. Users of this class will
 	 * have to use the public version (see below).
@@ -102,41 +73,22 @@ public class Driver {
 	 * @throws IOException
 	 */
 	private static void traverse(String prefix, Path path) throws IOException {
-		/*
-		 * The try-with-resources block makes sure we close the directory stream
-		 * when done, to make sure there aren't any issues later when accessing this
-		 * directory.
-		 *
-		 * Note, however, we are still not catching any exceptions. This type of try
-		 * block does not have to be accompanied with a catch block. (You should,
-		 * however, do something about the exception.)
-		 */
 		try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
-			// Efficiently iterate through the files and subdirectories.
+			// looks thru directory
 			for (Path file : listing) {
-				// Print the name with the proper padding/prefix.
-				System.out.print(prefix + file.getFileName());
-				//System.out.println();
-				//System.out.println("Testing file path:" + file);
-				
-				// Check if this is a subdirectory
+				//System.out.print(prefix + file.getFileName());
 				if (Files.isDirectory(file)) {
 					// Add a slash so we can tell it is a directory
 					System.out.println("/");
-
-					// Recursively traverse the subdirectory.
-					// Add a little bit of padding so files in subdirectory
-					// are indented under that directory.
 					traverse("  " + prefix, file);
 				} else {
-					System.out.printf(" (%d bytes)%n", Files.size(file));
-					//System.out.println("I'm about to stemFile");
 					if (file.toString().matches(".*[tT][eE][xX][tT]$") || file.toString().matches(".*[tT][xX][tT]$")) {
 						TextFileStemmer.stemFile(file);
 					}
-					//System.out.println("Hi I successfully made an inverted index");
 				}
 			}
+		} catch (IOException e) {
+			System.out.println("Files doesn't exist!");
 		}
 	}
 
@@ -148,12 +100,9 @@ public class Driver {
 	 * @throws IOException
 	 */
 	public static void traverse(Path directory) throws IOException {
-		//System.out.println("Hi I got into traverse");
 		if (Files.isDirectory(directory)) {
-			//System.out.println("Directory: " + directory);
 			traverse("- ", directory);
 		} else {
-			//System.out.println("File: " + directory);
 			System.out.println(directory.getFileName());
 			TextFileStemmer.stemFile(directory);
 		}

@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -31,9 +30,10 @@ public class ArgumentMap {
 	}
 
 	/**
-	 * Parses the arguments into flag/value pairs where possible. Some flags may
-	 * not have associated values. If a flag is repeated, its value is
-	 * overwritten.
+	 * Parses the arguments into flag/path pairs. The path
+	 * is put as a String. Determines if the flag is 
+	 * recognized as -index or -path. Will put -index.json
+	 * for index flag w/o a pair
 	 *
 	 * @param args the command line arguments to parse
 	 */
@@ -65,18 +65,24 @@ public class ArgumentMap {
 				}
 			}
 		}
-		if (this.map.containsKey("-index")) {
+		if (hasFlag("-index")) {
 			this.output = true;
 		}
 	}
-
-	private boolean isIndexFlag(String arg) {
-		return arg.matches("^-index");
+	
+	/**
+	 * Checks if the given flag is an index flag
+	 * 
+	 * @param flag The given flag
+	 * @return true if the flag is an index flag
+	 */
+	private boolean isIndexFlag(String flag) {
+		return flag.matches("^-index");
 	}
 
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
-	 * character, followed by at least one other non-whitespace character.
+	 * character and is either followed by a "index" or "path".
 	 *
 	 * @param arg the argument to test if its a flag
 	 * @return {@code true} if the argument is a flag
@@ -106,30 +112,10 @@ public class ArgumentMap {
 	 * @see String#length()
 	 */
 	public static boolean isValue(String arg) {
-		//return arg.matches("[^-]\\S+.*");   // test | old code
 		if (arg == null) {
 			return false;
 		}
 		return arg.matches("[^-\\s]+.*");
-	}
-
-	/**
-	 * Checks if the string provided is a valid path object (either a file or a directory)
-	 * 
-	 * @return true if string provided is a valid path
-	 */
-	private boolean isValidPath(String arg) {
-		Path currPath = Paths.get(arg);
-		return (Files.isDirectory(currPath) | Files.exists(currPath))?true:false;
-	}
-	
-	/**
-	 * Returns the number of unique flags.
-	 *
-	 * @return number of unique flags
-	 */
-	public int numFlags() {
-		return this.map.keySet().size();
 	}
 
 	/**
@@ -150,7 +136,6 @@ public class ArgumentMap {
 	 */
 	public boolean hasValue(String flag) {
 		return this.map.get(flag) != null;
-		//DONE Fill in this method and fix the return. 
 	}
 
 	/**
@@ -162,7 +147,6 @@ public class ArgumentMap {
 	 *         there is no mapping for the flag
 	 */
 	public String getString(String flag) {
-		//System.out.printf("My flag is %s and value is %s\n", flag, this.map.get(flag));  //testing values
 		return this.map.get(flag);
 	}
 
@@ -197,7 +181,6 @@ public class ArgumentMap {
 	 */
 	public Path getPath(String flag) throws IOException {
 		var myValue = getString(flag);
-		//System.out.printf("myValue is %d\n", myValue);
 		return (myValue != null)?Paths.get(myValue):null;
 	}
 
