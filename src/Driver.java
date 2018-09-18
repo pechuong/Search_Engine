@@ -29,20 +29,27 @@ public class Driver {
 		// TODO Parses args
 		Driver test1 = new Driver(args);
 		
-		//TODO traverse Directory
+		System.out.println(test1.ArgMap.toString());
+		//TODO traverse Directories and makes inverted index
 		try {
-			traverse(test1.ArgMap.getPath("-path"));
-		} catch (Exception e){
-			System.out.println("Error");
+			if (test1.ArgMap.getPath("-path") != null)
+				traverse(test1.ArgMap.getPath("-path"));
+			else 
+				System.out.println("Didn't traverse path");
+		} catch (NullPointerException e){
+			System.out.println("No -path found :(");
+		} catch (IOException e) {
+			System.out.println("File doesn't exist");
 		}
 		
-		//TODO parse the file and stem words into index (stem hw)
-		
-		
+		System.out.println(test1.ArgMap.output);
 		//TODO format the inverted index into JSON file if output is true
-		if (test1.ArgMap.output = true) {
+		if (test1.ArgMap.output == true) {
 			try {
-				TreeJSONWriter.asObject(invertedIndex, Paths.get(test1.ArgMap.getString("index")));
+				if (test1.ArgMap.getString("-index") != null)
+					TreeJSONWriter.asObject(invertedIndex, Paths.get(test1.ArgMap.getString("-index")));
+				else 
+					System.out.println("Didn't format inverted index... no output found");
 			} catch (IOException e) {
 				System.out.println("Error in opening Path given to 'asObject' method");
 			}
@@ -50,7 +57,6 @@ public class Driver {
 			TreeJSONWriter.asObject(invertedIndex);
 		}		
 		
-		//test1.ArgMap.put("-path", "test/path");
 		System.out.println(test1.ArgMap.toString());
 	}
 	
@@ -104,8 +110,8 @@ public class Driver {
 					// are indented under that directory.
 					traverse("  " + prefix, file);
 				} else {
-					// Add the file size next to the name
 					System.out.printf(" (%d bytes)%n", Files.size(file));
+					TextFileStemmer.stemFile(path);
 				}
 			}
 		}

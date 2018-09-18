@@ -95,26 +95,11 @@ public class TextFileStemmer {
 	 */
 	public static void main(String[] args) throws IOException {
 		Path inputPath = Paths.get("test", "words.tExT");
-		Path outputPath = Paths.get("out", "words.tExT");
 
 		Files.createDirectories(Paths.get("out"));
 		
-		// Start of lab 5
 		System.out.println(inputPath);
 		stemFile(inputPath);
-		
-		/*
-		System.out.println(stemLine("antelope\n" + 
-									"an+telope\n" + 
-									"a-n-t-e-l-o-p-e\n" + 
-									"=>antelope<=\n" + 
-									"ante@lope\n" + 
-									"an%te&lo#pe\n" + 
-									"an:tel:ope\n" + 
-									"ante~~~~lope\n" + 
-									"antelope\n" + 
-									"antelöpé\n" + 
-									""));
-		*/				
+					
 	}
 }

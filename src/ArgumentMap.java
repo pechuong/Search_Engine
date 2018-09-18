@@ -40,6 +40,18 @@ public class ArgumentMap {
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			if (isValidFlag(args[i])) {
+				if (!isIndexFlag(args[i])) {
+					try {
+						if (isValue(args[i+1]) && args[i+1].matches(".*[jJ][sS][oO][nN]")) {
+							this.map.put(args[i], args[i+1]);
+						} else {
+							this.map.put(args[i], "index.json");
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("End of args reached");
+					}
+				}
+				/*
 				try {
 					if (isValue(args[i+1]) && isValidPath(args[i+1])) {
 						this.map.put(args[i], args[i+1]);
@@ -49,6 +61,7 @@ public class ArgumentMap {
 				} catch (ArrayIndexOutOfBoundsException e) {
 					this.map.put(args[i], null);
 				}
+				*/
 			}
 		}
 		if (this.map.containsKey("-index")) {
@@ -56,6 +69,9 @@ public class ArgumentMap {
 		}
 	}
 
+	private boolean isIndexFlag(String arg) {
+		return arg.matches("^-index");
+	}
 
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
@@ -97,7 +113,7 @@ public class ArgumentMap {
 	}
 
 	/**
-	 * Checks if the string provided is a valid path object
+	 * Checks if the string provided is a valid path object (either a file or a directory)
 	 * 
 	 * @return true if string provided is a valid path
 	 */
