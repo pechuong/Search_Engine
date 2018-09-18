@@ -26,15 +26,17 @@ public class Driver {
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(args));
 		
-		// TODO Parses args
+		// TODO Parses args and creates an arg map
 		Driver test1 = new Driver(args);
 		
-		System.out.println(test1.ArgMap.toString());
+		System.out.println("Arg Map: " + test1.ArgMap.toString());
+		System.out.println("-path mapping: " + test1.ArgMap.getString("-path"));
 		//TODO traverse Directories and makes inverted index
 		try {
-			if (test1.ArgMap.getPath("-path") != null)
+			if (test1.ArgMap.getPath("-path") != null) {
+				System.out.println(test1.ArgMap.getPath("-path").getRoot().toString());
 				traverse(test1.ArgMap.getPath("-path"));
-			else 
+			} else 
 				System.out.println("Didn't traverse path");
 		} catch (NullPointerException e){
 			System.out.println("No -path found :(");
@@ -42,7 +44,7 @@ public class Driver {
 			System.out.println("File doesn't exist");
 		}
 		
-		System.out.println(test1.ArgMap.output);
+		System.out.println("Outputting: " + test1.ArgMap.output);
 		//TODO format the inverted index into JSON file if output is true
 		if (test1.ArgMap.output == true) {
 			try {
@@ -56,8 +58,6 @@ public class Driver {
 		} else {
 			TreeJSONWriter.asObject(invertedIndex);
 		}		
-		
-		System.out.println(test1.ArgMap.toString());
 	}
 	
 	/**
