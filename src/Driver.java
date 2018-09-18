@@ -109,6 +109,8 @@ public class Driver {
 			for (Path file : listing) {
 				// Print the name with the proper padding/prefix.
 				System.out.print(prefix + file.getFileName());
+				//System.out.println();
+				//System.out.println("Testing file path:" + file);
 				
 				// Check if this is a subdirectory
 				if (Files.isDirectory(file)) {
@@ -121,8 +123,8 @@ public class Driver {
 					traverse("  " + prefix, file);
 				} else {
 					System.out.printf(" (%d bytes)%n", Files.size(file));
-					System.out.println("I'm about to stemFile");
-					TextFileStemmer.stemFile(path);
+					//System.out.println("I'm about to stemFile");
+					TextFileStemmer.stemFile(file);
 					//System.out.println("Hi I successfully made an inverted index");
 				}
 			}

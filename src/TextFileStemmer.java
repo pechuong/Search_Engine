@@ -63,9 +63,13 @@ public class TextFileStemmer {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 			) {
+			//System.out.println("Hi I'm in the stemFile");
+			//System.out.println("Input File: " + inputFile);
 			String line = null;
 			int wordCount = 1;
+			//System.out.println(reader.readLine());
 			while ((line = reader.readLine()) != null) {
+				//System.out.println("I'm about to read my first line");
 				List<String> stemmed = stemLine(line);
 				for (String word : stemmed) {
 					// Does the index have the word?
