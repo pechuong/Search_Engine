@@ -51,7 +51,7 @@ public class Driver {
 			System.out.println("File doesn't exist");
 		}
 		//System.out.println(invertedIndex);
-		
+				
 		//System.out.println("Outputting: " + test1.ArgMap.output);
 		//TODO format the inverted index into JSON file if output is true
 		if (test1.ArgMap.output == true) {
@@ -73,7 +73,8 @@ public class Driver {
 		} else {
 			//System.out.println("Making index w/o output");
 			TreeJSONWriter.asObject(invertedIndex);
-		}		
+		}
+		invertedIndex.clear();
 	}
 	
 	/**
@@ -152,6 +153,7 @@ public class Driver {
 		} else {
 			//System.out.println("File: " + directory);
 			System.out.println(directory.getFileName());
+			TextFileStemmer.stemFile(directory);
 		}
 	}
 }
