@@ -29,6 +29,7 @@ public class Driver {
 		// TODO Parses args and creates an arg map
 		Driver test1 = new Driver(args);
 		
+		/*
 		System.out.println("Arg Map:        " + test1.ArgMap.toString());
 		try {
 			System.out.println("-path mapping:  " + test1.ArgMap.getPath("-path"));
@@ -36,6 +37,7 @@ public class Driver {
 		} catch (Exception e) {
 			System.out.println("Error getting paths of flags");
 		}
+		*/
 		
 		//TODO traverse Directories and makes inverted index
 		try {
@@ -48,9 +50,9 @@ public class Driver {
 		} catch (IOException e) {
 			System.out.println("File doesn't exist");
 		}
-		System.out.println(invertedIndex);
+		//System.out.println(invertedIndex);
 		
-		System.out.println("Outputting: " + test1.ArgMap.output);
+		//System.out.println("Outputting: " + test1.ArgMap.output);
 		//TODO format the inverted index into JSON file if output is true
 		if (test1.ArgMap.output == true) {
 			try {

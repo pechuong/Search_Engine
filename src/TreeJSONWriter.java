@@ -256,7 +256,7 @@ public class TreeJSONWriter {
 			quote(key, writer);
 			writer.write(": ");
 			asArray(elements.get(key), writer, level + 1);
-			if (iterator < elements.keySet().size()) {
+			if (iterator < elements.keySet().size() - 1) {
 				writer.write(",");
 			}
 			writer.write(System.lineSeparator());
