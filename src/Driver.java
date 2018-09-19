@@ -5,10 +5,30 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/*
+ * TODO
+ * Put anything generally-useful in its own class outside of Driver
+ * In Driver only handle project-specific stuff, just checking for specific flags and values
+ * 
+ * main {
+ *   ArgMap map...
+ *   
+ *   if (have the -path flag)
+ *      trigger building the index
+ *     
+ *   if (have the -index flag)
+ *       trigger writing the index
+ * 
+ * }
+ */
+
 public class Driver {
-	
+	// TODO Need to make this non-static, put this in its own data-structure-like class
+	// TODO Adding stuff to this data structure, toString(), other methods similar to what you found in WordIndex
+	// TODO Step 1: Create your own class but keep the static keyword, Step 2: Remove the static keyword
 	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
-	public ArgumentMap ArgMap;
+	
+	public ArgumentMap ArgMap;  // TODO Make a local variable inside your main method and then remove the constructor
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
@@ -82,12 +102,15 @@ public class Driver {
 					//System.out.println("/");
 					traverse("  " + prefix, file);
 				} else {
+					// TODO (?i).*\\.te?xt$
 					if (file.toString().matches(".*[tT][eE][xX][tT]$") || file.toString().matches(".*[tT][xX][tT]$")) {
 						TextFileStemmer.stemFile(file);
 					}
 				}
 			}
+			// TODO throw to Driver.main and catch there, remove the catch block here
 		} catch (IOException e) {
+			// TODO Output the path that caused the issue
 			System.out.println("Files doesn't exist!");
 		}
 	}

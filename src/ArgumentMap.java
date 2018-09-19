@@ -4,6 +4,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO Re-generalize this class, shouldn't see specific flags or paths in here
+
 public class ArgumentMap {
 
 	private final Map<String, String> map;
@@ -161,6 +163,7 @@ public class ArgumentMap {
 	 *         value if there is no mapping for the flag
 	 */
 	public String getString(String flag, String defaultValue) {
+		// TODO return map.getOrDefault(...)
 		String myValue = getString(flag);
 		return (myValue != null)?myValue:defaultValue;
 	}

@@ -28,6 +28,7 @@ public class TextFileStemmer {
 		return stemLine(line, new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH));
 	}
 
+	// TODO Configure Eclipse to remove trailing whitespace
 	/**
 	 * Returns a list of cleaned and stemmed words parsed from the provided line.
 	 *
@@ -46,6 +47,8 @@ public class TextFileStemmer {
 		return wordList;
 	}
 
+	// TODO This should actually stay pretty generalized and not immediately put things into an InvertedIndex
+	// TODO Maybe create a "builder" class that is similar to this one but specific to building an inverted index data structure
 	/**
 	 * Reads a file line by line, parses each line into cleaned and stemmed words,
 	 * and then writes that line to a new file.
