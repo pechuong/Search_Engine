@@ -4,6 +4,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO Re-generalize this class, shouldn't see specific flags or paths in here
+
 public class ArgumentMap {
 
 	private final Map<String, String> map;
@@ -45,7 +47,7 @@ public class ArgumentMap {
 				if (isIndexFlag(args[i])) {
 					try {
 						// Is the next arg a json output and not a flag?
-						if (isValue(args[i+1]) && args[i+1].matches(".*[jJ][sS][oO][nN]")) {
+						if (isValue(args[i+1]) && args[i+1].matches("(?i).*json$")) {
 							this.map.put(args[i], args[i+1]);
 						} else {
 							// No path given to -index and therefore defaults "index.json"
@@ -53,7 +55,6 @@ public class ArgumentMap {
 						}
 					// If my index flag is at the end, give it default value
 					} catch (ArrayIndexOutOfBoundsException e) {
-						System.out.println("End of args reached");
 						this.map.put(args[i], "index.json");
 					}
 				} else {
@@ -169,6 +170,7 @@ public class ArgumentMap {
 	 *         value if there is no mapping for the flag
 	 */
 	public String getString(String flag, String defaultValue) {
+		// TODO return map.getOrDefault(...)
 		String myValue = getString(flag);
 		return (myValue != null)?myValue:defaultValue;
 	}
