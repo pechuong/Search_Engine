@@ -20,8 +20,9 @@ public class Driver {
 		// parses args
 		Driver test1 = new Driver(args);
 		
-		// traverses and makes inverted index
+		// Traverses and makes inverted index
 		try {
+			// If I don't get nothing from my -path flag, traverse it
 			if (test1.ArgMap.getPath("-path") != null) {
 				traverse(test1.ArgMap.getPath("-path"));
 			} else 
@@ -32,13 +33,16 @@ public class Driver {
 			System.out.println("File doesn't exist");
 		}
 		
-		// outputs inverted index to json
+		// Outputs inverted index to json if output is true
 		if (test1.ArgMap.output == true) {
 			try {
+				// If -index flag doesn't give me a null 
 				if (test1.ArgMap.getString("-index") != null) {
+					// If the file doesn't exist, make that file
 					if (!Files.exists(test1.ArgMap.getPath("-index"))) {
 						Files.createFile(test1.ArgMap.getPath("-index"));
 					}
+					// Output my index to the provided json file
 					TreeJSONWriter.asObject(invertedIndex, test1.ArgMap.getPath("-index"));
 				}
 				else 
@@ -47,11 +51,12 @@ public class Driver {
 				System.out.println("Error in opening Path given to 'asObject' method");
 			}
 		}
+		// Avoids the index stacking up when the second args is run
 		invertedIndex.clear();
 	}
 	
 	/**
-	 * Initializes the inverted index
+	 * Instantiates Driver and makes a new ArgMap
 	 */
 	public Driver(String[] args){
 		this.ArgMap = new ArgumentMap(args);
@@ -82,6 +87,7 @@ public class Driver {
 					//System.out.println("/");
 					traverse("  " + prefix, file);
 				} else {
+					// If file is a text file, stem it
 					if (file.toString().matches(".*[tT][eE][xX][tT]$") || file.toString().matches(".*[tT][xX][tT]$")) {
 						TextFileStemmer.stemFile(file);
 					}
@@ -100,9 +106,11 @@ public class Driver {
 	 * @throws IOException
 	 */
 	public static void traverse(Path directory) throws IOException {
+		// look thru path if directory
 		if (Files.isDirectory(directory)) {
 			traverse("- ", directory);
 		} else {
+			// otherwise stem file from path
 			System.out.println(directory.getFileName());
 			TextFileStemmer.stemFile(directory);
 		}

@@ -39,23 +39,30 @@ public class ArgumentMap {
 	 */
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
+			// Is my argument a flag?
 			if (isValidFlag(args[i])) {
+				// Is the flag a -index flag?
 				if (isIndexFlag(args[i])) {
 					try {
+						// Is the next arg a json output and not a flag?
 						if (isValue(args[i+1]) && args[i+1].matches(".*[jJ][sS][oO][nN]")) {
 							this.map.put(args[i], args[i+1]);
 						} else {
+							// No path given to -index and therefore defaults "index.json"
 							this.map.put(args[i], "index.json");
 						}
+					// If my index flag is at the end, give it default value
 					} catch (ArrayIndexOutOfBoundsException e) {
 						System.out.println("End of args reached");
 						this.map.put(args[i], "index.json");
 					}
 				} else {
+					// Is my next arg not a flag?
 					try {
 						if (isValue(args[i+1])) {
 							this.map.put(args[i], args[i+1]);
 						} else {
+							// put null for no path
 							this.map.put(args[i], null);
 						}
 					} catch (ArrayIndexOutOfBoundsException e) {
@@ -65,6 +72,7 @@ public class ArgumentMap {
 				}
 			}
 		}
+		// If I have -index in my argmap, set output to true
 		if (hasFlag("-index")) {
 			this.output = true;
 		}
