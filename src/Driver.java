@@ -40,11 +40,10 @@ public class Driver {
 
 		// Traverses and makes inverted index
 		try {
-			// If I don't get nothing from my -path flag, traverse it
-			if (ArgMap.getPath("-path") != null) {
+			if (ArgMap.getPath("-path") != null)
 				TraversePath.traverse(ArgMap.getPath("-path"));
-			} else
-				System.out.println("Didn't traverse path");
+			else
+				System.out.println("No path to traverse!");
 		} catch (NullPointerException e){
 			System.out.println("No -path found :(");
 		} catch (IOException e) {

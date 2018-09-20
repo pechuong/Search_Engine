@@ -55,7 +55,6 @@ public class ArgumentMap {
 		}
 	}
 
-
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
 	 * character and is either followed by a "index" or "path".
