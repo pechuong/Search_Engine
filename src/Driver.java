@@ -40,7 +40,7 @@ public class Driver {
 
 		// Traverses and makes inverted index
 		try {
-			if (ArgMap.getPath("-path") != null)
+			if (ArgMap.hasValue("-path"))
 				TraversePath.traverse(ArgMap.getPath("-path"));
 			else
 				System.out.println("No path to traverse!");
