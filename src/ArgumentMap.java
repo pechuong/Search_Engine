@@ -46,10 +46,8 @@ public class ArgumentMap {
 					if (isValue(args[i+1])) {
 						this.map.put(args[i], args[i+1]);
 					} else {
-						// No path given to -index and therefore defaults "index.json"
 						this.map.put(args[i], null);
 					}
-					// If my index flag is at the end, give it default value
 				} catch (ArrayIndexOutOfBoundsException e) {
 					this.map.put(args[i], null);
 				}
