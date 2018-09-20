@@ -39,13 +39,15 @@ public class TextFileStemmer {
 	 * @see TextParser#parse(String)
 	 */
 	public static List<String> stemLine(String line, Stemmer stemmer) {
-		ArrayList<String> wordList = new ArrayList<>();				
+		ArrayList<String> wordList = new ArrayList<>();
 		for (String word : TextParser.parse(line)) {
 			wordList.add(stemmer.stem(word).toString());
 		}
 		return wordList;
 	}
 
+	// TODO This should actually stay pretty generalized and not immediately put things into an InvertedIndex
+	// TODO Maybe create a "builder" class that is similar to this one but specific to building an inverted index data structure
 	/**
 	 * Reads a file line by line, parses each line into cleaned and stemmed words,
 	 * and then writes that line to a new file.
@@ -60,7 +62,7 @@ public class TextFileStemmer {
 	public static void stemFile(Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-			) {
+				) {
 			String line = null;
 			int wordCount = 1;
 			while ((line = reader.readLine()) != null) {
@@ -68,19 +70,19 @@ public class TextFileStemmer {
 				for (String word : stemmed) {
 					// Does the index have the word?
 					if (!Driver.invertedIndex.containsKey(word)) {
-							Driver.invertedIndex.put(word, new TreeMap<String, TreeSet<Integer>>());
-					} 
+						Driver.invertedIndex.put(word, new TreeMap<String, TreeSet<Integer>>());
+					}
 					// Does index have file?
 					if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
 						// Add word w/ new file placement
 						Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
-					} 
+					}
 					Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
 					wordCount++;
 				}
 			}
-		}	
-	}	
+		}
+	}
 
 	/**
 	 * Uses {@link #stemFile(Path, Path)} to stem a single hard-coded file. Useful
@@ -93,9 +95,9 @@ public class TextFileStemmer {
 		Path inputPath = Paths.get("test", "words.tExT");
 
 		Files.createDirectories(Paths.get("out"));
-		
+
 		System.out.println(inputPath);
 		stemFile(inputPath);
-					
+
 	}
 }
