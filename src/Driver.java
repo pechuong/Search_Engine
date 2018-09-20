@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -50,19 +52,14 @@ public class Driver {
 		}
 
 		// Outputs inverted index to json if output is true
-		if (ArgMap.output == true) {
+		if (ArgMap.hasFlag("-index")) {
 			try {
-				// If -index flag doesn't give me a null
-				if (ArgMap.getString("-index") != null) {
-					// If the file doesn't exist, make that file
-					if (!Files.exists(ArgMap.getPath("-index"))) {
-						Files.createFile(ArgMap.getPath("-index"));
-					}
-					// Output my index to the provided json file
-					TreeJSONWriter.asObject(invertedIndex, ArgMap.getPath("-index"));
+				Path output = ArgMap.getPath("-index", Paths.get("index.json"));
+				if (!Files.exists(output)) {
+					Files.createFile(output);
 				}
-				else
-					System.out.println("Didn't format inverted index... no output found");
+				TreeJSONWriter.asObject(invertedIndex, output);
+
 			} catch (IOException e) {
 				System.out.println("Error in opening Path given to 'asObject' method");
 			}
