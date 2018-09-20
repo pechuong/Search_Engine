@@ -14,7 +14,7 @@ public class ArgumentMap {
 	 * Initializes this argument map.
 	 */
 	public ArgumentMap() {
-		this.map = new HashMap<String, String>(); // DONE Properly initialize this.
+		this.map = new HashMap<String, String>();
 	}
 
 	/**
@@ -40,48 +40,23 @@ public class ArgumentMap {
 	public void parse(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			// Is my argument a flag?
-			if (isValidFlag(args[i])) {
-				// Is the flag a -index flag?
-				if (isIndexFlag(args[i])) {
-					try {
-						// Is the next arg a json output and not a flag?
-						if (isValue(args[i+1]) && args[i+1].matches("(?i).*json$")) {
-							this.map.put(args[i], args[i+1]);
-						} else {
-							// No path given to -index and therefore defaults "index.json"
-							this.map.put(args[i], "index.json");
-						}
-						// If my index flag is at the end, give it default value
-					} catch (ArrayIndexOutOfBoundsException e) {
-						this.map.put(args[i], "index.json");
-					}
-				} else {
-					// Is my next arg not a flag?
-					try {
-						if (isValue(args[i+1])) {
-							this.map.put(args[i], args[i+1]);
-						} else {
-							// put null for no path
-							this.map.put(args[i], null);
-						}
-					} catch (ArrayIndexOutOfBoundsException e) {
-						System.out.println("End of args reached");
+			if (isFlag(args[i])) {
+				try {
+					// Is the next arg not a flag?
+					if (isValue(args[i+1])) {
+						this.map.put(args[i], args[i+1]);
+					} else {
+						// No path given to -index and therefore defaults "index.json"
 						this.map.put(args[i], null);
 					}
+					// If my index flag is at the end, give it default value
+				} catch (ArrayIndexOutOfBoundsException e) {
+					this.map.put(args[i], null);
 				}
 			}
 		}
 	}
 
-	/**
-	 * Checks if the given flag is an index flag
-	 *
-	 * @param flag The given flag
-	 * @return true if the flag is an index flag
-	 */
-	private boolean isIndexFlag(String flag) {
-		return flag.matches("^-index");
-	}
 
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
@@ -95,11 +70,11 @@ public class ArgumentMap {
 	 * @see String#isEmpty()
 	 * @see String#length()
 	 */
-	public static boolean isValidFlag(String arg) {
+	public static boolean isFlag(String arg) {
 		if (arg == null) {
 			return false;
 		}
-		return arg.matches("^-index") | arg.matches("^-path");
+		return arg.matches("^-\\S+");
 	}
 
 	/**
