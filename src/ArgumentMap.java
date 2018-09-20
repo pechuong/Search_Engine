@@ -9,7 +9,6 @@ import java.util.Map;
 public class ArgumentMap {
 
 	private final Map<String, String> map;
-	public boolean output;
 
 	/**
 	 * Initializes this argument map.
@@ -27,13 +26,12 @@ public class ArgumentMap {
 	 */
 	public ArgumentMap(String[] args) {
 		this();
-		this.output = false;
 		parse(args);
 	}
 
 	/**
 	 * Parses the arguments into flag/path pairs. The path
-	 * is put as a String. Determines if the flag is 
+	 * is put as a String. Determines if the flag is
 	 * recognized as -index or -path. Will put -index.json
 	 * for index flag w/o a pair
 	 *
@@ -53,7 +51,7 @@ public class ArgumentMap {
 							// No path given to -index and therefore defaults "index.json"
 							this.map.put(args[i], "index.json");
 						}
-					// If my index flag is at the end, give it default value
+						// If my index flag is at the end, give it default value
 					} catch (ArrayIndexOutOfBoundsException e) {
 						this.map.put(args[i], "index.json");
 					}
@@ -73,15 +71,11 @@ public class ArgumentMap {
 				}
 			}
 		}
-		// If I have -index in my argmap, set output to true
-		if (hasFlag("-index")) {
-			this.output = true;
-		}
 	}
-	
+
 	/**
 	 * Checks if the given flag is an index flag
-	 * 
+	 *
 	 * @param flag The given flag
 	 * @return true if the flag is an index flag
 	 */
