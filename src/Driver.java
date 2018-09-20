@@ -61,7 +61,7 @@ public class Driver {
 				TreeJSONWriter.asObject(invertedIndex, output);
 
 			} catch (IOException e) {
-				System.out.println("Error in opening Path given to 'asObject' method");
+				System.out.println("Error writing to: " + ArgMap.getString("-index"));
 			}
 		}
 		// Avoids the index stacking up when the second args is run
