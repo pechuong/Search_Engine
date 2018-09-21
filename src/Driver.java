@@ -44,13 +44,11 @@ public class Driver {
 				TraversePath.traverse(ArgMap.getPath("-path"));
 			else
 				System.out.println("No path to traverse!");
-		} catch (NullPointerException e){
-			System.out.println("No -path found :(");
 		} catch (IOException e) {
-			System.out.printf("File: " + ArgMap.getString("-path") + " does not exist!" + System.lineSeparator());
+			System.out.println("File: " + ArgMap.getString("-path") + " does not exist!");
 		}
 
-		// Outputs inverted index to json if output is true
+		// Outputs inverted index to Json
 		if (ArgMap.hasFlag("-index")) {
 			try {
 				Path output = ArgMap.getPath("-index", Paths.get("index.json"));
@@ -67,11 +65,11 @@ public class Driver {
 		invertedIndex.clear();
 	}
 
-	/*
+
 	@Override
 	public String toString() {
-		return ;
+		return this.toString();
 	}
-	 */
+
 }
 
