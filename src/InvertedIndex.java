@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -11,6 +12,19 @@ public class InvertedIndex {
 	 */
 	public InvertedIndex() {
 		this.iIndex = new TreeMap<>();
+	}
+
+	public void buildiIndex(List<String> wordList, Path file) {
+		int wordCount = 0;
+		for (String word : wordList) {
+			if (!hasWord(word)) {
+				addWord(word);
+			}
+			if (!hasFile(word, file)) {
+				addFile(word, file);
+			}
+			addPosition(word, file, ++wordCount);
+		}
 	}
 
 	/**
@@ -31,8 +45,8 @@ public class InvertedIndex {
 	 * @param path The path to be found
 	 * @return true if the path exists in the specific word's index
 	 */
-	public boolean hasFile(String word, String path) {
-		return iIndex.get(word).containsKey(path);
+	public boolean hasFile(String word, Path path) {
+		return iIndex.get(word).containsKey(path.toString());
 	}
 
 	/**
@@ -42,7 +56,7 @@ public class InvertedIndex {
 	 * @param path The path to be found
 	 * @return true if the path exists in the inverted index
 	 */
-	public boolean hasFile(String path) {
+	public boolean hasFile(Path path) {
 		for (String word : iIndex.keySet()) {
 			if (hasFile(word, path)) {
 				return true;
@@ -59,10 +73,8 @@ public class InvertedIndex {
 	 * @param filePath The file to put into the index for this word
 	 * @param position The position of the word to add
 	 */
-	public void addWord(String word, Path filePath, int position) {
+	public void addWord(String word) {
 		iIndex.put(word, new TreeMap<>());
-		addFile(word, filePath);
-		addPosition(word, filePath, position);
 	}
 
 	/**
