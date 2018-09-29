@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class TraversePath {
-	
+
 	/**
 	 * Outputs the name of the file or subdirectory, with proper indentation to
 	 * help indicate the hierarchy. If a subdirectory is encountered, will
@@ -36,10 +36,6 @@ public class TraversePath {
 					}
 				}
 			}
-			// TODO throw to Driver.main and catch there, remove the catch block here
-		} catch (IOException e) {
-			// TODO Output the path that caused the issue
-			System.out.println("Files doesn't exist!");
 		}
 	}
 
