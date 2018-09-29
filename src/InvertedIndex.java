@@ -14,6 +14,15 @@ public class InvertedIndex {
 		this.iIndex = new TreeMap<>();
 	}
 
+	/**
+	 * Builds the inverted index
+	 * - checks for the word
+	 * - checks if word has file
+	 * - adds position
+	 *
+	 * @param wordList The list of words stemmed from 1 file
+	 * @param file The file the words were stemmed from
+	 */
 	public void buildiIndex(List<String> wordList, Path file) {
 		int wordCount = 0;
 		for (String word : wordList) {
