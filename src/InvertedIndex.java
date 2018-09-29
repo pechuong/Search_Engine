@@ -1,6 +1,8 @@
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javafx.scene.shape.Path;
+
 public class InvertedIndex {
 	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
 
@@ -49,4 +51,38 @@ public class InvertedIndex {
 		return false;
 	}
 
+	/**
+	 * Adds a word to the new index and creates the inner
+	 * data structures (TreeMap<String, TreeSet<Integer>>)
+	 *
+	 * @param word The word to be put into the index
+	 * @param filePath The file to put into the index for this word
+	 * @param position The position of the word to add
+	 */
+	public void addWord(String word, Path filePath, int position) {
+		iIndex.put(word, new TreeMap<>());
+		addFile(word, filePath);
+		addPosition(word, filePath, position);
+	}
+
+	/**
+	 * Adds a file to the index under the given word
+	 *
+	 * @param word The word to put the filePath under
+	 * @param filePath The path to be put in the index
+	 */
+	public void addFile(String word, Path filePath) {
+		iIndex.get(word).put(filePath.toString(), new TreeSet<>());
+	}
+
+	/**
+	 * Adds the position of the word to the index
+	 *
+	 * @param word The word found from stemming
+	 * @param filePath The file to put the position in
+	 * @param position The position number to put into the set
+	 */
+	public void addPosition(String word, Path filePath, int position) {
+		iIndex.get(word).get(filePath.toString()).add(position);
+	}
 }
