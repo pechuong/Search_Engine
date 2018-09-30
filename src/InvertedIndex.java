@@ -105,4 +105,9 @@ public class InvertedIndex {
 	public void addPosition(String word, Path filePath, int position) {
 		this.iIndex.get(word).get(filePath.toString()).add(position);
 	}
+
+	@Override
+	public String toString() {
+		return this.iIndex.toString();
+	}
 }
