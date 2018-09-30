@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -59,14 +57,16 @@ public class TextFileStemmer {
 	 * @see #stemLine(String)
 	 * @see TextParser#parse(String)
 	 */
-	public static void stemFile(Path inputFile) throws IOException {
+	public static void stemFile(InvertedIndex iIndex, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
 			String line = null;
-			int wordCount = 1;
+			ArrayList<String> wordList = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 				List<String> stemmed = stemLine(line);
+				wordList.addAll(stemmed);
+				/*
 				for (String word : stemmed) {
 					// Does the index have the word?
 					if (!Driver.invertedIndex.containsKey(word)) {
@@ -79,8 +79,9 @@ public class TextFileStemmer {
 					}
 					Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
 					wordCount++;
-				}
+				 */
 			}
+			iIndex.buildiIndex(wordList, inputFile);
 		}
 	}
 
@@ -96,8 +97,8 @@ public class TextFileStemmer {
 
 		Files.createDirectories(Paths.get("out"));
 
-		System.out.println(inputPath);
-		stemFile(inputPath);
+		//System.out.println(inputPath);
+		//stemFile(inputPath);
 
 	}
 }

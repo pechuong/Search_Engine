@@ -20,7 +20,7 @@ public class TraversePath {
 	 *               is passed
 	 * @throws IOException
 	 */
-	private static void traverse(String prefix, Path path) throws IOException {
+	private static void traverse(InvertedIndex iIndex, String prefix, Path path) throws IOException {
 		try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 			// looks thru directory
 			for (Path file : listing) {
@@ -28,11 +28,11 @@ public class TraversePath {
 				if (Files.isDirectory(file)) {
 					// Add a slash so we can tell it is a directory
 					//System.out.println("/");
-					traverse("  " + prefix, file);
+					traverse(iIndex, "  " + prefix, file);
 				} else {
 					// If file is a text file, stem it
 					if (file.toString().matches("(?i).*\\.te?xt$")) {
-						TextFileStemmer.stemFile(file);
+						TextFileStemmer.stemFile(iIndex, file);
 					}
 				}
 			}
@@ -46,14 +46,14 @@ public class TraversePath {
 	 * @param directory to traverse
 	 * @throws IOException
 	 */
-	public static void traverse(Path directory) throws IOException {
+	public static void traverse(InvertedIndex iIndex, Path directory) throws IOException {
 		// look thru path if directory
 		if (Files.isDirectory(directory)) {
-			traverse("- ", directory);
+			traverse(iIndex, "- ", directory);
 		} else {
 			// otherwise stem file from path
 			System.out.println(directory.getFileName());
-			TextFileStemmer.stemFile(directory);
+			TextFileStemmer.stemFile(iIndex, directory);
 		}
 	}
 }

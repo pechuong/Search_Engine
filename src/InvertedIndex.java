@@ -1,8 +1,7 @@
+import java.nio.file.Path;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import javafx.scene.shape.Path;
 
 public class InvertedIndex {
 	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
@@ -11,7 +10,7 @@ public class InvertedIndex {
 	 * Initializes the inverted index
 	 */
 	public InvertedIndex() {
-		this.iIndex = new TreeMap<>();
+		iIndex = new TreeMap<>();
 	}
 
 	/**

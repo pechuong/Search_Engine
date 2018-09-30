@@ -37,11 +37,12 @@ public class Driver {
 	public static void main(String[] args) {
 		// parses args
 		ArgumentMap ArgMap = new ArgumentMap(args);
+		InvertedIndex iIndex = new InvertedIndex();
 
 		// Traverses and makes inverted index
 		try {
 			if (ArgMap.hasValue("-path"))
-				TraversePath.traverse(ArgMap.getPath("-path"));
+				TraversePath.traverse(iIndex, ArgMap.getPath("-path"));
 			else
 				System.out.println("No path to traverse!");
 		} catch (IOException e) {
