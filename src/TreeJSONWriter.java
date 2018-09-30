@@ -90,7 +90,7 @@ public class TreeJSONWriter {
 	 */
 	public static void asArray(TreeSet<Integer> elements, Writer writer,
 			int level) throws IOException {
-		
+
 		if (elements.isEmpty()) {
 			writer.write("[" + System.lineSeparator());
 			indent(level, writer);
@@ -119,7 +119,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements) {
+	public static String asObject(InvertedIndex elements) {
 		try {
 			StringWriter writer = new StringWriter();
 			asObject(elements, writer, 0);
@@ -140,7 +140,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Path path)
+	public static void asObject(InvertedIndex elements, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
 				StandardCharsets.UTF_8)) {
@@ -165,16 +165,16 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer,
+	public static void asObject(InvertedIndex elements, Writer writer,
 			int level) throws IOException {
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String word: elements.keySet()) {
+		for (String word: elements.iIndex.keySet()) {
 			indent(level + 1, writer);
 			quote(word, writer);
 			writer.write(": ");
-			asNestedObject(elements.get(word), writer, level + 1);
-			if (word != elements.lastKey()) {
+			asNestedObject(elements.iIndex.get(word), writer, level + 1);
+			if (word != elements.iIndex.lastKey()) {
 				writer.write(",");
 			}
 			writer.write(System.lineSeparator());
@@ -260,23 +260,23 @@ public class TreeJSONWriter {
 
 	public static void main(String[] args) {
 		// You can test your code here while developing!
-		
+
 		/*
 		TreeSet<Integer> test = new TreeSet<>();
 		test.add(3);
 		test.add(11);
 		test.add(-2);
 		System.out.println(asArray(test));
- 		*/
-		
+		 */
+
 		/*
 		TreeMap<String, Integer> test1 = new TreeMap<>();
 		test1.put("hello", -1);
 		test1.put("world", 2);
 		test1.put("!!!", 10);
 		System.out.println(asObject(test1));
-		*/
-		
+		 */
+
 		/*
 		TreeMap<String, TreeSet<Integer>> test2 = new TreeMap<>();
 		test2.put("hello", new TreeSet<>());
@@ -287,6 +287,6 @@ public class TreeJSONWriter {
 		test2.put("!!!", new TreeSet<>());
 		Collections.addAll(test2.get("!!!"), -8, 9);
 		System.out.println(asNestedObject(test2));
-		*/
+		 */
 	}
 }

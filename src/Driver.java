@@ -56,14 +56,12 @@ public class Driver {
 				if (!Files.exists(output)) {
 					Files.createFile(output);
 				}
-				TreeJSONWriter.asObject(invertedIndex, output);
+				TreeJSONWriter.asObject(iIndex, output);
 
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + ArgMap.getString("-index"));
 			}
 		}
-		// Avoids the index stacking up when the second args is run
-		invertedIndex.clear();
 	}
 
 

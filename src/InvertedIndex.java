@@ -4,13 +4,13 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class InvertedIndex {
-	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
 
 	/**
 	 * Initializes the inverted index
 	 */
 	public InvertedIndex() {
-		iIndex = new TreeMap<>();
+		this.iIndex = new TreeMap<>();
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class InvertedIndex {
 	 * @return true if the index contains the word
 	 */
 	public boolean hasWord(String word) {
-		return iIndex.containsKey(word.toLowerCase());
+		return this.iIndex.containsKey(word.toLowerCase());
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class InvertedIndex {
 	 * @return true if the path exists in the specific word's index
 	 */
 	public boolean hasFile(String word, Path path) {
-		return iIndex.get(word).containsKey(path.toString());
+		return this.iIndex.get(word).containsKey(path.toString());
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class InvertedIndex {
 	 * @return true if the path exists in the inverted index
 	 */
 	public boolean hasFile(Path path) {
-		for (String word : iIndex.keySet()) {
+		for (String word : this.iIndex.keySet()) {
 			if (hasFile(word, path)) {
 				return true;
 			}
@@ -82,7 +82,7 @@ public class InvertedIndex {
 	 * @param position The position of the word to add
 	 */
 	public void addWord(String word) {
-		iIndex.put(word, new TreeMap<>());
+		this.iIndex.put(word, new TreeMap<>());
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class InvertedIndex {
 	 * @param filePath The path to be put in the index
 	 */
 	public void addFile(String word, Path filePath) {
-		iIndex.get(word).put(filePath.toString(), new TreeSet<>());
+		this.iIndex.get(word).put(filePath.toString(), new TreeSet<>());
 	}
 
 	/**
@@ -103,6 +103,6 @@ public class InvertedIndex {
 	 * @param position The position number to put into the set
 	 */
 	public void addPosition(String word, Path filePath, int position) {
-		iIndex.get(word).get(filePath.toString()).add(position);
+		this.iIndex.get(word).get(filePath.toString()).add(position);
 	}
 }

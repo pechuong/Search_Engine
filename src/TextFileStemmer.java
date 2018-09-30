@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,25 +60,11 @@ public class TextFileStemmer {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
-			String line = null;
+			String line;
 			ArrayList<String> wordList = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 				List<String> stemmed = stemLine(line);
 				wordList.addAll(stemmed);
-				/*
-				for (String word : stemmed) {
-					// Does the index have the word?
-					if (!Driver.invertedIndex.containsKey(word)) {
-						Driver.invertedIndex.put(word, new TreeMap<String, TreeSet<Integer>>());
-					}
-					// Does index have file?
-					if (!Driver.invertedIndex.get(word).containsKey(inputFile.toString())) {
-						// Add word w/ new file placement
-						Driver.invertedIndex.get(word).put(inputFile.toString(), new TreeSet<Integer>());
-					}
-					Driver.invertedIndex.get(word).get(inputFile.toString()).add(wordCount);
-					wordCount++;
-				 */
 			}
 			iIndex.buildiIndex(wordList, inputFile);
 		}
@@ -93,9 +78,9 @@ public class TextFileStemmer {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		Path inputPath = Paths.get("test", "words.tExT");
+		//Path inputPath = Paths.get("test", "words.tExT");
 
-		Files.createDirectories(Paths.get("out"));
+		//Files.createDirectories(Paths.get("out"));
 
 		//System.out.println(inputPath);
 		//stemFile(inputPath);
