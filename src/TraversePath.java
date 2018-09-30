@@ -14,6 +14,7 @@ public class TraversePath {
 	 * The recursive version of this method is private. Users of this class will
 	 * have to use the public version (see below).
 	 *
+	 * @param iIndex The inverted index passed in
 	 * @param prefix the padding or prefix to put infront of the file or
 	 *               subdirectory name
 	 * @param path   to retrieve the listing, assumes a directory and not a file
