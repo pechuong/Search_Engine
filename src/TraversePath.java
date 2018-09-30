@@ -52,7 +52,7 @@ public class TraversePath {
 			traverse(iIndex, "- ", directory);
 		} else {
 			// otherwise stem file from path
-			System.out.println(directory.getFileName());
+			//System.out.println(directory.getFileName());
 			TextFileStemmer.stemFile(iIndex, directory);
 		}
 	}

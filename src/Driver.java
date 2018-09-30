@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /*
  * TODO
@@ -26,7 +24,6 @@ public class Driver {
 	// TODO Need to make this non-static, put this in its own data-structure-like class
 	// TODO Adding stuff to this data structure, toString(), other methods similar to what you found in WordIndex
 	// TODO Step 1: Create your own class but keep the static keyword, Step 2: Remove the static keyword
-	public static TreeMap<String, TreeMap<String, TreeSet<Integer>>> invertedIndex = new TreeMap<>();
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
