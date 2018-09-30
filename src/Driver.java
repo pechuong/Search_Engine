@@ -21,9 +21,7 @@ import java.nio.file.Paths;
  */
 
 public class Driver {
-	// TODO Need to make this non-static, put this in its own data-structure-like class
 	// TODO Adding stuff to this data structure, toString(), other methods similar to what you found in WordIndex
-	// TODO Step 1: Create your own class but keep the static keyword, Step 2: Remove the static keyword
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
