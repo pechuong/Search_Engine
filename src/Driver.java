@@ -3,25 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/*
- * TODO
- * Put anything generally-useful in its own class outside of Driver
- * In Driver only handle project-specific stuff, just checking for specific flags and values
- *
- * main {
- *   ArgMap map...
- *
- *   if (have the -path flag)
- *      trigger building the index
- *
- *   if (have the -index flag)
- *       trigger writing the index
- *
- * }
- */
-
 public class Driver {
-	// TODO Adding stuff to this data structure, toString(), other methods similar to what you found in WordIndex
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search

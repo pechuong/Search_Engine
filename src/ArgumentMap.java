@@ -4,8 +4,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO Re-generalize this class, shouldn't see specific flags or paths in here
-
 public class ArgumentMap {
 
 	private final Map<String, String> map;
