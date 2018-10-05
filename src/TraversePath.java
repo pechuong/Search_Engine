@@ -3,6 +3,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+// TODO Remove the String prefix logic from the code
+
 public class TraversePath {
 
 	/**
@@ -57,4 +59,19 @@ public class TraversePath {
 			TextFileStemmer.stemFile(iIndex, directory);
 		}
 	}
+	
+	/* TODO 
+	public static void traverse1(InvertedIndex index, Path path) throws IOException {
+		if (Files.isDirectory(path)) {
+			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
+				for (Path file : listing) {
+					traverse1(index, file);
+				}
+			}
+		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
+			TextFileStemmer.stemFile(index, path);
+		}
+	}
+	*/
+	
 }
