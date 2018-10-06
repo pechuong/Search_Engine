@@ -11,7 +11,7 @@ public class InvertedIndex {
 	 * TODO Really be nothing modifying the string or doing reading of files, etc.
 	 * in this class. (No toLowerCase, etc.)
 	 */
-	
+
 	/**
 	 * Initializes the inverted index
 	 */
@@ -19,12 +19,12 @@ public class InvertedIndex {
 		this.iIndex = new TreeMap<>();
 	}
 
-	/* TODO 
+	/* TODO
 	public void writeJSON(Path path) {
 		TreeJSONWriter.asObject(iIndex, path);
 	}
-	*/
-	
+	 */
+
 	/**
 	 * Builds the inverted index
 	 * - checks for the word
@@ -88,12 +88,12 @@ public class InvertedIndex {
 		return false;
 	}
 
-	/* TODO 
+	/* TODO
 	public void add(String word, String location, int position) {
 		do all the checking in here instead of in the builder
 	}
-	*/
-	
+	 */
+
 	// TODO These should maybe be private so that nothing can mess up and overwrite what is already stored
 	/**
 	 * Adds a word to the new index and creates the inner
@@ -103,7 +103,7 @@ public class InvertedIndex {
 	 * @param filePath The file to put into the index for this word
 	 * @param position The position of the word to add
 	 */
-	public void addWord(String word) {
+	private void addWord(String word) {
 		this.iIndex.put(word, new TreeMap<>());
 	}
 
@@ -113,7 +113,7 @@ public class InvertedIndex {
 	 * @param word The word to put the filePath under
 	 * @param filePath The path to be put in the index
 	 */
-	public void addFile(String word, Path filePath) {
+	private void addFile(String word, Path filePath) {
 		this.iIndex.get(word).put(filePath.toString(), new TreeSet<>());
 	}
 
@@ -124,7 +124,7 @@ public class InvertedIndex {
 	 * @param filePath The file to put the position in
 	 * @param position The position number to put into the set
 	 */
-	public void addPosition(String word, Path filePath, int position) {
+	private void addPosition(String word, Path filePath, int position) {
 		this.iIndex.get(word).get(filePath.toString()).add(position);
 	}
 
