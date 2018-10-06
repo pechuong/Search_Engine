@@ -94,7 +94,6 @@ public class InvertedIndex {
 	}
 	 */
 
-	// TODO These should maybe be private so that nothing can mess up and overwrite what is already stored
 	/**
 	 * Adds a word to the new index and creates the inner
 	 * data structures (TreeMap<String, TreeSet<Integer>>)
