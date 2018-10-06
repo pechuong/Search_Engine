@@ -25,8 +25,7 @@ public class Driver {
 				System.out.println("No path to traverse!");
 			}
 		} catch (IOException e) {
-			System.out.println("File: " + argMap.getString("-path") + " does not exist!");
-			// TODO sysout(Unable to build from + path);
+			System.out.println("Unable to build from: " + argMap.getString("-path"));
 		}
 
 		// Outputs inverted index to Json
