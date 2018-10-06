@@ -40,13 +40,7 @@ public class InvertedIndex {
 	public void buildiIndex(List<String> wordList, Path file) {
 		int wordCount = 0;
 		for (String word : wordList) {
-			if (!hasWord(word)) {
-				addWord(word);
-			}
-			if (!hasFile(word, file)) {
-				addFile(word, file);
-			}
-			addPosition(word, file, ++wordCount);
+			add(word, file.toString(), ++wordCount);
 		}
 	}
 
@@ -68,16 +62,23 @@ public class InvertedIndex {
 	 * @param path The path to be found
 	 * @return true if the path exists in the specific word's index
 	 */
-	public boolean hasFile(String word, Path path) { // TODO Take a String instead of a Path
+	public boolean hasFile(String word, String path) { // TODO Take a String instead of a Path
 		// TODO Check if iIndex.get(word) returns null, if so return false
-		return this.index.get(word).containsKey(path.toString());
+		return this.index.get(word).containsKey(path);
 	}
 
-	/* TODO
+
 	public void add(String word, String location, int position) {
-		do all the checking in here instead of in the builder
+		//do all the checking in here instead of in the builder
+		if (!hasWord(word)) {
+			addWord(word);
+		}
+		if (!hasFile(word, location)) {
+			addFile(word, location);
+		}
+		addPosition(word, location, position);
 	}
-	 */
+
 
 	/**
 	 * Adds a word to the new index and creates the inner
