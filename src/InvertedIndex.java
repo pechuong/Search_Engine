@@ -19,11 +19,14 @@ public class InvertedIndex {
 		this.index = new TreeMap<>();
 	}
 
-	/* TODO
-	public void writeJSON(Path path) {
-		TreeJSONWriter.asObject(iIndex, path);
-	}
+	/**
+	 * Writes the index to a JSON file
+	 *
+	 * @param path The file to write the index to
 	 */
+	public void writeJSON(Path path) {
+		TreeJSONWriter.asObject(index, path);
+	}
 
 	/**
 	 * Builds the inverted index
@@ -55,8 +58,7 @@ public class InvertedIndex {
 	 * @return true if the index contains the word
 	 */
 	public boolean hasWord(String word) {
-		// TODO No lowercase
-		return this.index.containsKey(word.toLowerCase());
+		return this.index.containsKey(word);
 	}
 
 	/**
