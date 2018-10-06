@@ -16,16 +16,13 @@ public class Driver {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
 
-		// TODO Nest the try/catch inside of the if-statement
 		// Traverses and makes inverted index
-		try {
-			if (argMap.hasValue("-path")) {
+		if (argMap.hasValue("-path")) {
+			try {
 				TraversePath.traverse(index, argMap.getPath("-path"));
-			} else {
-				System.out.println("No path to traverse!");
+			} catch (IOException e) {
+				System.out.println("Unable to build from: " + argMap.getString("-path"));
 			}
-		} catch (IOException e) {
-			System.out.println("Unable to build from: " + argMap.getString("-path"));
 		}
 
 		// Outputs inverted index to Json
