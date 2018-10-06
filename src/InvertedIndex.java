@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 public class InvertedIndex {
 	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
 
 	/*
 	 * TODO Really be nothing modifying the string or doing reading of files, etc.
@@ -16,7 +16,7 @@ public class InvertedIndex {
 	 * Initializes the inverted index
 	 */
 	public InvertedIndex() {
-		this.iIndex = new TreeMap<>();
+		this.index = new TreeMap<>();
 	}
 
 	/* TODO
@@ -56,7 +56,7 @@ public class InvertedIndex {
 	 */
 	public boolean hasWord(String word) {
 		// TODO No lowercase
-		return this.iIndex.containsKey(word.toLowerCase());
+		return this.index.containsKey(word.toLowerCase());
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class InvertedIndex {
 	 */
 	public boolean hasFile(String word, Path path) { // TODO Take a String instead of a Path
 		// TODO Check if iIndex.get(word) returns null, if so return false
-		return this.iIndex.get(word).containsKey(path.toString());
+		return this.index.get(word).containsKey(path.toString());
 	}
 
 	// TODO Remove for now, maybe re-add in project 2.
@@ -80,7 +80,7 @@ public class InvertedIndex {
 	 * @return true if the path exists in the inverted index
 	 */
 	public boolean hasFile(Path path) {
-		for (String word : this.iIndex.keySet()) {
+		for (String word : this.index.keySet()) {
 			if (hasFile(word, path)) {
 				return true;
 			}
@@ -103,7 +103,7 @@ public class InvertedIndex {
 	 * @param position The position of the word to add
 	 */
 	private void addWord(String word) {
-		this.iIndex.put(word, new TreeMap<>());
+		this.index.put(word, new TreeMap<>());
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class InvertedIndex {
 	 * @param filePath The path to be put in the index
 	 */
 	private void addFile(String word, Path filePath) {
-		this.iIndex.get(word).put(filePath.toString(), new TreeSet<>());
+		this.index.get(word).put(filePath.toString(), new TreeSet<>());
 	}
 
 	/**
@@ -124,11 +124,11 @@ public class InvertedIndex {
 	 * @param position The position number to put into the set
 	 */
 	private void addPosition(String word, Path filePath, int position) {
-		this.iIndex.get(word).get(filePath.toString()).add(position);
+		this.index.get(word).get(filePath.toString()).add(position);
 	}
 
 	@Override
 	public String toString() {
-		return this.iIndex.toString();
+		return this.index.toString();
 	}
 }
