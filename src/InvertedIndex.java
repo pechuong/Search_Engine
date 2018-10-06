@@ -71,23 +71,6 @@ public class InvertedIndex {
 		return this.index.get(word).containsKey(path.toString());
 	}
 
-	// TODO Remove for now, maybe re-add in project 2.
-	/**
-	 * Checks the whole index for the path and if it
-	 * find one, then it returns true
-	 *
-	 * @param path The path to be found
-	 * @return true if the path exists in the inverted index
-	 */
-	public boolean hasFile(Path path) {
-		for (String word : this.index.keySet()) {
-			if (hasFile(word, path)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/* TODO
 	public void add(String word, String location, int position) {
 		do all the checking in here instead of in the builder
