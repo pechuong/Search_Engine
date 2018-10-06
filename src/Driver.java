@@ -32,7 +32,7 @@ public class Driver {
 				if (!Files.exists(output)) { // TODO Might be able to remove?
 					Files.createFile(output);
 				}
-				TreeJSONWriter.asObject(index, output);
+				index.writeJSON(output);
 
 			} catch (IOException e) {
 				// TODO System.out.println("Error writing to: " + output);
