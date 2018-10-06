@@ -43,7 +43,6 @@ public class TreeJSONWriter {
 	 * @param elements the elements to convert to JSON
 	 * @return {@link String} containing the elements in pretty JSON format
 	 *
-	 * @see #asArray(TreeSet, Writer, int)
 	 */
 	public static String asArray(TreeSet<Integer> elements) {
 		try {
@@ -81,12 +80,6 @@ public class TreeJSONWriter {
 	 * @param level    the initial indentation level
 	 * @throws IOException if the writer encounters any issues
 	 *
-	 * @see Writer#write(String)
-	 * @see Writer#append(CharSequence)
-	 *
-	 * @see System#lineSeparator()
-	 *
-	 * @see #indent(int, Writer)
 	 */
 	public static void asArray(TreeSet<Integer> elements, Writer writer,
 			int level) throws IOException {
@@ -117,7 +110,6 @@ public class TreeJSONWriter {
 	 * @param elements the elements to convert to JSON
 	 * @return {@link String} containing the elements in pretty JSON format
 	 *
-	 * @see #asObject(TreeMap, Writer, int)
 	 */
 	public static String asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements) {
 		try {
@@ -138,7 +130,6 @@ public class TreeJSONWriter {
 	 * @param path     the path to the file write to output
 	 * @throws IOException if the writer encounters any issues
 	 *
-	 * @see #asObject(TreeMap, Writer, int)
 	 */
 	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Path path)
 			throws IOException {
@@ -157,13 +148,6 @@ public class TreeJSONWriter {
 	 * @param level    the initial indentation level
 	 * @throws IOException if the writer encounters any issues
 	 *
-	 * @see Writer#write(String)
-	 * @see Writer#append(CharSequence)
-	 *
-	 * @see System#lineSeparator()
-	 *
-	 * @see #indent(int, Writer)
-	 * @see #quote(String, Writer)
 	 */
 	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
@@ -189,7 +173,6 @@ public class TreeJSONWriter {
 	 * @param elements the elements to convert to JSON
 	 * @return {@link String} containing the elements in pretty JSON format
 	 *
-	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
 	public static String asNestedObject(TreeMap<String, TreeSet<Integer>> elements) {
 		try {
@@ -210,7 +193,6 @@ public class TreeJSONWriter {
 	 * @param path     the path to the file write to output
 	 * @throws IOException if the writer encounters any issues
 	 *
-	 * @see #asNestedObject(TreeMap, Writer, int)
 	 */
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Path path) throws IOException {
@@ -229,15 +211,6 @@ public class TreeJSONWriter {
 	 * @param level    the initial indentation level
 	 * @throws IOException if the writer encounters any issues
 	 *
-	 * @see Writer#write(String)
-	 * @see Writer#append(CharSequence)
-	 *
-	 * @see System#lineSeparator()
-	 *
-	 * @see #indent(int, Writer)
-	 * @see #quote(String, Writer)
-	 *
-	 * @see #asArray(TreeSet, Writer, int)
 	 */
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
