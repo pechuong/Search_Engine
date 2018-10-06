@@ -63,9 +63,11 @@ public class InvertedIndex {
 	 * @param path The path to be found
 	 * @return true if the path exists in the specific word's index
 	 */
-	public boolean hasFile(String word, String path) { // TODO Take a String instead of a Path
-		// TODO Check if iIndex.get(word) returns null, if so return false
-		return this.index.get(word).containsKey(path);
+	public boolean hasFile(String word, String path) {
+		if (hasWord(word)) {
+			return this.index.get(word).containsKey(path);
+		}
+		return false;
 	}
 
 
