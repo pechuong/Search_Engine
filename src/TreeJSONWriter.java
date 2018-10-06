@@ -182,19 +182,19 @@ public class TreeJSONWriter {
 		indent(level, writer);
 		writer.write("}");
 	}
-	
+
 	/* TODO
 	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> index, Writer writer, int level) throws IOException {
 		basically the same code
 		try to remove the if statement from inside the for loop
-		
+
 		output the first element
-		
+
 		for (String word: index.tailMap(index.firstKey(), false).keySet()) {
 			output comma, and then the element
 		}
 	}
-	*/
+	 */
 
 	/**
 	 * Returns the nested map of elements formatted as a nested pretty JSON object.
@@ -271,36 +271,4 @@ public class TreeJSONWriter {
 		writer.write("}");
 	}
 
-	// TODO Remove
-	public static void main(String[] args) {
-		// You can test your code here while developing!
-
-		/*
-		TreeSet<Integer> test = new TreeSet<>();
-		test.add(3);
-		test.add(11);
-		test.add(-2);
-		System.out.println(asArray(test));
-		 */
-
-		/*
-		TreeMap<String, Integer> test1 = new TreeMap<>();
-		test1.put("hello", -1);
-		test1.put("world", 2);
-		test1.put("!!!", 10);
-		System.out.println(asObject(test1));
-		 */
-
-		/*
-		TreeMap<String, TreeSet<Integer>> test2 = new TreeMap<>();
-		test2.put("hello", new TreeSet<>());
-		Collections.addAll(test2.get("hello"), 10, 2, 4, -1);
-		//System.out.println(test2);
-		test2.put("world", new TreeSet<>());
-		Collections.addAll(test2.get("world"), -5, 3, 6, 7);
-		test2.put("!!!", new TreeSet<>());
-		Collections.addAll(test2.get("!!!"), -8, 9);
-		System.out.println(asNestedObject(test2));
-		 */
-	}
 }
