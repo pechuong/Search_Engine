@@ -16,15 +16,14 @@ public class Driver {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
 
-		// TODO Avoid the goto fail bug... and put curly braces around your if/else statements
-
 		// TODO Nest the try/catch inside of the if-statement
 		// Traverses and makes inverted index
 		try {
-			if (argMap.hasValue("-path"))
+			if (argMap.hasValue("-path")) {
 				TraversePath.traverse(index, argMap.getPath("-path"));
-			else
+			} else {
 				System.out.println("No path to traverse!");
+			}
 		} catch (IOException e) {
 			System.out.println("File: " + argMap.getString("-path") + " does not exist!");
 			// TODO sysout(Unable to build from + path);
