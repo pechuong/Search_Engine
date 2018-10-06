@@ -153,7 +153,7 @@ public class ArgumentMap {
 	 */
 	public Path getPath(String flag) throws IOException {
 		var myValue = getString(flag);
-		return (myValue != null)?Paths.get(myValue):null;
+		return (myValue != null) ? Paths.get(myValue) : null;
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class ArgumentMap {
 	 */
 	public Path getPath(String flag, Path defaultValue) throws IOException {
 		var myPath = getPath(flag);
-		return (myPath != null)?myPath:defaultValue;
+		return (myPath != null) ? myPath : defaultValue;
 	}
 
 	@Override

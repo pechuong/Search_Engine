@@ -4,8 +4,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class InvertedIndex {
+	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
 	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> iIndex;
 
+	/*
+	 * TODO Really be nothing modifying the string or doing reading of files, etc.
+	 * in this class. (No toLowerCase, etc.)
+	 */
+	
 	/**
 	 * Initializes the inverted index
 	 */
@@ -13,6 +19,12 @@ public class InvertedIndex {
 		this.iIndex = new TreeMap<>();
 	}
 
+	/* TODO 
+	public void writeJSON(Path path) {
+		TreeJSONWriter.asObject(iIndex, path);
+	}
+	*/
+	
 	/**
 	 * Builds the inverted index
 	 * - checks for the word
@@ -43,6 +55,7 @@ public class InvertedIndex {
 	 * @return true if the index contains the word
 	 */
 	public boolean hasWord(String word) {
+		// TODO No lowercase
 		return this.iIndex.containsKey(word.toLowerCase());
 	}
 
@@ -53,10 +66,12 @@ public class InvertedIndex {
 	 * @param path The path to be found
 	 * @return true if the path exists in the specific word's index
 	 */
-	public boolean hasFile(String word, Path path) {
+	public boolean hasFile(String word, Path path) { // TODO Take a String instead of a Path
+		// TODO Check if iIndex.get(word) returns null, if so return false
 		return this.iIndex.get(word).containsKey(path.toString());
 	}
 
+	// TODO Remove for now, maybe re-add in project 2.
 	/**
 	 * Checks the whole index for the path and if it
 	 * find one, then it returns true
@@ -73,6 +88,13 @@ public class InvertedIndex {
 		return false;
 	}
 
+	/* TODO 
+	public void add(String word, String location, int position) {
+		do all the checking in here instead of in the builder
+	}
+	*/
+	
+	// TODO These should maybe be private so that nothing can mess up and overwrite what is already stored
 	/**
 	 * Adds a word to the new index and creates the inner
 	 * data structures (TreeMap<String, TreeSet<Integer>>)
