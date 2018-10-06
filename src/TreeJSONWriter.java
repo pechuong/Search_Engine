@@ -119,7 +119,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static String asObject(InvertedIndex elements) {
+	public static String asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements) {
 		try {
 			StringWriter writer = new StringWriter();
 			asObject(elements, writer, 0);
@@ -140,7 +140,7 @@ public class TreeJSONWriter {
 	 *
 	 * @see #asObject(TreeMap, Writer, int)
 	 */
-	public static void asObject(InvertedIndex elements, Path path)
+	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Path path)
 			throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(path,
 				StandardCharsets.UTF_8)) {
@@ -165,16 +165,16 @@ public class TreeJSONWriter {
 	 * @see #indent(int, Writer)
 	 * @see #quote(String, Writer)
 	 */
-	public static void asObject(InvertedIndex elements, Writer writer,
+	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String word: elements.iIndex.keySet()) {
+		for (String word: elements.keySet()) {
 			indent(level + 1, writer);
 			quote(word, writer);
 			writer.write(": ");
-			asNestedObject(elements.iIndex.get(word), writer, level + 1);
-			if (word != elements.iIndex.lastKey()) {
+			asNestedObject(elements.get(word), writer, level + 1);
+			if (word != elements.lastKey()) {
 				writer.write(",");
 			}
 			writer.write(System.lineSeparator());

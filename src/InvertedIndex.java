@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.TreeMap;
@@ -24,7 +25,7 @@ public class InvertedIndex {
 	 *
 	 * @param path The file to write the index to
 	 */
-	public void writeJSON(Path path) {
+	public void writeJSON(Path path) throws IOException {
 		TreeJSONWriter.asObject(index, path);
 	}
 
