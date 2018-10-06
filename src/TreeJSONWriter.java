@@ -183,19 +183,6 @@ public class TreeJSONWriter {
 		writer.write("}");
 	}
 
-	/* TODO
-	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> index, Writer writer, int level) throws IOException {
-		basically the same code
-		try to remove the if statement from inside the for loop
-
-		output the first element
-
-		for (String word: index.tailMap(index.firstKey(), false).keySet()) {
-			output comma, and then the element
-		}
-	}
-	 */
-
 	/**
 	 * Returns the nested map of elements formatted as a nested pretty JSON object.
 	 *
