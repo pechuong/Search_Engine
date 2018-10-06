@@ -242,18 +242,16 @@ public class TreeJSONWriter {
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
 		writer.write("{" + System.lineSeparator());
-		int iterator = 0;
-		for (String key : elements.keySet()) {
+		for (String key : elements.headMap(elements.lastKey(), false).keySet()) {
 			indent(level + 1, writer);
 			quote(key, writer);
 			writer.write(": ");
 			asArray(elements.get(key), writer, level + 1);
-			if (iterator < elements.keySet().size() - 1) {
-				writer.write(",");
-			}
+			writer.write(",");
 			writer.write(System.lineSeparator());
-			iterator++;
 		}
+		asArray(elements.get(elements.lastKey()), writer, level + 1);
+		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("}");
 	}
