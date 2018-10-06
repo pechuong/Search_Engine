@@ -161,6 +161,9 @@ public class TreeJSONWriter {
 			writer.write(",");
 			writer.write(System.lineSeparator());
 		}
+		indent(level + 1, writer);
+		quote(elements.lastKey(), writer);
+		writer.write(": ");
 		asNestedObject(elements.get(elements.lastKey()), writer, level + 1);
 		writer.write(System.lineSeparator());
 		indent(level, writer);
