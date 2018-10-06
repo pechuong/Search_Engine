@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 public class InvertedIndex {
 	// TODO private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
+	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
 
 	/*
 	 * TODO Really be nothing modifying the string or doing reading of files, etc.
