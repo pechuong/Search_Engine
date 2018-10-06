@@ -169,16 +169,16 @@ public class TreeJSONWriter {
 			int level) throws IOException {
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
-		for (String word: elements.keySet()) {
+		for (String word: elements.headMap(elements.lastKey(), false).keySet()) {
 			indent(level + 1, writer);
 			quote(word, writer);
 			writer.write(": ");
 			asNestedObject(elements.get(word), writer, level + 1);
-			if (word != elements.lastKey()) {
-				writer.write(",");
-			}
+			writer.write(",");
 			writer.write(System.lineSeparator());
 		}
+		asNestedObject(elements.get(elements.lastKey()), writer, level + 1);
+		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("}");
 	}
