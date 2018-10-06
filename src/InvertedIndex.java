@@ -98,8 +98,8 @@ public class InvertedIndex {
 	 * @param word The word to put the filePath under
 	 * @param filePath The path to be put in the index
 	 */
-	private void addFile(String word, Path filePath) {
-		this.index.get(word).put(filePath.toString(), new TreeSet<>());
+	private void addFile(String word, String filePath) {
+		this.index.get(word).put(filePath, new TreeSet<>());
 	}
 
 	/**
@@ -109,8 +109,8 @@ public class InvertedIndex {
 	 * @param filePath The file to put the position in
 	 * @param position The position number to put into the set
 	 */
-	private void addPosition(String word, Path filePath, int position) {
-		this.index.get(word).get(filePath.toString()).add(position);
+	private void addPosition(String word, String filePath, int position) {
+		this.index.get(word).get(filePath).add(position);
 	}
 
 	@Override
