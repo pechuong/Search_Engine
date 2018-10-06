@@ -14,7 +14,7 @@ public class Driver {
 	public static void main(String[] args) {
 		// parses args
 		ArgumentMap argMap = new ArgumentMap(args);
-		InvertedIndex iIndex = new InvertedIndex(); // TODO Refactor to just index
+		InvertedIndex index = new InvertedIndex();
 
 		// TODO Avoid the goto fail bug... and put curly braces around your if/else statements
 
@@ -22,7 +22,7 @@ public class Driver {
 		// Traverses and makes inverted index
 		try {
 			if (argMap.hasValue("-path"))
-				TraversePath.traverse(iIndex, argMap.getPath("-path"));
+				TraversePath.traverse(index, argMap.getPath("-path"));
 			else
 				System.out.println("No path to traverse!");
 		} catch (IOException e) {
@@ -37,7 +37,7 @@ public class Driver {
 				if (!Files.exists(output)) { // TODO Might be able to remove?
 					Files.createFile(output);
 				}
-				TreeJSONWriter.asObject(iIndex, output);
+				TreeJSONWriter.asObject(index, output);
 
 			} catch (IOException e) {
 				// TODO System.out.println("Error writing to: " + output);
