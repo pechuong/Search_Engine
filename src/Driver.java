@@ -37,6 +37,8 @@ public class Driver {
 			} catch (IOException e) {
 				// TODO System.out.println("Error writing to: " + output);
 				System.out.println("Error writing to: " + argMap.getString("-index"));
+			} catch (Exception e) {
+				System.out.println("Error");
 			}
 		}
 	}
