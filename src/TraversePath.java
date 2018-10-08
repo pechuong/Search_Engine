@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class TraversePath {
 
@@ -13,7 +14,9 @@ public class TraversePath {
 				}
 			}
 		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-			TextFileStemmer.stemFile(index, lMap, path);
+			List<String> wordList = TextFileStemmer.stemFile(path);
+			index.buildiIndex(wordList, path);
+			lMap.buildLocation(path, wordList.size());;
 
 		}
 	}
