@@ -1,3 +1,5 @@
+import java.nio.file.Path;
+import java.util.List;
 import java.util.TreeMap;
 
 public class LocationMap {
@@ -12,8 +14,8 @@ public class LocationMap {
 		return this.location.containsKey(path);
 	}
 
-	public void buildLocation() {
-
+	public void buildLocation(Path inputFile, List<String> words) {
+		add(inputFile.toString(), words.size());
 	}
 
 	private void add(String path, int amount) {
