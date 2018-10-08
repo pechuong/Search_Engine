@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.TreeMap;
 
@@ -10,6 +11,10 @@ public class LocationMap {
 	 */
 	public LocationMap() {
 		this.location = new TreeMap<>();
+	}
+
+	public void writeJSON(Path output) throws IOException {
+		LocationJSON.asObject(location, output);
 	}
 
 	/**
