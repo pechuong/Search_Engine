@@ -5,15 +5,16 @@ import java.nio.file.Path;
 
 public class TraversePath {
 
-	public static void traverse(InvertedIndex index, Path path) throws IOException {
+	public static void traverse(InvertedIndex index, LocationMap lMap, Path path) throws IOException {
 		if (Files.isDirectory(path)) {
 			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 				for (Path file : listing) {
-					traverse(index, file);
+					traverse(index, lMap, file);
 				}
 			}
 		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-			TextFileStemmer.stemFile(index, path);
+			TextFileStemmer.stemFile(index, lMap, path);
+
 		}
 	}
 

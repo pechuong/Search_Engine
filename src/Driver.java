@@ -15,11 +15,12 @@ public class Driver {
 		// parses args
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
+		LocationMap lMap = new LocationMap();
 
 		// Traverses and makes inverted index
 		if (argMap.hasValue("-path")) {
 			try {
-				TraversePath.traverse(index, argMap.getPath("-path"));
+				TraversePath.traverse(index, lMap, argMap.getPath("-path"));
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + argMap.getString("-path"));
 			}
