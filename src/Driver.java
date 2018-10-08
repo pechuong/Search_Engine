@@ -45,6 +45,8 @@ public class Driver {
 		if (argMap.hasFlag("-search")) {
 			if (argMap.hasFlag("-exact")) {
 
+			} else {
+				// do partial search
 			}
 		}
 
