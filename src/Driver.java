@@ -41,6 +41,23 @@ public class Driver {
 				System.out.println("Error");
 			}
 		}
+
+		if (argMap.hasFlag("-search")) {
+			if (argMap.hasFlag("-exact")) {
+
+			} else {
+				// do partial search
+			}
+		}
+
+		if (argMap.hasFlag("-results")) {
+			try {
+				Path output = argMap.getPath("-results", Paths.get("results.json"));
+
+			} catch (IOException e) {
+				System.out.println("Error writing to: " + argMap.getString("-results"));
+			}
+		}
 	}
 }
 
