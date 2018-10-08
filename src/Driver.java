@@ -26,6 +26,8 @@ public class Driver {
 			}
 		}
 
+		System.out.println(lMap.toString());
+
 		// Outputs inverted index to Json
 		if (argMap.hasFlag("-index")) {
 			try {

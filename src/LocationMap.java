@@ -42,8 +42,8 @@ public class LocationMap {
 	private void add(String path, int wordCount) {
 		if (!hasFile(path)) {
 			addFile(path);
+			addWordCount(path, wordCount);
 		}
-		addWordCount(path, wordCount);
 
 	}
 
