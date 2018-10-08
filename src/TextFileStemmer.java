@@ -65,7 +65,7 @@ public class TextFileStemmer {
 				wordList.addAll(stemmed);
 			}
 			index.buildiIndex(wordList, inputFile);
-			lMap.buildLocation(inputFile, wordList);
+			lMap.buildLocation(inputFile, wordList.size());
 		}
 	}
 
