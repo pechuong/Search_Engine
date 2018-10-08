@@ -49,7 +49,12 @@ public class Driver {
 		}
 
 		if (argMap.hasFlag("-results")) {
+			try {
+				Path output = argMap.getPath("-results", Paths.get("results.json"));
 
+			} catch (IOException e) {
+				System.out.println("Error writing to: " + argMap.getString("-results"));
+			}
 		}
 	}
 }
