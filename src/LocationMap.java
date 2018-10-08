@@ -32,4 +32,9 @@ public class LocationMap {
 	private void addWordCount(String path, int amount) {
 		this.location.put(path, this.location.get(path) + amount);
 	}
+
+	@Override
+	public String toString() {
+		return this.location.toString();
+	}
 }
