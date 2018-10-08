@@ -42,7 +42,15 @@ public class Driver {
 			}
 		}
 
-		// Start of lab08
+		if (argMap.hasFlag("-search")) {
+			if (argMap.hasFlag("-exact")) {
+
+			}
+		}
+
+		if (argMap.hasFlag("-results")) {
+
+		}
 	}
 }
 
