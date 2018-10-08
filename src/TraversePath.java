@@ -17,7 +17,6 @@ public class TraversePath {
 			List<String> wordList = TextFileStemmer.stemFile(path);
 			index.buildiIndex(wordList, path);
 			lMap.buildLocation(path, wordList.size());;
-
 		}
 	}
 

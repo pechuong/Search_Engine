@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class Driver {
 
@@ -45,7 +46,12 @@ public class Driver {
 
 		// Searches
 		if (argMap.hasFlag("-search")) {
-			System.out.println("I'm going to stem the query file first!");
+			try {
+				Path searchFile = argMap.getPath("-search", null);
+				List<String> list = TextFileStemmer.stemFile(searchFile);
+			} catch (Exception e){
+				System.out.println("Something went wrong with: " + argMap.getString("-search"));
+			}
 			if (argMap.hasFlag("-exact")) {
 				System.out.println("I'm going to do an exact search!");
 			} else {
