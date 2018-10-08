@@ -63,6 +63,15 @@ public class Driver {
 				System.out.println("Error writing to: " + argMap.getString("-results"));
 			}
 		}
+
+		if (argMap.hasFlag("-locations")) {
+			try {
+				Path output = argMap.getPath("-results", Paths.get("locations.json"));
+				System.out.println("I'm going to write out locations to Json");
+			} catch (IOException e) {
+				System.out.println("Error writing to: " + argMap.getString("-locations"));
+			}
+		}
 	}
 }
 
