@@ -54,7 +54,7 @@ public class TextFileStemmer {
 	 * @see #stemLine(String)
 	 * @see TextParser#parse(String)
 	 */
-	public static void stemFile(InvertedIndex iIndex, Path inputFile) throws IOException {
+	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
@@ -64,7 +64,7 @@ public class TextFileStemmer {
 				List<String> stemmed = stemLine(line);
 				wordList.addAll(stemmed);
 			}
-			iIndex.buildiIndex(wordList, inputFile);
+			index.buildiIndex(wordList, inputFile);
 		}
 	}
 
