@@ -1,10 +1,10 @@
 import java.util.TreeMap;
 
-public class locationMap {
+public class LocationMap {
 
 	private final TreeMap<String, Integer> location;
 
-	public locationMap() {
+	public LocationMap() {
 		this.location = new TreeMap<>();
 	}
 
