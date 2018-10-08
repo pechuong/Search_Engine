@@ -43,17 +43,19 @@ public class Driver {
 		}
 
 		if (argMap.hasFlag("-search")) {
+			System.out.println("I'm going to stem the query file first!");
 			if (argMap.hasFlag("-exact")) {
-
+				System.out.println("I'm going to do an exact search!");
 			} else {
 				// do partial search
+				System.out.println("I'm going to do a partial search!");
 			}
 		}
 
 		if (argMap.hasFlag("-results")) {
 			try {
 				Path output = argMap.getPath("-results", Paths.get("results.json"));
-
+				System.out.println("I'm going to write out search results to Json");
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + argMap.getString("-results"));
 			}
