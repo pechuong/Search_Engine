@@ -45,6 +45,9 @@ public class LocationMap {
 	 * @param wordCount The word to associate it with
 	 */
 	private void add(String path, int wordCount) {
+		if (wordCount == 0) {
+			return;
+		}
 		if (!hasFile(path)) {
 			addFile(path);
 			addWordCount(path, wordCount);

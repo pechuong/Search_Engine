@@ -26,8 +26,6 @@ public class Driver {
 			}
 		}
 
-		System.out.println(lMap.toString());
-
 		// Outputs inverted index to Json
 		if (argMap.hasFlag("-index")) {
 			try {
@@ -45,6 +43,7 @@ public class Driver {
 			}
 		}
 
+		// Searches
 		if (argMap.hasFlag("-search")) {
 			System.out.println("I'm going to stem the query file first!");
 			if (argMap.hasFlag("-exact")) {
@@ -66,8 +65,8 @@ public class Driver {
 
 		if (argMap.hasFlag("-locations")) {
 			try {
-				Path output = argMap.getPath("-results", Paths.get("locations.json"));
-				System.out.println("I'm going to write out locations to Json");
+				Path output = argMap.getPath("-locations", Paths.get("locations.json"));
+				lMap.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + argMap.getString("-locations"));
 			}
