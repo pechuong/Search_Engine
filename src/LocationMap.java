@@ -32,18 +32,36 @@ public class LocationMap {
 		add(inputFile.toString(), wordCount);
 	}
 
-	private void add(String path, int amount) {
+	/**
+	 * Adds the path and wordCount to the map and does
+	 * the checking to see if the file already exists or no
+	 *
+	 * @param path The file to put in the map
+	 * @param wordCount The word to associate it with
+	 */
+	private void add(String path, int wordCount) {
 		if (!hasFile(path)) {
 			addFile(path);
 		}
-		addWordCount(path, amount);
+		addWordCount(path, wordCount);
 
 	}
 
+	/**
+	 * Adds the file to the location and initializes the count
+	 *
+	 * @param path The file to put into the map
+	 */
 	private void addFile(String path) {
 		this.location.put(path, 0);
 	}
 
+	/**
+	 * Adds the wordCount to the specific file
+	 *
+	 * @param path The path to add the wordCount to
+	 * @param amount The number of word to associate with the file
+	 */
 	private void addWordCount(String path, int amount) {
 		this.location.put(path, this.location.get(path) + amount);
 	}
