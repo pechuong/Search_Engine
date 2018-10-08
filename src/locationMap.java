@@ -12,6 +12,10 @@ public class locationMap {
 		return this.location.containsKey(path);
 	}
 
+	public void buildLocation() {
+
+	}
+
 	private void add(String path, int amount) {
 		if (!hasFile(path)) {
 			addFile(path);
