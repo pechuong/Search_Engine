@@ -68,20 +68,4 @@ public class TextFileStemmer {
 		}
 	}
 
-	/**
-	 * Uses {@link #stemFile(Path, Path)} to stem a single hard-coded file. Useful
-	 * for development.
-	 *
-	 * @param args unused
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws IOException {
-		//Path inputPath = Paths.get("test", "words.tExT");
-
-		//Files.createDirectories(Paths.get("out"));
-
-		//System.out.println(inputPath);
-		//stemFile(inputPath);
-
-	}
 }
