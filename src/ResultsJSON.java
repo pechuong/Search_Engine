@@ -135,16 +135,37 @@ public class ResultsJSON {
 	public static void asResultArray(List<Result> results, Writer writer, int level) throws IOException {
 		int numResults = results.size();
 
-		TreeJSONWriter.indent(level + 1, writer);
-		writer.write("{" + System.lineSeparator());
 		for (Result result : results.subList(0, numResults)) {
+			TreeJSONWriter.indent(level, writer);
+			writer.write("{" + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);
-			TreeJSONWriter.quote(file, writer);
-			writer.write(": " + results.get(file) + "," + System.lineSeparator());
+			TreeJSONWriter.quote("where", writer);
+			writer.write(": ");
+			TreeJSONWriter.quote(result.getFileName(), writer);
+			writer.write("," + System.lineSeparator());
+			TreeJSONWriter.indent(level + 1, writer);
+			TreeJSONWriter.quote("count", writer);
+			writer.write(": " + result.getMatches() + "," + System.lineSeparator());
+			TreeJSONWriter.indent(level + 1, writer);
+			TreeJSONWriter.quote("score", writer);
+			writer.write(": " + result.getScore() + System.lineSeparator());
+			TreeJSONWriter.indent(level, writer);
+			writer.write("}," + System.lineSeparator());
 		}
+		TreeJSONWriter.indent(level, writer);
+		writer.write("{" + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
-		TreeJSONWriter.quote(results.lastKey(), writer);
-		writer.write(": " + results.get(results.lastKey()) + System.lineSeparator());
-		writer.write("}");
+		TreeJSONWriter.quote("where", writer);
+		writer.write(": ");
+		TreeJSONWriter.quote(results.get(numResults-1).getFileName(), writer);
+		writer.write("," + System.lineSeparator());
+		TreeJSONWriter.indent(level + 1, writer);
+		TreeJSONWriter.quote("count", writer);
+		writer.write(": " + results.get(numResults-1).getMatches() + "," + System.lineSeparator());
+		TreeJSONWriter.indent(level + 1, writer);
+		TreeJSONWriter.quote("score", writer);
+		writer.write(": " + results.get(numResults-1).getScore() + System.lineSeparator());
+		TreeJSONWriter.indent(level, writer);
+		writer.write("}" + System.lineSeparator());
 	}
 }

@@ -4,7 +4,7 @@ public class Result implements Comparable<Result> {
 	private final String where;
 	private int matches;
 	private final int wordCount;
-	private int score;
+	private double score;
 
 	public Result(String file, int count, int wordCount) {
 		this.where = file;
@@ -20,6 +20,14 @@ public class Result implements Comparable<Result> {
 
 	public String getFileName() {
 		return this.where;
+	}
+
+	public int getMatches() {
+		return this.matches;
+	}
+
+	public double getScore() {
+		return this.score;
 	}
 
 	public void calculateScore() {
