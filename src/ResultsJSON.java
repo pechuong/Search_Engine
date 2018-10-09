@@ -144,7 +144,7 @@ public class ResultsJSON {
 		}
 		DecimalFormat FORMATTER = new DecimalFormat("0.000000");
 
-		for (Result result : results.subList(0, numResults)) {
+		for (Result result : results.subList(0, numResults - 1)) {
 			TreeJSONWriter.indent(level, writer);
 			writer.write("{" + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);

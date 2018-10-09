@@ -2,7 +2,7 @@
 public class Result implements Comparable<Result> {
 
 	private final String where;
-	private int matches;
+	private double matches;
 	private final int wordCount;
 	private double score;
 
@@ -23,7 +23,7 @@ public class Result implements Comparable<Result> {
 	}
 
 	public int getMatches() {
-		return this.matches;
+		return (int)this.matches;
 	}
 
 	public double getScore() {
@@ -42,12 +42,7 @@ public class Result implements Comparable<Result> {
 			if (this.matches < o.matches) {
 				return 1;
 			} else if (this.matches == o.matches) {
-				if (this.wordCount < o.wordCount) {
-					return 1;
-				} else if (this.wordCount == o.wordCount) {
-					return 0;
-				}
-				return -1;
+				return this.where.compareTo(o.where);
 			}
 			return -1;
 		}
