@@ -16,7 +16,7 @@ public class QueryMap {
 	}
 
 	public void writeJSON(Path path) throws IOException {
-		ResultsJSON.asArray(this.queryMap);
+		ResultsJSON.asArray(this.queryMap, path);
 	}
 
 	@Override

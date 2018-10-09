@@ -56,7 +56,6 @@ public class Driver {
 						String searchName = String.join(" ", oneSearch);
 						queryMap.addQuery(searchName, index.exactSearch(lMap, oneSearch));
 					}
-					System.out.println(queryMap.toString());
 				} else {
 					// do partial search
 					System.out.println("I'm going to do a partial search!");

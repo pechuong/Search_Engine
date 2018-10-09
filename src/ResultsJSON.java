@@ -134,6 +134,9 @@ public class ResultsJSON {
 	 */
 	public static void asResultArray(List<Result> results, Writer writer, int level) throws IOException {
 		int numResults = results.size();
+		if (numResults < 1) {
+			return;
+		}
 
 		for (Result result : results.subList(0, numResults)) {
 			TreeJSONWriter.indent(level, writer);
