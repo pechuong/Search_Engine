@@ -51,25 +51,25 @@ public class InvertedIndex {
 		ArrayList<Result> resultList = new ArrayList<>();
 
 		for (String word : queryLine) {
-			for (String fileName : this.index.get(word).keySet()) {
-				boolean resultExists = false;
-				for (Result oneResult : resultList) {
-					if (oneResult.getFileName() == fileName) {
-						oneResult.addMatches(this.index.get(word).get(fileName).size());
-						resultExists = true;
-						break;
+			if (hasWord(word)) {
+				for (String fileName : this.index.get(word).keySet()) {
+					boolean resultExists = false;
+					for (Result oneResult : resultList) {
+						if (oneResult.getFileName() == fileName) {
+							oneResult.addMatches(this.index.get(word).get(fileName).size());
+							resultExists = true;
+							break;
+						}
 					}
-				}
-				if (!resultExists) {
-					resultList.add(new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+					if (!resultExists) {
+						resultList.add(new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+					}
 				}
 			}
 		}
-
 		List<Result> sortedResults = resultList.stream()
-				.sorted(Result::compareTo)
+				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
-
 		return sortedResults;
 	}
 

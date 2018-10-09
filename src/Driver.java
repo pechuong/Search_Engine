@@ -53,7 +53,6 @@ public class Driver {
 				List<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
 				if (argMap.hasFlag("-exact")) {
 					for (TreeSet<String> oneSearch : queries) {
-						System.out.println(oneSearch);
 						String searchName = String.join(" ", oneSearch);
 						queryMap.addQuery(searchName, index.exactSearch(lMap, oneSearch));
 					}
