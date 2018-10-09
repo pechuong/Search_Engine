@@ -58,7 +58,9 @@ public class ResultsJSON {
 			writer.write("{" + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);
 			TreeJSONWriter.quote("queries", writer);
-			writer.write(": " + searchName + "," + System.lineSeparator());
+			writer.write(": ");
+			TreeJSONWriter.quote(searchName, writer);
+			writer.write("," + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);
 			TreeJSONWriter.quote("results", writer);
 			writer.write(": [" + System.lineSeparator());
@@ -73,7 +75,9 @@ public class ResultsJSON {
 		writer.write("{" + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("queries", writer);
-		writer.write(": " + qMap.lastKey() + "," + System.lineSeparator());
+		writer.write(": ");
+		TreeJSONWriter.quote(qMap.lastKey(), writer);
+		writer.write("," + System.lineSeparator());
 
 		// writers "results":
 		TreeJSONWriter.indent(level + 1, writer);
