@@ -18,6 +18,7 @@ public class Driver {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
 		LocationMap lMap = new LocationMap();
+		QueryMap queryMap = new QueryMap();
 
 		// Traverses and makes inverted index
 		if (argMap.hasValue("-path")) {
@@ -53,13 +54,14 @@ public class Driver {
 				if (argMap.hasFlag("-exact")) {
 					// Does one search at a time
 					for (TreeSet<String> oneSearch : queries) {
-						index.exactSearch(lMap, oneSearch);
+						String searchName = String.join(" ", oneSearch);
+						queryMap.addQuery(searchName, index.exactSearch(lMap, oneSearch));
 					}
 				} else {
 					// do partial search
 					System.out.println("I'm going to do a partial search!");
 				}
-			} catch (Exception e){
+			} catch (IOException e){
 				System.out.println("Something went wrong with: " + argMap.getString("-search"));
 			}
 		}

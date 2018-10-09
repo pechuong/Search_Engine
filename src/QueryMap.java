@@ -13,4 +13,8 @@ public class QueryMap {
 		this.queryMap.put(path, results);
 	}
 
+	@Override
+	public String toString() {
+		return this.queryMap.toString();
+	}
 }
