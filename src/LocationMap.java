@@ -17,6 +17,10 @@ public class LocationMap {
 		LocationJSON.asObject(location, output);
 	}
 
+	public int getFile(String path) {
+		return this.location.get(path);
+	}
+
 	/**
 	 * Checks if the location Map has this file
 	 *

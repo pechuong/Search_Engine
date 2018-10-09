@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -45,14 +46,25 @@ public class InvertedIndex {
 	}
 
 
-	public void exactSearch(TreeSet<String> queryLine) {
-		int matches = 0;
+	public ArrayList<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
+		ArrayList<Result> resultList = new ArrayList<>();
 
 		for (String word : queryLine) {
-			if (hasWord(word)) {
-				this.index.get(word);
+			for (String fileName : this.index.get(word).keySet()) {
+				boolean resultExists = false;
+				for (Result oneResult : resultList) {
+					if (oneResult.getFileName() == fileName) {
+						oneResult.addMatches(this.index.get(word).get(fileName).size());
+						resultExists = true;
+						break;
+					}
+				}
+				if (!resultExists) {
+					resultList.add(new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+				}
 			}
 		}
+		return resultList;
 	}
 
 	public void partialSearch(TreeSet<String> queryLine) {

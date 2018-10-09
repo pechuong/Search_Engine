@@ -3,20 +3,27 @@ public class Result {
 
 	private final String where;
 	private int matches;
+	private final int wordCount;
 	private int score;
 
-	public Result(String file) {
+	public Result(String file, int count, int wordCount) {
 		this.where = file;
-		this.matches = 0;
-		this.score = 0;
+		this.matches = count;
+		this.wordCount = wordCount;
+		this.score = this.matches / this.wordCount; // TODO convert to 6 decimal floating point
 	}
 
-	public void addMatches() {
-
+	public void addMatches(int count) {
+		this.matches += count;
+		calculateScore();
 	}
 
-	public void getScore() {
+	public String getFileName() {
+		return this.where;
+	}
 
+	public void calculateScore() {
+		this.score = this.matches / this.wordCount;
 	}
 
 }
