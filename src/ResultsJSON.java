@@ -55,7 +55,7 @@ public class ResultsJSON {
 	public static void asSearchResult(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException {
 		for (String searchName : qMap.headMap(qMap.lastKey(), false).keySet()) {
 			TreeJSONWriter.indent(level, writer);
-			writer.write("{");
+			writer.write("{" + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);
 			TreeJSONWriter.quote("queries", writer);
 			writer.write(": " + searchName + "," + System.lineSeparator());
@@ -70,7 +70,7 @@ public class ResultsJSON {
 		}
 		// writes "queries":
 		TreeJSONWriter.indent(level, writer);
-		writer.write("{");
+		writer.write("{" + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("queries", writer);
 		writer.write(": " + qMap.lastKey() + "," + System.lineSeparator());
