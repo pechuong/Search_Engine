@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -11,6 +13,10 @@ public class QueryMap {
 
 	public void addQuery(String path, List<Result> results) {
 		this.queryMap.put(path, results);
+	}
+
+	public void writeJSON(Path path) throws IOException {
+		ResultsJSON.asArray(this.queryMap);
 	}
 
 	@Override
