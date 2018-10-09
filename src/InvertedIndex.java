@@ -44,6 +44,22 @@ public class InvertedIndex {
 		}
 	}
 
+
+	public void exactSearch(TreeSet<String> queryLine) {
+		int matches = 0;
+
+		for (String word : queryLine) {
+			if (hasWord(word)) {
+				this.index.get(word);
+			}
+		}
+	}
+
+	public void partialSearch(TreeSet<String> queryLine) {
+
+	}
+
+
 	/**
 	 * Checks the inverted index for the word given
 	 * after turning it to lowercase
