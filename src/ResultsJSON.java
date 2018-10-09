@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -141,6 +142,7 @@ public class ResultsJSON {
 		if (numResults < 1) {
 			return;
 		}
+		DecimalFormat FORMATTER = new DecimalFormat("0.000000");
 
 		for (Result result : results.subList(0, numResults)) {
 			TreeJSONWriter.indent(level, writer);
@@ -155,7 +157,7 @@ public class ResultsJSON {
 			writer.write(": " + result.getMatches() + "," + System.lineSeparator());
 			TreeJSONWriter.indent(level + 1, writer);
 			TreeJSONWriter.quote("score", writer);
-			writer.write(": " + result.getScore() + System.lineSeparator());
+			writer.write(": " + FORMATTER.format(result.getScore()) + System.lineSeparator());
 			TreeJSONWriter.indent(level, writer);
 			writer.write("}," + System.lineSeparator());
 		}
@@ -171,7 +173,7 @@ public class ResultsJSON {
 		writer.write(": " + results.get(numResults-1).getMatches() + "," + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("score", writer);
-		writer.write(": " + results.get(numResults-1).getScore() + System.lineSeparator());
+		writer.write(": " + FORMATTER.format(results.get(numResults-1).getScore()) + System.lineSeparator());
 		TreeJSONWriter.indent(level, writer);
 		writer.write("}" + System.lineSeparator());
 	}
