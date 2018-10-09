@@ -73,8 +73,34 @@ public class InvertedIndex {
 		return sortedResults;
 	}
 
-	public void partialSearch(TreeSet<String> queryLine) {
+	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
+		ArrayList<Result> resultList = new ArrayList<>();
 
+		for (String word : queryLine) {
+			if (hasWord(word) || startsWith(word)) {
+				for (String key : this.index.keySet()) {
+					if (key.startsWith(word)) {
+						for (String fileName : this.index.get(key).keySet()) {
+							boolean resultExists = false;
+							for (Result oneResult : resultList) {
+								if (oneResult.getFileName() == fileName) {
+									oneResult.addMatches(this.index.get(key).get(fileName).size());
+									resultExists = true;
+									break;
+								}
+							}
+							if (!resultExists) {
+								resultList.add(new Result(fileName, this.index.get(key).get(fileName).size(), lMap.getFile(fileName)));
+							}
+						}
+					}
+				}
+			}
+		}
+		List<Result> sortedResults = resultList.stream()
+				.sorted((result1, result2) -> result1.compareTo(result2))
+				.collect(Collectors.toList());
+		return sortedResults;
 	}
 
 
@@ -87,6 +113,15 @@ public class InvertedIndex {
 	 */
 	public boolean hasWord(String word) {
 		return this.index.containsKey(word);
+	}
+
+	public boolean startsWith(String word) {
+		for (String key : this.index.keySet()) {
+			if (key.startsWith(word)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

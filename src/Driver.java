@@ -57,8 +57,10 @@ public class Driver {
 						queryMap.addQuery(searchName, index.exactSearch(lMap, oneSearch));
 					}
 				} else {
-					// do partial search
-					System.out.println("I'm going to do a partial search!");
+					for (TreeSet<String> oneSearch : queries) {
+						String searchName = String.join(" ", oneSearch);
+						queryMap.addQuery(searchName, index.partialSearch(lMap, oneSearch));
+					}
 				}
 			} catch (IOException e){
 				System.out.println("Something went wrong with: " + argMap.getString("-search"));
@@ -66,12 +68,14 @@ public class Driver {
 		}
 
 		if (argMap.hasFlag("-results")) {
+
 			try {
 				Path output = argMap.getPath("-results", Paths.get("results.json"));
 				queryMap.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + argMap.getString("-results"));
 			}
+
 		}
 
 		if (argMap.hasFlag("-locations")) {

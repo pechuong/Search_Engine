@@ -19,6 +19,13 @@ public class QueryMap {
 		ResultsJSON.asArray(this.queryMap, path);
 	}
 
+	public boolean isEmpty() {
+		if (this.queryMap.size() < 1) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return this.queryMap.toString();

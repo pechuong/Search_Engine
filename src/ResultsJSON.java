@@ -31,7 +31,9 @@ public class ResultsJSON {
 
 	public static void asArray(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException{
 		writer.write("[" + System.lineSeparator());
-		asSearchResult(qMap, writer, level + 1);
+		if (!qMap.isEmpty()) {
+			asSearchResult(qMap, writer, level + 1);
+		}
 		writer.write("]");
 	}
 
