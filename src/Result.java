@@ -1,5 +1,5 @@
 
-public class Result {
+public class Result implements Comparable<Result> {
 
 	private final String where;
 	private int matches;
@@ -24,6 +24,27 @@ public class Result {
 
 	public void calculateScore() {
 		this.score = this.matches / this.wordCount;
+	}
+
+	@Override
+	public int compareTo(Result o) {
+		if (this.score < o.score) {
+			return 1;
+		} else if (this.score == o.score) {
+			if (this.matches < o.matches) {
+				return 1;
+			} else if (this.matches == o.matches) {
+				if (this.wordCount < o.wordCount) {
+					return 1;
+				} else if (this.wordCount == o.wordCount) {
+					return 0;
+				}
+				return -1;
+			}
+			return -1;
+		}
+		return -1;
+
 	}
 
 }

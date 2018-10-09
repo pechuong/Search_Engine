@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class InvertedIndex {
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
@@ -46,7 +47,7 @@ public class InvertedIndex {
 	}
 
 
-	public ArrayList<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
+	public List<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
 		ArrayList<Result> resultList = new ArrayList<>();
 
 		for (String word : queryLine) {
@@ -65,8 +66,11 @@ public class InvertedIndex {
 			}
 		}
 
-		resultList.sort();
-		return resultList;
+		List<Result> sortedResults = resultList.stream()
+				.sorted(Result::compareTo)
+				.collect(Collectors.toList());
+
+		return sortedResults;
 	}
 
 	public void partialSearch(TreeSet<String> queryLine) {
