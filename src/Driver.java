@@ -51,7 +51,10 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				ArrayList<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
 				if (argMap.hasFlag("-exact")) {
-					System.out.println("I'm going to do an exact search!");
+					// Does one search at a time
+					for (TreeSet<String> oneSearch : queries) {
+						index.exactSearch(lMap, oneSearch);
+					}
 				} else {
 					// do partial search
 					System.out.println("I'm going to do a partial search!");

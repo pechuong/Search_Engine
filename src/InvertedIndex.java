@@ -64,6 +64,8 @@ public class InvertedIndex {
 				}
 			}
 		}
+
+		resultList.sort();
 		return resultList;
 	}
 
