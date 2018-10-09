@@ -69,4 +69,20 @@ public class TextFileStemmer {
 		}
 	}
 
+	public static ArrayList<ArrayList<String>> stemQuery(Path inputFile) throws IOException {
+		try (
+				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
+				) {
+			String line;
+			ArrayList<ArrayList<String>> queries = new ArrayList<ArrayList<String>>();
+			while ((line = reader.readLine()) != null) {
+				ArrayList<String> wordList = new ArrayList<>();
+				List<String> stemmed = stemLine(line);
+				wordList.addAll(stemmed);
+				queries.add(wordList);
+			}
+			return queries;
+		}
+	}
+
 }
