@@ -1,17 +1,14 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 
 public class SearchResults /*implements Comparable<>*/ {
 
-	private final ArrayList<TreeSet<String>> query;
-	private final HashMap<String, Integer> results;
+	private final TreeSet<String> query;
+	private final HashMap<String, Object> results;
 
 	public SearchResults() {
-		query = new ArrayList<>();
+		query = new TreeSet<>();
 		results = new HashMap<>();
 	}
-
-
 
 }
