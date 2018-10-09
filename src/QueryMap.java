@@ -10,7 +10,9 @@ public class QueryMap {
 	}
 
 	public void addQuery(String path, List<Result> results) {
+		System.out.println("hello I got here");
 		this.queryMap.put(path, results);
+		System.out.println("hello I got here");
 	}
 
 	@Override
