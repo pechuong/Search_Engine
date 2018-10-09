@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class Driver {
 
@@ -48,7 +49,7 @@ public class Driver {
 		if (argMap.hasFlag("-search")) {
 			try {
 				Path searchFile = argMap.getPath("-search");
-				ArrayList<ArrayList<String>> list = TextFileStemmer.stemQuery(searchFile);
+				ArrayList<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
 				if (argMap.hasFlag("-exact")) {
 					System.out.println("I'm going to do an exact search!");
 				} else {

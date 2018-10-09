@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -69,17 +70,18 @@ public class TextFileStemmer {
 		}
 	}
 
-	public static ArrayList<ArrayList<String>> stemQuery(Path inputFile) throws IOException {
+	public static ArrayList<TreeSet<String>> stemQuery(Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
 			String line;
-			ArrayList<ArrayList<String>> queries = new ArrayList<ArrayList<String>>();
+			ArrayList<TreeSet<String>> queries = new ArrayList<TreeSet<String>>();
 			while ((line = reader.readLine()) != null) {
-				ArrayList<String> wordList = new ArrayList<>();
-				List<String> stemmed = stemLine(line);
-				wordList.addAll(stemmed);
-				queries.add(wordList);
+				TreeSet<String> uniqueWords = new TreeSet<>();
+				for (String word : stemLine(line)) {
+					uniqueWords.add(word.toLowerCase());
+				}
+				queries.add(uniqueWords);
 			}
 			return queries;
 		}
