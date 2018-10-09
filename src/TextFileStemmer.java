@@ -89,6 +89,7 @@ public class TextFileStemmer {
 						return list.size() > 0;
 					})
 					.collect(Collectors.toList());
+			System.out.println(queries);
 			return queries;
 		}
 	}
