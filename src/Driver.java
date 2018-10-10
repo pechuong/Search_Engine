@@ -77,12 +77,11 @@ public class Driver {
 		 * Goes through the query map and outputs it to a json format.
 		 */
 		if (argMap.hasFlag("-results")) {
-
+			Path output = argMap.getPath("-results", Paths.get("results.json"));
 			try {
-				Path output = argMap.getPath("-results", Paths.get("results.json"));
 				queryMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing to: " + argMap.getString("-results"));
+				System.out.println("Error writing to: " + output);
 			}
 
 		}
@@ -93,11 +92,11 @@ public class Driver {
 		 * the total count of stemmed words in it's value.
 		 */
 		if (argMap.hasFlag("-locations")) {
+			Path output = argMap.getPath("-locations", Paths.get("locations.json"));
 			try {
-				Path output = argMap.getPath("-locations", Paths.get("locations.json"));
 				lMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing to: " + argMap.getString("-locations"));
+				System.out.println("Error writing to: " + output);
 			}
 		}
 	}
