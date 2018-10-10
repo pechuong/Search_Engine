@@ -91,15 +91,16 @@ public class TreeJSONWriter {
 			writer.write("]");
 			return;
 		}
+
 		writer.write("[" + System.lineSeparator());
-		for (int num : elements) {
+		for (int num : elements.headSet(elements.last(), false)) {
 			indent(level + 1, writer);
 			writer.write(Integer.toString(num));
-			if (elements.last() != num) {
-				writer.write(",");
-			}
-			writer.write(System.lineSeparator());
+			writer.write("," + System.lineSeparator());
 		}
+		indent(level + 1, writer);
+		writer.write(Integer.toString(elements.last()));
+		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("]");
 	}
