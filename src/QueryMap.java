@@ -18,13 +18,24 @@ public class QueryMap {
 		this.queryMap = new TreeMap<>();
 	}
 
-
+	/**
+	 * Writes the Query Map to a JSON file given a JSON output path.
+	 *
+	 * @param path The path to write the map to
+	 * @throws IOException
+	 */
 	public void writeJSON(Path path) throws IOException {
 		ResultsJSON.asArray(this.queryMap, path);
 	}
 
-	public void addQuery(String path, List<Result> results) {
-		this.queryMap.put(path, results);
+	/**
+	 * Adds a Query (one search) into the map w/ it's result(s).
+	 *
+	 * @param search The search query made to store in the map
+	 * @param results The list of results to store into the map
+	 */
+	public void addQuery(String search, List<Result> results) {
+		this.queryMap.put(search, results);
 	}
 
 	public boolean isEmpty() {
