@@ -65,7 +65,7 @@ public class Driver {
 					}
 				}
 			} catch (IOException e){
-				System.out.println("Something went wrong with: " + searchFile);
+				System.out.println("Something went wrong searching: " + searchFile);
 			}
 		}
 
