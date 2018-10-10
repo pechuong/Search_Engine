@@ -46,10 +46,12 @@ public class Driver {
 			}
 		}
 
-		// Searches
+		/**
+		 * Searches the Query file and performs either an exact or partial search
+		 */
 		if (argMap.hasFlag("-search")) {
+			Path searchFile = argMap.getPath("-search");
 			try {
-				Path searchFile = argMap.getPath("-search");
 				List<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
 				if (argMap.hasFlag("-exact")) {
 					for (TreeSet<String> oneSearch : queries) {
@@ -63,7 +65,7 @@ public class Driver {
 					}
 				}
 			} catch (IOException e){
-				System.out.println("Something went wrong with: " + argMap.getString("-search"));
+				System.out.println("Something went wrong with: " + searchFile);
 			}
 		}
 
