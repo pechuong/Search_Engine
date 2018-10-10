@@ -82,7 +82,6 @@ public class InvertedIndex {
 		addPosition(word, location, position);
 	}
 
-
 	/**
 	 * Adds a word to the new index and creates the inner
 	 * data structures (TreeMap<String, TreeSet<Integer>>)
