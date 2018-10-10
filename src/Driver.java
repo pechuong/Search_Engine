@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -27,16 +26,11 @@ public class Driver {
 
 		// Outputs inverted index to Json
 		if (argMap.hasFlag("-index")) {
-			Path output = argMap.getPath("-index", Paths.get("index.json")); // TODO Move outside of try-catch
+			Path output = argMap.getPath("-index", Paths.get("index.json"));
 			try {
-				if (!Files.exists(output)) { // TODO Might be able to remove?
-					Files.createFile(output);
-				}
 				index.writeJSON(output);
-
 			} catch (IOException e) {
-				// TODO System.out.println("Error writing to: " + output);
-				System.out.println("Error writing to: " + argMap.getString("-index"));
+				System.out.println("Error writing to: " + output);
 			} catch (Exception e) {
 				System.out.println("Error");
 			}
