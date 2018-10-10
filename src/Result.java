@@ -10,7 +10,7 @@ public class Result implements Comparable<Result> {
 		this.where = file;
 		this.matches = count;
 		this.wordCount = wordCount;
-		this.score = (double)this.matches / this.wordCount;
+		this.score = (double) this.matches / this.wordCount;
 	}
 
 	public void addMatches(int count) {
