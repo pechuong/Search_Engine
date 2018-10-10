@@ -81,7 +81,7 @@ public class Driver {
 			try {
 				queryMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing to: " + output);
+				System.out.println("Error writing search results to: " + output);
 			}
 
 		}
@@ -96,7 +96,7 @@ public class Driver {
 			try {
 				lMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing to: " + output);
+				System.out.println("Error writing location to: " + output);
 			}
 		}
 	}
