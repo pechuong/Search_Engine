@@ -38,6 +38,12 @@ public class QueryMap {
 		this.queryMap.put(search, results);
 	}
 
+	/**
+	 * Checks to see if the Query Map is empty or not.
+	 * This means that no search has been made or stored.
+	 *
+	 * @return true if the Query Map has at least 1 entry.
+	 */
 	public boolean isEmpty() {
 		if (this.queryMap.size() < 1) {
 			return true;
