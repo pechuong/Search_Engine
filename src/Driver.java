@@ -27,8 +27,8 @@ public class Driver {
 
 		// Outputs inverted index to Json
 		if (argMap.hasFlag("-index")) {
+			Path output = argMap.getPath("-index", Paths.get("index.json")); // TODO Move outside of try-catch
 			try {
-				Path output = argMap.getPath("-index", Paths.get("index.json")); // TODO Move outside of try-catch
 				if (!Files.exists(output)) { // TODO Might be able to remove?
 					Files.createFile(output);
 				}

@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -151,7 +150,7 @@ public class ArgumentMap {
 	 *
 	 * @see Paths#get(String, String...)
 	 */
-	public Path getPath(String flag) throws IOException {
+	public Path getPath(String flag) {
 		var myValue = getString(flag);
 		return (myValue != null) ? Paths.get(myValue) : null;
 	}
@@ -170,7 +169,7 @@ public class ArgumentMap {
 	 * @return the value to which the specified flag is mapped as a {@link Path},
 	 *         or the default value if there is no mapping for the flag
 	 */
-	public Path getPath(String flag, Path defaultValue) throws IOException {
+	public Path getPath(String flag, Path defaultValue) {
 		var myPath = getPath(flag);
 		return (myPath != null) ? myPath : defaultValue;
 	}
