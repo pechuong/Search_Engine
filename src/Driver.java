@@ -17,13 +17,13 @@ public class Driver {
 
 		// Traverses and makes inverted index
 		if (argMap.hasValue("-path")) {
+			Path output = argMap.getPath("-path");
 			try {
-				TraversePath.traverse(index, argMap.getPath("-path"));
+				TraversePath.traverse(index, output);
 			} catch (IOException e) {
-				System.out.println("Unable to build from: " + argMap.getString("-path"));
+				System.out.println("Unable to build from: " + output);
 			}
 		}
-
 		// Outputs inverted index to Json
 		if (argMap.hasFlag("-index")) {
 			Path output = argMap.getPath("-index", Paths.get("index.json"));
