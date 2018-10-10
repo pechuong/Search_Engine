@@ -47,7 +47,10 @@ public class Driver {
 		}
 
 		/**
-		 * Searches the Query file and performs either an exact or partial search
+		 * Searches the Query file and performs either an exact or partial search.
+		 * The result is stored in query map where the key is the query / the search
+		 * word or phrase to perform on and the value is all the result objects I get
+		 * as a result of performing the search.
 		 */
 		if (argMap.hasFlag("-search")) {
 			Path searchFile = argMap.getPath("-search");
@@ -69,6 +72,10 @@ public class Driver {
 			}
 		}
 
+		/**
+		 * Prints out the results from the searching.
+		 * Goes through the query map and outputs it to a json format.
+		 */
 		if (argMap.hasFlag("-results")) {
 
 			try {
@@ -80,6 +87,11 @@ public class Driver {
 
 		}
 
+		/**
+		 * Outputs a Json file showing the total word count per file.
+		 * Outputs from a Location Map that stores file / path as it's key and
+		 * the total count of stemmed words in it's value.
+		 */
 		if (argMap.hasFlag("-locations")) {
 			try {
 				Path output = argMap.getPath("-locations", Paths.get("locations.json"));
