@@ -2,7 +2,7 @@
 public class Result implements Comparable<Result> {
 
 	private final String where;
-	private int matches;
+	private double matches;
 	private final int wordCount;
 	private double score;
 
@@ -17,7 +17,7 @@ public class Result implements Comparable<Result> {
 		this.where = file;
 		this.matches = count;
 		this.wordCount = wordCount;
-		this.score = (double) this.matches / this.wordCount;
+		this.score = this.matches / this.wordCount;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class Result implements Comparable<Result> {
 	 * @return int - Num of matches
 	 */
 	public int getMatches() {
-		return this.matches;
+		return (int)this.matches;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Result implements Comparable<Result> {
 	public String toString() {
 		StringBuffer myString = new StringBuffer();
 		return myString.append("Where: " + this.where.toString() + System.lineSeparator() +
-				"Matches: " + Integer.toString(this.matches) + System.lineSeparator() +
+				"Matches: " + Double.toString(this.matches) + System.lineSeparator() +
 				"Score: " + Double.toString(this.score)).toString();
 	}
 
