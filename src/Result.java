@@ -94,4 +94,12 @@ public class Result implements Comparable<Result> {
 		return -1;
 	}
 
+	@Override
+	public String toString() {
+		StringBuffer myString = new StringBuffer();
+		return myString.append("Where: " + this.where.toString() + System.lineSeparator() +
+				"Matches: " + Integer.toString(this.matches) + System.lineSeparator() +
+				"Score: " + Double.toString(this.score)).toString();
+	}
+
 }
