@@ -67,6 +67,7 @@ public class InvertedIndex {
 				}
 			}
 		}
+
 		List<Result> sortedResults = resultList.stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
