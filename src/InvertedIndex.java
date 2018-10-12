@@ -95,7 +95,6 @@ public class InvertedIndex {
 	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
-
 		queryLine.stream()
 		.flatMap((word) -> {
 			return this.index.keySet().stream()
@@ -112,10 +111,9 @@ public class InvertedIndex {
 		});
 
 
-		List<Result> sortedResults = resultMap.values().stream()
+		return resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
-		return sortedResults;
 		/*
 		HashMap<String, Result> resultMap = new HashMap<>();
 
