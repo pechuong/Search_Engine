@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -48,60 +48,87 @@ public class InvertedIndex {
 
 
 	public List<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
-		ArrayList<Result> resultList = new ArrayList<>();
+		/*//METHOD 1
+		HashMap<String, Result> resultMap = new HashMap<>();
 
+		// go thru my search words
 		for (String word : queryLine) {
+			// is it inside the index
 			if (hasWord(word)) {
+				// go thru all files with the word and add them to index
 				for (String fileName : this.index.get(word).keySet()) {
-					boolean resultExists = false;
-					for (Result oneResult : resultList) {
-						if (oneResult.getFileName() == fileName) {
-							oneResult.addMatches(this.index.get(word).get(fileName).size());
-							resultExists = true;
-							break;
-						}
+					if (resultMap.containsKey(fileName)) {
+						resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
+						continue;
 					}
-					if (!resultExists) {
-						resultList.add(new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
-					}
+					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
 				}
 			}
 		}
 
-		List<Result> sortedResults = resultList.stream()
+		List<Result> sortedResults = resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
 		return sortedResults;
+		 */
+		HashMap<String, Result> resultMap = new HashMap<>();
+
+		for (String word : this.index.keySet().stream()
+				.filter((word) -> queryLine.contains(word))
+				.collect(Collectors.toSet())) {
+			this.index.get(word).keySet().stream()
+			.forEach((fileName)-> {
+				if (resultMap.containsKey(fileName)) {
+					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
+				} else {
+					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+				}
+			});
+
+		}
+
+		return resultMap.values().stream()
+				.sorted((result1, result2) -> result1.compareTo(result2))
+				.collect(Collectors.toList());
 	}
 
 	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
-		ArrayList<Result> resultList = new ArrayList<>();
+		HashMap<String, Result> resultMap = new HashMap<>();
 
 		for (String word : queryLine) {
 			if (hasWord(word) || startsWith(word)) {
 				for (String key : this.index.keySet()) {
 					if (key.startsWith(word)) {
 						for (String fileName : this.index.get(key).keySet()) {
-							boolean resultExists = false;
-							for (Result oneResult : resultList) {
-								if (oneResult.getFileName() == fileName) {
-									oneResult.addMatches(this.index.get(key).get(fileName).size());
-									resultExists = true;
-									break;
-								}
-							}
-							if (!resultExists) {
-								resultList.add(new Result(fileName, this.index.get(key).get(fileName).size(), lMap.getFile(fileName)));
+							if (resultMap.containsKey(fileName)) {
+								resultMap.get(fileName).addMatches(this.index.get(key).get(fileName).size());
+							} else {
+								resultMap.put(fileName, new Result(fileName, this.index.get(key).get(fileName).size(), lMap.getFile(fileName)));
 							}
 						}
 					}
 				}
 			}
 		}
-		List<Result> sortedResults = resultList.stream()
+		List<Result> sortedResults = resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
 		return sortedResults;
+		/*
+		HashMap<String, Result> resultMap = new HashMap<>();
+
+		for (String word : this.index.keySet().stream()
+				.filter((word) -> queryLine.contains(word))
+				.collect(Collectors.toSet())) {
+
+
+		}
+
+		List<Result> sortedResults = resultMap.values().stream()
+				.sorted((result1, result2) -> result1.compareTo(result2))
+				.collect(Collectors.toList());
+		return sortedResults;
+		 */
 	}
 
 
