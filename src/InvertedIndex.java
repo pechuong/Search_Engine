@@ -73,10 +73,9 @@ public class InvertedIndex {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
 		queryLine.stream()
-		.flatMap((word) -> {
-			return this.index.keySet().stream()
-					.filter(key -> key.startsWith(word) || key.equals(word));
-		})
+		.flatMap((word) -> this.index.keySet().stream()
+				.filter(key -> key.startsWith(word) || key.equals(word))
+				)
 		.forEach((word) -> {
 			for (String fileName : this.index.get(word).keySet()) {
 				if (resultMap.containsKey(fileName)) {
