@@ -83,7 +83,6 @@ public class Driver {
 			} catch (IOException e) {
 				System.out.println("Error writing search results to: " + output);
 			}
-
 		}
 
 		/**
