@@ -103,15 +103,6 @@ public class InvertedIndex {
 		return this.index.containsKey(word);
 	}
 
-	public boolean startsWith(String word) {
-		for (String key : this.index.keySet()) {
-			if (key.startsWith(word)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * Checks if the indexed word has the given path
 	 *
