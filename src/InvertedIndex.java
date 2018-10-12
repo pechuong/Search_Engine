@@ -48,29 +48,6 @@ public class InvertedIndex {
 
 
 	public List<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
-		/*//METHOD 1
-		HashMap<String, Result> resultMap = new HashMap<>();
-
-		// go thru my search words
-		for (String word : queryLine) {
-			// is it inside the index
-			if (hasWord(word)) {
-				// go thru all files with the word and add them to index
-				for (String fileName : this.index.get(word).keySet()) {
-					if (resultMap.containsKey(fileName)) {
-						resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
-						continue;
-					}
-					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
-				}
-			}
-		}
-
-		List<Result> sortedResults = resultMap.values().stream()
-				.sorted((result1, result2) -> result1.compareTo(result2))
-				.collect(Collectors.toList());
-		return sortedResults;
-		 */
 		HashMap<String, Result> resultMap = new HashMap<>();
 
 		for (String word : this.index.keySet().stream()
@@ -113,23 +90,7 @@ public class InvertedIndex {
 		return resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
-		/*
-		HashMap<String, Result> resultMap = new HashMap<>();
-
-		for (String word : this.index.keySet().stream()
-				.filter((word) -> queryLine.contains(word))
-				.collect(Collectors.toSet())) {
-
-
-		}
-
-		List<Result> sortedResults = resultMap.values().stream()
-				.sorted((result1, result2) -> result1.compareTo(result2))
-				.collect(Collectors.toList());
-		return sortedResults;
-		 */
 	}
-
 
 	/**
 	 * Checks the inverted index for the word given
