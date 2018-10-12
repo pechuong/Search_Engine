@@ -62,7 +62,6 @@ public class InvertedIndex {
 					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
 				}
 			});
-
 		}
 
 		return resultMap.values().stream()
