@@ -95,21 +95,23 @@ public class InvertedIndex {
 	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
-		for (String word : queryLine) {
-			if (hasWord(word) || startsWith(word)) {
-				for (String key : this.index.keySet()) {
-					if (key.startsWith(word)) {
-						for (String fileName : this.index.get(key).keySet()) {
-							if (resultMap.containsKey(fileName)) {
-								resultMap.get(fileName).addMatches(this.index.get(key).get(fileName).size());
-							} else {
-								resultMap.put(fileName, new Result(fileName, this.index.get(key).get(fileName).size(), lMap.getFile(fileName)));
-							}
-						}
-					}
+
+		queryLine.stream()
+		.flatMap((word) -> {
+			return this.index.keySet().stream()
+					.filter(key -> key.startsWith(word) || key.equals(word));
+		})
+		.forEach((word) -> {
+			for (String fileName : this.index.get(word).keySet()) {
+				if (resultMap.containsKey(fileName)) {
+					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
+				} else {
+					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
 				}
 			}
-		}
+		});
+
+
 		List<Result> sortedResults = resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
