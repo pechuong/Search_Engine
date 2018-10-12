@@ -110,7 +110,6 @@ public class InvertedIndex {
 			}
 		});
 
-
 		return resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());

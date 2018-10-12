@@ -56,7 +56,6 @@ public class LocationMap {
 			addFile(path);
 			addWordCount(path, wordCount);
 		}
-
 	}
 
 	/**
