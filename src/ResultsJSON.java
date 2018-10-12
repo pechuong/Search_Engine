@@ -11,6 +11,12 @@ import java.util.TreeMap;
 
 public class ResultsJSON {
 
+	/**
+	 * Starts the output for the results to JSON
+	 *
+	 * @param qMap The search results to turn to JSON
+	 * @return String writer.toString()
+	 */
 	public static String asArray(TreeMap<String, List<Result>> qMap) {
 		try {
 			StringWriter writer = new StringWriter();
@@ -22,6 +28,14 @@ public class ResultsJSON {
 		}
 	}
 
+	/**
+	 * Takes in the search result map and the JSON file path to output it to.
+	 * Sends a writer and level to the other asArray method.
+	 *
+	 * @param qMap The search results
+	 * @param output The JSON filename path to write the search results to.
+	 * @throws IOException
+	 */
 	public static void asArray(TreeMap<String, List<Result>> qMap, Path output) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(output,
 				StandardCharsets.UTF_8)) {
@@ -29,6 +43,16 @@ public class ResultsJSON {
 		}
 	}
 
+	/**
+	 * Starts writing JSON output for search results.
+	 * Starts writing the outer [ ] and then calls the other methods to write
+	 * the search results into JSON file.
+	 *
+	 * @param qMap The search result map
+	 * @param writer The writer
+	 * @param level The indentation level
+	 * @throws IOException
+	 */
 	public static void asArray(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException{
 		writer.write("[" + System.lineSeparator());
 		if (!qMap.isEmpty()) {
@@ -37,6 +61,13 @@ public class ResultsJSON {
 		writer.write("]");
 	}
 
+	/**
+	 * Writes out the search results by queries.
+	 * Calls the other asSearchResult method
+	 *
+	 * @param qMap The map of search results
+	 * @return String writer.toString()
+	 */
 	public static String asSearchResult(TreeMap<String, List<Result>> qMap) {
 		try {
 			StringWriter writer = new StringWriter();
@@ -48,6 +79,15 @@ public class ResultsJSON {
 		}
 	}
 
+	/**
+	 * Given a search result map and the output file to write to,
+	 * will write the map out as JSON format. Calls the other
+	 * asSearchResult method and gives it a writer and level.
+	 *
+	 * @param qMap The search result map
+	 * @param output The output JSON filepath to write to
+	 * @throws IOException
+	 */
 	public static void asSearchResult(TreeMap<String, List<Result>> qMap, Path output) throws IOException {
 		try (BufferedWriter writer = Files.newBufferedWriter(output,
 				StandardCharsets.UTF_8)) {
@@ -55,6 +95,16 @@ public class ResultsJSON {
 		}
 	}
 
+	/**
+	 * Writes out all the searches found in the queries out one by one.
+	 * Writes the "queries": " " and then all the results that appeared
+	 * from that particular search.
+	 *
+	 * @param qMap The search result map
+	 * @param writer The writer
+	 * @param level The indentation level
+	 * @throws IOException
+	 */
 	public static void asSearchResult(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException {
 		for (String searchName : qMap.headMap(qMap.lastKey(), false).keySet()) {
 			TreeJSONWriter.indent(level, writer);
@@ -96,11 +146,10 @@ public class ResultsJSON {
 	}
 
 	/**
-	 * Returns the set of elements formatted as a pretty JSON array of numbers.
+	 * Returns writer.toString()
 	 *
 	 * @param elements the elements to convert to JSON
 	 * @return {@link String} containing the elements in pretty JSON format
-	 *
 	 */
 	public static String asResultArray(List<Result> results) {
 		try {
@@ -114,8 +163,8 @@ public class ResultsJSON {
 	}
 
 	/**
-	 * Writes the set of elements formatted as a pretty JSON array of numbers to
-	 * the specified file.
+	 * Writes the set of elements formatted as a pretty JSON as an Array
+	 * of Result Objects.
 	 *
 	 * @param elements the elements to convert to JSON
 	 * @param path     the path to the file write to output
@@ -130,8 +179,9 @@ public class ResultsJSON {
 	}
 
 	/**
-	 * Writes the set of elements formatted as a pretty JSON array of numbers
-	 * using the provided {@link Writer} and indentation level.
+	 * Writes the set of elements formatted as a pretty JSON as an Array
+	 * of Result Objects (where, matches, score) given the writer and
+	 * indentation level.
 	 *
 	 * @param elements the elements to convert to JSON
 	 * @param writer   the writer to use
