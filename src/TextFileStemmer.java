@@ -84,13 +84,11 @@ public class TextFileStemmer {
 				}
 				queries.add(uniqueWords);
 			}
-			queries = queries.stream()
+			return queries.stream()
 					.filter((list) -> {
 						return list.size() > 0;
 					})
 					.collect(Collectors.toList());
-			System.out.println(queries);
-			return queries;
 		}
 	}
 
