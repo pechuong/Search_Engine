@@ -53,6 +53,7 @@ public class InvertedIndex {
 		for (String word : this.index.keySet().stream()
 				.filter((word) -> queryLine.contains(word))
 				.collect(Collectors.toSet())) {
+
 			this.index.get(word).keySet().stream()
 			.forEach((fileName)-> {
 				if (resultMap.containsKey(fileName)) {
