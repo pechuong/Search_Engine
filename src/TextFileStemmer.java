@@ -43,6 +43,8 @@ public class TextFileStemmer {
 		return wordList;
 	}
 
+	// TODO Move into the TraversePath class
+	// TODO Rename iIndex to just index
 	/**
 	 * Reads a file line by line, parses each line into cleaned and stemmed words,
 	 * and then writes that line to a new file.
@@ -59,6 +61,22 @@ public class TextFileStemmer {
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
 			String line;
+			
+			/*
+			 * TODO Some efficiency issues
+			 * 1) Any time you use "temporary storage" like this list, and then
+			 * move data elsewhere (like into your index), using more space and
+			 * time than necessary.
+			 * 
+			 * Efficiency is one reason to create a more specific version of
+			 * generalized code. Copy/paste some of what is going on in stemLine
+			 * into your while loop... and instead of adding to a list immediately
+			 * add to your index
+			 * 
+			 * 2) Creating a stemmer object for every line, causing garbage collection
+			 * Instead, create 1 stemmer per file.
+			 */
+			
 			ArrayList<String> wordList = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 				List<String> stemmed = stemLine(line);
