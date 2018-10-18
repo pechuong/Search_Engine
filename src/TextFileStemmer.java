@@ -72,8 +72,6 @@ public class TextFileStemmer {
 			 * into your while loop... and instead of adding to a list immediately
 			 * add to your index
 			 *
-			 * 2) Creating a stemmer object for every line, causing garbage collection
-			 * Instead, create 1 stemmer per file.
 			 */
 
 			ArrayList<String> wordList = new ArrayList<>();
