@@ -154,6 +154,7 @@ public class TreeJSONWriter {
 			int level) throws IOException {
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
+		// TODO Put the for loop and output for last key inside a if(not empty) block
 		for (String word: elements.headMap(elements.lastKey(), false).keySet()) {
 			indent(level + 1, writer);
 			quote(word, writer);
@@ -219,6 +220,10 @@ public class TreeJSONWriter {
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
 		writer.write("{" + System.lineSeparator());
+		
+		// TODO Put the for loop and output for last key inside a if(not empty) block
+		// TODO Clean up the sysouts
+		
 		//System.out.println(elements.headMap(elements.lastKey(), false));
 		//System.out.println(elements.headMap(elements.lastKey(), false).keySet().size());
 		for (String key : elements.headMap(elements.lastKey(), false).keySet()) {

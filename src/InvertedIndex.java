@@ -23,6 +23,11 @@ public class InvertedIndex {
 		TreeJSONWriter.asObject(index, path);
 	}
 
+	// TODO With Javadoc try to describe the functionality and not the implementation
+	// TODO Only refer to code if its important
+	
+	// TODO Refactor to just "build"
+	// TODO Change Path file to String file as the input parameter
 	/**
 	 * Builds the inverted index
 	 * - checks for the word
@@ -39,6 +44,7 @@ public class InvertedIndex {
 		}
 	}
 
+	// TODO Don't assume the lowercase
 	/**
 	 * Checks the inverted index for the word given
 	 * after turning it to lowercase
@@ -64,6 +70,7 @@ public class InvertedIndex {
 		return false;
 	}
 
+	// TODO Make this method public
 	/**
 	 * Adds the word to the index given the word, location, and position
 	 *
