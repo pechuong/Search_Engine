@@ -84,22 +84,16 @@ public class TreeJSONWriter {
 	public static void asArray(TreeSet<Integer> elements, Writer writer,
 			int level) throws IOException {
 
-		if (elements.isEmpty()) {
-			writer.write("[" + System.lineSeparator());
-			indent(level, writer);
-			writer.write("");
-			writer.write("]");
-			return;
-		}
-
 		writer.write("[" + System.lineSeparator());
-		for (int num : elements.headSet(elements.last(), false)) {
+		if (!elements.isEmpty()) {
+			for (int num : elements.headSet(elements.last(), false)) {
+				indent(level + 1, writer);
+				writer.write(Integer.toString(num));
+				writer.write("," + System.lineSeparator());
+			}
 			indent(level + 1, writer);
-			writer.write(Integer.toString(num));
-			writer.write("," + System.lineSeparator());
+			writer.write(Integer.toString(elements.last()));
 		}
-		indent(level + 1, writer);
-		writer.write(Integer.toString(elements.last()));
 		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("]");
@@ -152,6 +146,7 @@ public class TreeJSONWriter {
 	 */
 	public static void asObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer,
 			int level) throws IOException {
+
 		indent(level, writer);
 		writer.write("{" + System.lineSeparator());
 		if (!elements.isEmpty()) {
@@ -171,6 +166,7 @@ public class TreeJSONWriter {
 		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("}");
+
 	}
 
 	/**
@@ -239,6 +235,7 @@ public class TreeJSONWriter {
 		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("}");
+
 	}
 
 }
