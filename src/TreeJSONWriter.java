@@ -219,23 +219,22 @@ public class TreeJSONWriter {
 	 */
 	public static void asNestedObject(TreeMap<String, TreeSet<Integer>> elements,
 			Writer writer, int level) throws IOException {
+
 		writer.write("{" + System.lineSeparator());
-
-		// TODO Put the for loop and output for last key inside a if(not empty) block
-		// TODO Clean up the sysouts
-
-		for (String key : elements.headMap(elements.lastKey(), false).keySet()) {
+		if (!elements.isEmpty()) {
+			for (String key : elements.headMap(elements.lastKey(), false).keySet()) {
+				indent(level + 1, writer);
+				quote(key, writer);
+				writer.write(": ");
+				asArray(elements.get(key), writer, level + 1);
+				writer.write(",");
+				writer.write(System.lineSeparator());
+			}
 			indent(level + 1, writer);
-			quote(key, writer);
+			quote(elements.lastKey(), writer);
 			writer.write(": ");
-			asArray(elements.get(key), writer, level + 1);
-			writer.write(",");
-			writer.write(System.lineSeparator());
+			asArray(elements.get(elements.lastKey()), writer, level + 1);
 		}
-		indent(level + 1, writer);
-		quote(elements.lastKey(), writer);
-		writer.write(": ");
-		asArray(elements.get(elements.lastKey()), writer, level + 1);
 		writer.write(System.lineSeparator());
 		indent(level, writer);
 		writer.write("}");
