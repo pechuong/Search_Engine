@@ -43,10 +43,8 @@ public class InvertedIndex {
 		}
 	}
 
-	// TODO Don't assume the lowercase
 	/**
 	 * Checks the inverted index for the word given
-	 * after turning it to lowercase
 	 *
 	 * @param word The word to search for
 	 * @return true if the index contains the word
