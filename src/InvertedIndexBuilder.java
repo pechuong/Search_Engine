@@ -11,7 +11,7 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 // TODO Maybe refactor the class name to InvertedIndexBuilder
 
-public class TraversePath {
+public class InvertedIndexBuilder {
 
 	/**
 	 * TODO
@@ -47,6 +47,7 @@ public class TraversePath {
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
 			String line;
+			int count = 1;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			/*
 			 * TODO Some efficiency issues
