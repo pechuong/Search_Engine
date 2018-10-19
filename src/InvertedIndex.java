@@ -25,8 +25,7 @@ public class InvertedIndex {
 
 	// TODO With Javadoc try to describe the functionality and not the implementation
 	// TODO Only refer to code if its important
-	
-	// TODO Refactor to just "build"
+
 	// TODO Change Path file to String file as the input parameter
 	/**
 	 * Builds the inverted index
@@ -37,7 +36,7 @@ public class InvertedIndex {
 	 * @param wordList The list of words stemmed from 1 file
 	 * @param file The file the words were stemmed from
 	 */
-	public void buildiIndex(List<String> wordList, Path file) {
+	public void build(List<String> wordList, Path file) {
 		int wordCount = 0;
 		for (String word : wordList) {
 			add(word, file.toString(), ++wordCount);

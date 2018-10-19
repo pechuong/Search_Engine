@@ -9,8 +9,6 @@ import java.util.List;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
-// TODO Maybe refactor the class name to InvertedIndexBuilder
-
 public class InvertedIndexBuilder {
 
 	/**
@@ -67,7 +65,7 @@ public class InvertedIndexBuilder {
 				List<String> stemmed = TextFileStemmer.stemLine(line, stemmer);
 				wordList.addAll(stemmed);
 			}
-			index.buildiIndex(wordList, inputFile);
+			index.build(wordList, inputFile);
 		}
 	}
 
