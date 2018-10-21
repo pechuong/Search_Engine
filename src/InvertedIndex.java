@@ -60,7 +60,6 @@ public class InvertedIndex {
 		return false;
 	}
 
-	// TODO Make this method public
 	/**
 	 * Adds the word to the index given the word, location, and position
 	 *
@@ -68,7 +67,7 @@ public class InvertedIndex {
 	 * @param location The file from where the word came from
 	 * @param position The position that word is right now
 	 */
-	private void add(String word, String location, int position) {
+	public void add(String word, String location, int position) {
 		//do all the checking in here instead of in the builder
 		if (!hasWord(word)) {
 			addWord(word);
