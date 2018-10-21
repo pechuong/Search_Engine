@@ -22,9 +22,6 @@ public class InvertedIndex {
 		TreeJSONWriter.asObject(index, path);
 	}
 
-	// TODO With Javadoc try to describe the functionality and not the implementation
-	// TODO Only refer to code if its important
-
 	/**
 	 * Builds / adds to the inverted index
 	 *
