@@ -102,7 +102,7 @@ public class TreeJSONWriter {
 	/**
 	 * Returns the map of elements formatted as a pretty JSON object.
 	 *
-	 * @param elements the elements to convert to JSON
+	 * @param elements the inverted index to convert to JSON
 	 * @return {@link String} containing the elements in pretty JSON format
 	 *
 	 */
