@@ -25,7 +25,6 @@ public class InvertedIndex {
 	// TODO With Javadoc try to describe the functionality and not the implementation
 	// TODO Only refer to code if its important
 
-	// TODO Change Path file to String file as the input parameter
 	/**
 	 * Builds the inverted index
 	 *
