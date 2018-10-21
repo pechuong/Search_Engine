@@ -31,8 +31,6 @@ public class Driver {
 				index.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + output);
-			} catch (Exception e) { // TODO Remove?
-				System.out.println("Error");
 			}
 		}
 	}
