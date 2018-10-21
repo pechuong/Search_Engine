@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -29,18 +28,12 @@ public class InvertedIndex {
 	// TODO Change Path file to String file as the input parameter
 	/**
 	 * Builds the inverted index
-	 * - checks for the word
-	 * - checks if word has file
-	 * - adds position
 	 *
 	 * @param wordList The list of words stemmed from 1 file
 	 * @param file The file the words were stemmed from
 	 */
-	public void build(List<String> wordList, Path file) {
-		int wordCount = 0;
-		for (String word : wordList) {
-			add(word, file.toString(), ++wordCount);
-		}
+	public void build(String word, String file, int count) {
+		add(word, file, count);
 	}
 
 	/**

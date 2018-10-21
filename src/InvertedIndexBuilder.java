@@ -3,8 +3,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -46,6 +44,7 @@ public class InvertedIndexBuilder {
 				) {
 			String line;
 			int count = 1;
+			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			/*
 			 * TODO Some efficiency issues
@@ -60,12 +59,12 @@ public class InvertedIndexBuilder {
 			 *
 			 */
 
-			ArrayList<String> wordList = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
-				List<String> stemmed = TextFileStemmer.stemLine(line, stemmer);
-				wordList.addAll(stemmed);
+				for (String word : TextParser.parse(line)) {
+					index.build(stemmer.stem(word).toString(), filePath, count);
+					count++;
+				}
 			}
-			index.build(wordList, inputFile);
 		}
 	}
 
