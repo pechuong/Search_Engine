@@ -91,7 +91,8 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * Adds a file to the index under the given word
+	 * Adds a file to the index under the given word and
+	 * creates the last inner data structure (TreeSet<Integer>)
 	 *
 	 * @param word The word to put the filePath under
 	 * @param filePath The path to be put in the index

@@ -27,10 +27,8 @@ public class ArgumentMap {
 	}
 
 	/**
-	 * Parses the arguments into flag/path pairs. The path
-	 * is put as a String. Determines if the flag is
-	 * recognized as -index or -path. Will put -index.json
-	 * for index flag w/o a pair
+	 * Parses the arguments into flag/path pairs. If no path is provided after
+	 * a flag, will put a null value in it's place.
 	 *
 	 * @param args the command line arguments to parse
 	 */
@@ -54,7 +52,7 @@ public class ArgumentMap {
 
 	/**
 	 * Determines whether the argument is a flag. Flags start with a dash "-"
-	 * character and is either followed by a "index" or "path".
+	 * character and is followed by at least 1 non-whitespace character.
 	 *
 	 * @param arg the argument to test if its a flag
 	 * @return {@code true} if the argument is a flag
@@ -142,13 +140,9 @@ public class ArgumentMap {
 	 * (including being unable to convert the value to a {@link Path} or no value
 	 * existing for this flag).
 	 *
-	 * This method should not throw any exceptions!
-	 *
 	 * @param flag the flag whose associated value is to be returned
 	 * @return the value to which the specified flag is mapped, or {@code null} if
 	 *         unable to retrieve this mapping for any reason
-	 *
-	 * @see Paths#get(String, String...)
 	 */
 	public Path getPath(String flag) {
 		var myValue = getString(flag);
@@ -160,8 +154,6 @@ public class ArgumentMap {
 	 * or the default value if unable to retrieve this mapping for any reason
 	 * (including being unable to convert the value to a {@link Path} or no value
 	 * existing for this flag).
-	 *
-	 * This method should not throw any exceptions!
 	 *
 	 * @param flag         the flag whose associated value is to be returned
 	 * @param defaultValue the default value to return if there is no mapping for

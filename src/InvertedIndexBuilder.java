@@ -10,7 +10,8 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class InvertedIndexBuilder {
 
 	/**
-	 * Traverses a path and stems each file found.
+	 * Traverses a path and stems each file found. If a directory is found,
+	 * will continue traversing until a file pops up.
 	 *
 	 * @param index The inverted index to build to
 	 * @param path The path to traverse and go thru
@@ -46,13 +47,6 @@ public class InvertedIndexBuilder {
 			int count = 1;
 			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			/*
-			 * TODO Some efficiency issues
-			 * 1) Any time you use "temporary storage" like this list, and then
-			 * move data elsewhere (like into your index), using more space and
-			 * time than necessary.
-			 *
-			 */
 
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
