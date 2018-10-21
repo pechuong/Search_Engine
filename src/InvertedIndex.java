@@ -26,10 +26,11 @@ public class InvertedIndex {
 	// TODO Only refer to code if its important
 
 	/**
-	 * Builds the inverted index
+	 * Builds / adds to the inverted index
 	 *
-	 * @param wordList The list of words stemmed from 1 file
-	 * @param file The file the words were stemmed from
+	 * @param word The word to add to the index
+	 * @param file The file the word was stemmed from
+	 * @param count The position the word is found in from the file
 	 */
 	public void build(String word, String file, int count) {
 		add(word, file, count);

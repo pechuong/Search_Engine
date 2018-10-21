@@ -10,9 +10,10 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class InvertedIndexBuilder {
 
 	/**
-	 * TODO
-	 * @param index
-	 * @param path
+	 * Traverses a path and stems each file found.
+	 *
+	 * @param index The inverted index to build to
+	 * @param path The path to traverse and go thru
 	 * @throws IOException
 	 */
 	public static void traverse(InvertedIndex index, Path path) throws IOException {
@@ -29,13 +30,12 @@ public class InvertedIndexBuilder {
 
 	/**
 	 * Reads a file line by line, parses each line into cleaned and stemmed words,
-	 * and then writes that line to a new file.
+	 * and then adds it to the inverted index.
 	 *
+	 * @param index The inverted index to add the words in the file to
 	 * @param inputFile the input file to parse
-	 * @param outputFile the output file to write the cleaned and stemmed words
 	 * @throws IOException if unable to read or write to file
 	 *
-	 * @see #stemLine(String)
 	 * @see TextParser#parse(String)
 	 */
 	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
@@ -51,11 +51,6 @@ public class InvertedIndexBuilder {
 			 * 1) Any time you use "temporary storage" like this list, and then
 			 * move data elsewhere (like into your index), using more space and
 			 * time than necessary.
-			 *
-			 * Efficiency is one reason to create a more specific version of
-			 * generalized code. Copy/paste some of what is going on in stemLine
-			 * into your while loop... and instead of adding to a list immediately
-			 * add to your index
 			 *
 			 */
 
