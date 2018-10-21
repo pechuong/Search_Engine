@@ -65,7 +65,6 @@ public class InvertedIndex {
 	 * @param position The position that word is right now
 	 */
 	public void add(String word, String location, int position) {
-		//do all the checking in here instead of in the builder
 		if (!hasWord(word)) {
 			addWord(word);
 		}
