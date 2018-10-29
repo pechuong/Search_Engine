@@ -56,6 +56,8 @@ public class InvertedIndex {
 		}
 		return false;
 	}
+	
+	// TODO Add public boolean hasPosition(String word, String path, int position)...
 
 	/**
 	 * Adds the word to the index given the word, location, and position
