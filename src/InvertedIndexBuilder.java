@@ -3,6 +3,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -57,4 +58,17 @@ public class InvertedIndexBuilder {
 		}
 	}
 
+	public static void traverse(InvertedIndex index, LocationMap lMap, Path path) throws IOException {
+		if (Files.isDirectory(path)) {
+			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
+				for (Path file : listing) {
+					traverse(index, lMap, file);
+				}
+			}
+		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
+			List<String> wordList = TextFileStemmer.stemFile(path);
+			index.build(wordList, path);
+			lMap.buildLocation(path, wordList.size());;
+		}
+	}
 }

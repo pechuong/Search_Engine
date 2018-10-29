@@ -24,7 +24,7 @@ public class Driver {
 			Path output = argMap.getPath("-path");
 			try {
 				InvertedIndexBuilder.traverse(index, output);
-				TraversePath.traverse(index, lMap, argMap.getPath("-path"));
+				InvertedIndexBuilder.traverse(index, lMap, argMap.getPath("-path"));
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + output);
 			}
