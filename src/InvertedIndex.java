@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class InvertedIndex {
 	}
 
 
-	public List<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
+	public List<Result> exactSearch(LocationMap lMap, Set<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
 		for (String word : this.index.keySet().stream()
@@ -59,7 +60,7 @@ public class InvertedIndex {
 				.collect(Collectors.toList());
 	}
 
-	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
+	public List<Result> partialSearch(LocationMap lMap, Set<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
 		queryLine.stream()

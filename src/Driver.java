@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 
 public class Driver {
 
@@ -48,14 +48,14 @@ public class Driver {
 		if (argMap.hasFlag("-search")) {
 			Path searchFile = argMap.getPath("-search");
 			try {
-				List<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
+				List<Set<String>> queries = TextFileStemmer.stemQuery(searchFile);
 				if (argMap.hasFlag("-exact")) {
-					for (TreeSet<String> oneSearch : queries) {
+					for (Set<String> oneSearch : queries) {
 						String searchName = String.join(" ", oneSearch);
 						queryMap.addQuery(searchName, index.exactSearch(locMap, oneSearch));
 					}
 				} else {
-					for (TreeSet<String> oneSearch : queries) {
+					for (Set<String> oneSearch : queries) {
 						String searchName = String.join(" ", oneSearch);
 						queryMap.addQuery(searchName, index.partialSearch(locMap, oneSearch));
 					}
