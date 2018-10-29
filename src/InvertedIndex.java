@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class InvertedIndex {
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
@@ -31,6 +34,50 @@ public class InvertedIndex {
 	 */
 	public void build(String word, String file, int count) {
 		add(word, file, count);
+	}
+
+
+	public List<Result> exactSearch(LocationMap lMap, TreeSet<String> queryLine) {
+		HashMap<String, Result> resultMap = new HashMap<>();
+
+		for (String word : this.index.keySet().stream()
+				.filter((word) -> queryLine.contains(word))
+				.collect(Collectors.toSet())) {
+
+			this.index.get(word).keySet().stream()
+			.forEach((fileName)-> {
+				if (resultMap.containsKey(fileName)) {
+					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
+				} else {
+					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+				}
+			});
+		}
+
+		return resultMap.values().stream()
+				.sorted((result1, result2) -> result1.compareTo(result2))
+				.collect(Collectors.toList());
+	}
+
+	public List<Result> partialSearch(LocationMap lMap, TreeSet<String> queryLine) {
+		HashMap<String, Result> resultMap = new HashMap<>();
+
+		queryLine.stream()
+		.flatMap((word) -> this.index.keySet().stream()
+				.filter(key -> key.startsWith(word)))
+		.forEach((word) -> {
+			for (String fileName : this.index.get(word).keySet()) {
+				if (resultMap.containsKey(fileName)) {
+					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
+				} else {
+					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
+				}
+			}
+		});
+
+		return resultMap.values().stream()
+				.sorted((result1, result2) -> result1.compareTo(result2))
+				.collect(Collectors.toList());
 	}
 
 	/**
