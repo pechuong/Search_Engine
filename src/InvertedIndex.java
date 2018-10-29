@@ -57,6 +57,14 @@ public class InvertedIndex {
 		return false;
 	}
 
+	/**
+	 * Checks if the index has a position based on given word and path
+	 *
+	 * @param word The word to find in the index
+	 * @param path The file to find for the word
+	 * @param position The position to find
+	 * @return true if position is found
+	 */
 	public boolean hasPosition(String word, String path, int position) {
 		if (hasFile(word, path)) {
 			return this.index.get(word).get(path).contains(position);
