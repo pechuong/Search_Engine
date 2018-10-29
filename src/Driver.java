@@ -19,17 +19,22 @@ public class Driver {
 		LocationMap locMap = new LocationMap();
 		QueryMap queryMap = new QueryMap();
 
-		// Traverses and makes inverted index
+		/**
+		 *  Traverses and makes inverted index
+		 */
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
 				InvertedIndexBuilder.traverse(index, output);
-				InvertedIndexBuilder.traverse(index, locMap, argMap.getPath("-path"));
+				InvertedIndexBuilder.traverse(index, locMap, output);
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + output);
 			}
 		}
-		// Outputs inverted index to Json
+
+		/**
+		 * Outputs inverted index to Json
+		 */
 		if (argMap.hasFlag("-index")) {
 			Path output = argMap.getPath("-index", Paths.get("index.json"));
 			try {
@@ -41,9 +46,6 @@ public class Driver {
 
 		/**
 		 * Searches the Query file and performs either an exact or partial search.
-		 * The result is stored in query map where the key is the query / the search
-		 * word or phrase to perform on and the value is all the result objects I get
-		 * as a result of performing the search.
 		 */
 		if (argMap.hasFlag("-search")) {
 			Path searchFile = argMap.getPath("-search");
@@ -66,8 +68,7 @@ public class Driver {
 		}
 
 		/**
-		 * Prints out the results from the searching.
-		 * Goes through the query map and outputs it to a json format.
+		 * Prints out the search to JSON
 		 */
 		if (argMap.hasFlag("-results")) {
 			Path output = argMap.getPath("-results", Paths.get("results.json"));
@@ -79,9 +80,7 @@ public class Driver {
 		}
 
 		/**
-		 * Outputs a Json file showing the total word count per file.
-		 * Outputs from a Location Map that stores file / path as it's key and
-		 * the total count of stemmed words in it's value.
+		 * Outputs the location map to JSON
 		 */
 		if (argMap.hasFlag("-locations")) {
 			Path output = argMap.getPath("-locations", Paths.get("locations.json"));
