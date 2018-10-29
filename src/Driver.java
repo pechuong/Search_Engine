@@ -45,7 +45,7 @@ public class Driver {
 		}
 
 		/**
-		 * Searches the Query file and performs either an exact or partial search.
+		 * Performs either an exact or partial search on the inverted index
 		 */
 		if (argMap.hasFlag("-search")) {
 			Path searchFile = argMap.getPath("-search");
@@ -68,7 +68,7 @@ public class Driver {
 		}
 
 		/**
-		 * Prints out the search to JSON
+		 * Outputs the search results to JSON
 		 */
 		if (argMap.hasFlag("-results")) {
 			Path output = argMap.getPath("-results", Paths.get("results.json"));

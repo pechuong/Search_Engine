@@ -3,7 +3,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -18,15 +17,15 @@ public class InvertedIndexBuilder {
 	 * @param path The path to traverse and go thru
 	 * @throws IOException
 	 */
-	public static void traverse(InvertedIndex index, Path path) throws IOException {
+	public static void traverse(InvertedIndex index, LocationMap locMap, Path path) throws IOException {
 		if (Files.isDirectory(path)) {
 			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 				for (Path file : listing) {
-					traverse(index, file);
+					traverse(index, locMap, file);
 				}
 			}
 		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-			stemFile(index, path);
+			stemFile(index, locMap, path);
 		}
 	}
 
@@ -40,7 +39,7 @@ public class InvertedIndexBuilder {
 	 *
 	 * @see TextParser#parse(String)
 	 */
-	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
+	public static void stemFile(InvertedIndex index, LocationMap locMap, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
@@ -55,20 +54,7 @@ public class InvertedIndexBuilder {
 					count++;
 				}
 			}
-		}
-	}
-
-	public static void traverse(InvertedIndex index, LocationMap lMap, Path path) throws IOException {
-		if (Files.isDirectory(path)) {
-			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
-				for (Path file : listing) {
-					traverse(index, lMap, file);
-				}
-			}
-		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-			List<String> wordList = TextFileStemmer.stemFile(path);
-			index.build(wordList, path);
-			lMap.buildLocation(path, wordList.size());;
+			locMap.buildLocation(inputFile, count);
 		}
 	}
 }
