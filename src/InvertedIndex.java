@@ -56,8 +56,13 @@ public class InvertedIndex {
 		}
 		return false;
 	}
-	
-	// TODO Add public boolean hasPosition(String word, String path, int position)...
+
+	public boolean hasPosition(String word, String path, int position) {
+		if (hasFile(word, path)) {
+			return this.index.get(word).get(path).contains(position);
+		}
+		return false;
+	}
 
 	/**
 	 * Adds the word to the index given the word, location, and position
