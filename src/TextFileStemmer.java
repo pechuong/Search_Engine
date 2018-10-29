@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -49,20 +50,22 @@ public class TextFileStemmer {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
+
 			String line;
 			List<Set<String>> queries = new ArrayList<Set<String>>();
 			while ((line = reader.readLine()) != null) {
-				/*
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : stemLine(line)) {
 					uniqueWords.add(word.toLowerCase());
 				}
 				queries.add(uniqueWords);
-				 */
+				/*
 				queries.add(stemLine(line).stream()
-						.filter((word) -> word.length() > 0)
+						.distinct()
 						.map((word) -> word.toLowerCase())
+						.sorted()
 						.collect(Collectors.toSet()));
+				 */
 
 			}
 			return queries.stream()
