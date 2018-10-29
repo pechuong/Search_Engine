@@ -45,32 +45,6 @@ public class TextFileStemmer {
 		return wordList;
 	}
 
-	/**
-	 * Reads a file line by line, parses each line into cleaned and stemmed words,
-	 * and then writes that line to a new file.
-	 *
-	 * @param inputFile the input file to parse
-	 * @param outputFile the output file to write the cleaned and stemmed words
-	 * @throws IOException if unable to read or write to file
-	 *
-	 * @see #stemLine(String)
-	 * @see TextParser#parse(String)
-	 */
-	public static List<String> stemFile(Path inputFile) throws IOException {
-		try (
-				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-				) {
-			String line;
-			ArrayList<String> wordList = new ArrayList<>();
-			while ((line = reader.readLine()) != null) {
-				List<String> stemmed = stemLine(line);
-				wordList.addAll(stemmed);
-			}
-			return wordList;
-
-		}
-	}
-
 	public static List<TreeSet<String>> stemQuery(Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
