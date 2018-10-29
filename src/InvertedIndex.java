@@ -81,6 +81,10 @@ public class InvertedIndex {
 				.collect(Collectors.toList());
 	}
 
+	public boolean isEmpty() {
+		return this.index.keySet().isEmpty();
+	}
+
 	/**
 	 * Checks the inverted index for the word given
 	 *

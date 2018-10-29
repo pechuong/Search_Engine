@@ -60,12 +60,13 @@ public class TextFileStemmer {
 				queries.add(uniqueWords);
 				 */
 				queries.add(stemLine(line).stream()
+						.filter((word) -> word.length() > 0)
+						.map((word) -> word.toLowerCase())
 						.collect(Collectors.toSet()));
+
 			}
 			return queries.stream()
-					.filter((list) -> {
-						return list.size() > 0;
-					})
+					.filter((list) -> list.size() > 0)
 					.collect(Collectors.toList());
 		}
 	}
