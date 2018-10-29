@@ -16,7 +16,7 @@ public class Driver {
 		// parses args
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
-		LocationMap lMap = new LocationMap();
+		LocationMap locMap = new LocationMap();
 		QueryMap queryMap = new QueryMap();
 
 		// Traverses and makes inverted index
@@ -24,7 +24,7 @@ public class Driver {
 			Path output = argMap.getPath("-path");
 			try {
 				InvertedIndexBuilder.traverse(index, output);
-				InvertedIndexBuilder.traverse(index, lMap, argMap.getPath("-path"));
+				InvertedIndexBuilder.traverse(index, locMap, argMap.getPath("-path"));
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + output);
 			}
@@ -52,12 +52,12 @@ public class Driver {
 				if (argMap.hasFlag("-exact")) {
 					for (TreeSet<String> oneSearch : queries) {
 						String searchName = String.join(" ", oneSearch);
-						queryMap.addQuery(searchName, index.exactSearch(lMap, oneSearch));
+						queryMap.addQuery(searchName, index.exactSearch(locMap, oneSearch));
 					}
 				} else {
 					for (TreeSet<String> oneSearch : queries) {
 						String searchName = String.join(" ", oneSearch);
-						queryMap.addQuery(searchName, index.partialSearch(lMap, oneSearch));
+						queryMap.addQuery(searchName, index.partialSearch(locMap, oneSearch));
 					}
 				}
 			} catch (IOException e){
@@ -86,7 +86,7 @@ public class Driver {
 		if (argMap.hasFlag("-locations")) {
 			Path output = argMap.getPath("-locations", Paths.get("locations.json"));
 			try {
-				lMap.writeJSON(output);
+				locMap.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Error writing location to: " + output);
 			}
