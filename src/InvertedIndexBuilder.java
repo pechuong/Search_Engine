@@ -44,17 +44,19 @@ public class InvertedIndexBuilder {
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
 			String line;
-			int count = 1;
+			int count = 0;
 			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
-					index.build(stemmer.stem(word).toString(), filePath, count);
 					count++;
+					index.build(stemmer.stem(word).toString(), filePath, count);
 				}
 			}
-			locMap.buildLocation(inputFile, count);
+			if (count > 0) {
+				locMap.buildLocation(inputFile, count);
+			}
 		}
 	}
 }

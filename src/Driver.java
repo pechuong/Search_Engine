@@ -13,7 +13,6 @@ public class Driver {
 	 * @param args the command-line arguments to parse
 	 */
 	public static void main(String[] args) {
-		// parses args
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
 		LocationMap locMap = new LocationMap();
@@ -62,7 +61,7 @@ public class Driver {
 					}
 				}
 			} catch (IOException e){
-				System.out.println("Something went wrong searching: " + searchFile);
+				System.out.println("Something went wrong with searching: " + searchFile);
 			}
 		}
 
@@ -74,7 +73,7 @@ public class Driver {
 			try {
 				queryMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing search results to: " + output);
+				System.out.println("Something went wrong writing search results to: " + output);
 			}
 		}
 
@@ -86,7 +85,7 @@ public class Driver {
 			try {
 				locMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Error writing location to: " + output);
+				System.out.println("Something went wrong writing location to: " + output);
 			}
 		}
 	}
