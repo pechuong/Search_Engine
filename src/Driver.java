@@ -50,6 +50,7 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				try {
 					List<Set<String>> queries = TextFileStemmer.stemQuery(searchFile);
+
 					if (argMap.hasFlag("-exact")) {
 						for (Set<String> oneSearch : queries) {
 							String searchName = String.join(" ", oneSearch);
@@ -61,6 +62,7 @@ public class Driver {
 							queryMap.addQuery(searchName, index.partialSearch(locMap, oneSearch));
 						}
 					}
+
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
 				}
