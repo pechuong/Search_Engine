@@ -15,21 +15,6 @@ public class TextFileStemmer {
 
 	/**
 	 * Returns a list of cleaned and stemmed words parsed from the provided line.
-	 * Uses the English {@link SnowballStemmer.ALGORITHM} for stemming.
-	 *
-	 * @param line the line of words to clean, split, and stem
-	 * @return list of cleaned and stemmed words
-	 *
-	 * @see SnowballStemmer
-	 * @see SnowballStemmer.ALGORITHM#ENGLISH
-	 * @see #stemLine(String, Stemmer)
-	 */
-	public static List<String> stemLine(String line) {
-		return stemLine(line, new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH));
-	}
-
-	/**
-	 * Returns a list of cleaned and stemmed words parsed from the provided line.
 	 *
 	 * @param line the line of words to clean, split, and stem
 	 * @param stemmer the stemmer to use
@@ -52,11 +37,12 @@ public class TextFileStemmer {
 				) {
 
 			String line;
+			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			List<Set<String>> queries = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 
 				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : stemLine(line)) {
+				for (String word : stemLine(line, stemmer)) {
 					uniqueWords.add(word.toLowerCase());
 				}
 				queries.add(uniqueWords);
