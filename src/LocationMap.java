@@ -13,10 +13,23 @@ public class LocationMap {
 		this.location = new TreeMap<>();
 	}
 
+	/**
+	 * Writes the location map to JSON
+	 *
+	 * @param output The output file to write the location map to
+	 * @throws IOException
+	 */
 	public void writeJSON(Path output) throws IOException {
 		LocationJSON.asObject(location, output);
 	}
 
+	/**
+	 * Gets the File that's associated with the path from
+	 * the location map
+	 *
+	 * @param path The path to get the location from in the map
+	 * @return the number of words found from that file path
+	 */
 	public int getFile(String path) {
 		return this.location.get(path);
 	}
