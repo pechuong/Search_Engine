@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 
 public class Driver {
 
@@ -46,22 +46,26 @@ public class Driver {
 		 * Performs either an exact or partial search on the inverted index
 		 */
 		if (argMap.hasFlag("-search")) {
-			Path searchFile = argMap.getPath("-search");
-			try {
-				List<TreeSet<String>> queries = TextFileStemmer.stemQuery(searchFile);
-				if (argMap.hasFlag("-exact")) {
-					for (TreeSet<String> oneSearch : queries) {
-						String searchName = String.join(" ", oneSearch);
-						queryMap.addQuery(searchName, index.exactSearch(locMap, oneSearch));
+			if (!index.isEmpty()) {
+				Path searchFile = argMap.getPath("-search");
+				try {
+					List<Set<String>> queries = TextFileStemmer.stemQuery(searchFile);
+
+					if (argMap.hasFlag("-exact")) {
+						for (Set<String> oneSearch : queries) {
+							String searchName = String.join(" ", oneSearch);
+							queryMap.addQuery(searchName, index.exactSearch(locMap, oneSearch));
+						}
+					} else {
+						for (Set<String> oneSearch : queries) {
+							String searchName = String.join(" ", oneSearch);
+							queryMap.addQuery(searchName, index.partialSearch(locMap, oneSearch));
+						}
 					}
-				} else {
-					for (TreeSet<String> oneSearch : queries) {
-						String searchName = String.join(" ", oneSearch);
-						queryMap.addQuery(searchName, index.partialSearch(locMap, oneSearch));
-					}
+
+				} catch (IOException e){
+					System.out.println("Something went wrong with searching: " + searchFile);
 				}
-			} catch (IOException e){
-				System.out.println("Something went wrong with searching: " + searchFile);
 			}
 		}
 
