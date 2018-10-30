@@ -26,8 +26,10 @@ public class Result implements Comparable<Result> {
 	 * @param count The amount of matches found
 	 */
 	public void addMatches(int count) {
-		this.matches += count;
-		calculateScore();
+		if (count > 0) {
+			this.matches += count;
+			calculateScore();
+		}
 	}
 
 	/**
