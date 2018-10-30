@@ -52,20 +52,14 @@ public class TextFileStemmer {
 				) {
 
 			String line;
-			List<Set<String>> queries = new ArrayList<Set<String>>();
+			List<Set<String>> queries = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
+
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : stemLine(line)) {
 					uniqueWords.add(word.toLowerCase());
 				}
 				queries.add(uniqueWords);
-				/*
-				queries.add(stemLine(line).stream()
-						.distinct()
-						.map((word) -> word.toLowerCase())
-						.sorted()
-						.collect(Collectors.toSet()));
-				 */
 
 			}
 			return queries.stream()
