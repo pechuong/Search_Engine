@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Set;
 
 public class Driver {
 
@@ -45,6 +43,7 @@ public class Driver {
 		/**
 		 * Performs either an exact or partial search on the inverted index
 		 */
+		/*
 		if (argMap.hasFlag("-search")) {
 			if (!index.isEmpty()) {
 				Path searchFile = argMap.getPath("-search");
@@ -63,6 +62,19 @@ public class Driver {
 						}
 					}
 
+				} catch (IOException e){
+					System.out.println("Something went wrong with searching: " + searchFile);
+				}
+			}
+		}
+		 */
+
+		if (argMap.hasFlag("-search")) {
+			if (!index.isEmpty()) {
+				Path searchFile = argMap.getPath("-search");
+				try {
+					boolean exact = argMap.hasFlag("-exact");
+					queryMap.stemQuery(searchFile, exact);
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
 				}

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
@@ -53,7 +52,7 @@ public class QueryMap {
 	 * List<Result> results = index.partialSearch(uniqueWords);
 	 * addQuery(queryLine, results)
 	 */
-
+	/*
 	public List<Set<String>> stemQuery(Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
@@ -74,6 +73,29 @@ public class QueryMap {
 			return queries.stream()
 					.filter((list) -> list.size() > 0)
 					.collect(Collectors.toList());
+		}
+	}
+	 */
+
+	public void stemQuery(Path inputFile, boolean exact) throws IOException {
+		try (
+				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
+				) {
+
+			String line;
+			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+			List<Set<String>> queries = new ArrayList<>();
+			while ((line = reader.readLine()) != null) {
+
+				TreeSet<String> uniqueWords = new TreeSet<>();
+				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
+					uniqueWords.add(word.toLowerCase());
+				}
+
+				String queryLine = String.join(" ");
+				queries.add(uniqueWords);
+
+			}
 		}
 	}
 
