@@ -2,9 +2,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -84,7 +82,6 @@ public class QueryMap {
 
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			List<Set<String>> queries = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 
 				TreeSet<String> uniqueWords = new TreeSet<>();
@@ -92,9 +89,14 @@ public class QueryMap {
 					uniqueWords.add(word.toLowerCase());
 				}
 
-				String queryLine = String.join(" ");
-				queries.add(uniqueWords);
+				String queryLine = String.join(" ", uniqueWords);
 
+				// TODO if index has the query line, do search
+				if (exact) {
+					// TODO exact search
+				} else {
+					// TODO partial search
+				}
 			}
 		}
 	}
