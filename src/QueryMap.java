@@ -16,14 +16,14 @@ public class QueryMap {
 	 * Value - the list of results we get back from the search
 	 */
 	private final TreeMap<String, List<Result>> queryMap;
-
-	// TODO private final InvertedIndex index; (initialize in the constructor)
+	private final InvertedIndex index;
 
 	/**
 	 * Initializes the Query Map
 	 */
-	public QueryMap() {
+	public QueryMap(InvertedIndex index) {
 		this.queryMap = new TreeMap<>();
+		this.index = index;
 	}
 
 	/**
