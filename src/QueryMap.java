@@ -11,6 +11,8 @@ public class QueryMap {
 	 */
 	private final TreeMap<String, List<Result>> queryMap;
 
+	// TODO private final InvertedIndex index; (initialize in the constructor)
+	
 	/**
 	 * Initializes the Query Map
 	 */
@@ -27,6 +29,21 @@ public class QueryMap {
 	public void writeJSON(Path path) throws IOException {
 		ResultsJSON.asArray(this.queryMap, path);
 	}
+	
+	/*
+	 * TODO
+	 * public void stemQuery(Path inputFile, boolean exact)
+	 * When you stem each query line....
+	 * 
+	 * at some point you have:
+	 * 
+	 * TreeSet<String> uniqueWords = ....
+	 * String queryLine = String.join(" ");
+	 * 
+	 * only do this stuff if the queryLine is new
+	 * List<Result> results = index.partialSearch(uniqueWords);
+	 * addQuery(queryLine, results)
+	 */
 
 	/**
 	 * Adds a Query (one search) into the map w/ it's result(s).

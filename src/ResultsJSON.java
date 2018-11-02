@@ -229,4 +229,6 @@ public class ResultsJSON {
 		TreeJSONWriter.indent(level, writer);
 		writer.write("}" + System.lineSeparator());
 	}
+	
+	// TODO Try to create a helper that outputs a single Result object with a specified indentation level
 }

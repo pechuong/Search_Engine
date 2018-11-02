@@ -2,6 +2,15 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.TreeMap;
 
+/*
+ * TODO Great class design...
+ * 
+ * Don't want to track these two things separately. This is important for the
+ * index to properly sort the search results, so need to embed the
+ *     private final TreeMap<String, Integer> location;
+ * in your InvertedIndex, and update every time you add to the index 
+ */
+
 public class LocationMap {
 
 	private final TreeMap<String, Integer> location;
