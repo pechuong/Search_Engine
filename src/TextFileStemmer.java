@@ -31,6 +31,7 @@ public class TextFileStemmer {
 		return wordList;
 	}
 
+	// TODO Move this to QueryMap as a non-static method
 	public static List<Set<String>> stemQuery(Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);

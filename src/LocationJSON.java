@@ -7,6 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.TreeMap;
 
+/*
+ * TODO 
+ * Combine LocationJSON into TreeJSONWriter, rename TreeJSONWriter.asObject(...) asDoubleNestedObject
+ */
+
 public class LocationJSON {
 
 	/**
@@ -56,6 +61,8 @@ public class LocationJSON {
 	public static void asObject(TreeMap<String, Integer> elements, Writer writer, int level) throws IOException {
 
 		writer.write("{" + System.lineSeparator());
+		
+		// TODO if (!elements.isEmpty()) {
 		for (String file : elements.headMap(elements.lastKey(), false).keySet()) {
 			TreeJSONWriter.indent(level + 1, writer);
 			TreeJSONWriter.quote(file, writer);
