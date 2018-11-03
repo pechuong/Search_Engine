@@ -39,7 +39,6 @@ public class QueryMap {
 
 	/*
 	 * TODO
-	 * public void stemQuery(Path inputFile, boolean exact)
 	 * When you stem each query line....
 	 *
 	 * at some point you have:
@@ -93,10 +92,13 @@ public class QueryMap {
 
 				String queryLine = String.join(" ", uniqueWords);
 				if (!queries.contains(queryLine)) {
+					queries.add(queryLine);
 					if (exact) {
 						// TODO exact search
+						// TODO add the search result and queryLine to queryMap
 					} else {
 						// TODO partial search
+						// TODO add the search result and queryLine to queryMap
 					}
 				}
 			}
