@@ -204,6 +204,15 @@ public class ResultsJSON {
 		writer.write(System.lineSeparator());
 	}
 
+	/**
+	 * Writes a single search result as JSON output
+	 *
+	 * @param result The result to write out to JSON
+	 * @param writer The writer to use
+	 * @param FORMATTER The formatter to use for the score
+	 * @param level The level of indentation to use
+	 * @throws IOException if writer encounters any issue
+	 */
 	public static void asOneResult(Result result, Writer writer, DecimalFormat FORMATTER, int level) throws IOException {
 		TreeJSONWriter.indent(level, writer);
 		writer.write("{" + System.lineSeparator());
