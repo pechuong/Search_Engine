@@ -108,8 +108,11 @@ public class InvertedIndex {
 				.collect(Collectors.toList());
 	}
 
-	// TODO Javadoc
-
+	/**
+	 * Check if the inverted index is empty or not
+	 *
+	 * @return true if the index is empty
+	 */
 	public boolean isEmpty() {
 		return this.index.keySet().isEmpty();
 	}
