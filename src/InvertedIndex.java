@@ -36,7 +36,7 @@ public class InvertedIndex {
 	 * @throws IOException
 	 */
 	public void writeLocation(Path output) throws IOException {
-		LocationJSON.asLocation(location, output);
+		TreeJSONWriter.asLocation(location, output);
 	}
 
 	/**
