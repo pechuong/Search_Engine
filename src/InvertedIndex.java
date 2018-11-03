@@ -211,10 +211,14 @@ public class InvertedIndex {
 	/**
 	 * Updates the word count at the specified location or file
 	 *
-	 * @param location The location to update the int value for
+	 * @param path The location to update the int value for
 	 */
-	private void updateLocation(String location) {
-		this.location.put(location, this.location.get(location) + 1);
+	private void updateLocation(String path) {
+		if (this.location.containsKey(path)) {
+			this.location.put(path, this.location.get(path) + 1);
+		} else {
+			this.location.put(path, 1);
+		}
 	}
 
 	@Override

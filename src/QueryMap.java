@@ -60,7 +60,7 @@ public class QueryMap {
 
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
-				if (!queries.contains(queryLine)) {
+				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
 					queries.add(queryLine);
 					if (exact) {
 						searchResults = index.exactSearch(uniqueWords);

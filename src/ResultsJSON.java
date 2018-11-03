@@ -106,6 +106,7 @@ public class ResultsJSON {
 	 * @throws IOException
 	 */
 	public static void asSearchResult(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException {
+		System.out.println(qMap.toString());
 		for (String searchName : qMap.headMap(qMap.lastKey(), false).keySet()) {
 			TreeJSONWriter.indent(level, writer);
 			writer.write("{" + System.lineSeparator());
@@ -190,18 +191,16 @@ public class ResultsJSON {
 	 *
 	 */
 	public static void asResultArray(List<Result> results, Writer writer, int level) throws IOException {
-		int numResults = results.size();
-		if (numResults < 1) {
-			return;
-		}
-		DecimalFormat FORMATTER = new DecimalFormat("0.000000");
+		if (!results.isEmpty()) {
+			DecimalFormat FORMATTER = new DecimalFormat("0.000000");
 
-		for (Result result : results.subList(0, numResults - 1)) {
-			asOneResult(result, writer, FORMATTER, level);
-			writer.write("," + System.lineSeparator());
+			for (Result result : results.subList(0, results.size() - 1)) {
+				asOneResult(result, writer, FORMATTER, level);
+				writer.write("," + System.lineSeparator());
+			}
+			asOneResult(results.get(results.size() - 1), writer, FORMATTER, level);
+			writer.write(System.lineSeparator());
 		}
-		asOneResult(results.get(numResults-1), writer, FORMATTER, level);
-		writer.write(System.lineSeparator());
 	}
 
 	/**
