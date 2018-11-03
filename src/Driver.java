@@ -14,7 +14,7 @@ public class Driver {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
 		LocationMap locMap = new LocationMap();
-		QueryMap queryMap = new QueryMap();
+		QueryMap queryMap = new QueryMap(index);
 
 		/**
 		 *  Traverses and makes inverted index
