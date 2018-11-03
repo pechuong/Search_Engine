@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class InvertedIndex {
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
 	// TODO private final TreeMap<String, Integer> location;
-	
+
 	/**
 	 * Initializes the inverted index
 	 */
@@ -37,10 +37,15 @@ public class InvertedIndex {
 	public void build(String word, String file, int count) {
 		add(word, file, count);
 	}
-	
+
 	// TODO Javadoc
-
-
+	/**
+	 * Performs an exact search on the inverted index set of queries
+	 *
+	 * @param lMap
+	 * @param queryLine
+	 * @return
+	 */
 	public List<Result> exactSearch(LocationMap lMap, Set<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
@@ -61,11 +66,11 @@ public class InvertedIndex {
 		return resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
-		
+
 		/*
 		HashMap<String, Result> lookup = new HashMap<>();
 		ArrayList<Result> results = ...
-		
+
 		for every query word
 			if index contains the query as a key
 				loop through the locations
@@ -75,8 +80,8 @@ public class InvertedIndex {
 						Result result = new Result(...)
 						lookup.put(location, result);
 						results.add(result);
-		
-		
+
+
 		Collections.sort(results);
 		 */
 	}
@@ -103,7 +108,7 @@ public class InvertedIndex {
 	}
 
 	// TODO Javadoc
-	
+
 	public boolean isEmpty() {
 		return this.index.keySet().isEmpty();
 	}
@@ -162,7 +167,7 @@ public class InvertedIndex {
 			addFile(word, location);
 		}
 		addPosition(word, location, position);
-		
+
 		// TODO Update locations (increase the count by 1)
 	}
 
