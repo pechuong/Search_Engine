@@ -106,7 +106,6 @@ public class ResultsJSON {
 	 * @throws IOException
 	 */
 	public static void asSearchResult(TreeMap<String, List<Result>> qMap, Writer writer, int level) throws IOException {
-		System.out.println(qMap.toString());
 		for (String searchName : qMap.headMap(qMap.lastKey(), false).keySet()) {
 			TreeJSONWriter.indent(level, writer);
 			writer.write("{" + System.lineSeparator());
