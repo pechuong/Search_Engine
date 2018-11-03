@@ -61,15 +61,15 @@ public class QueryMap {
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
+				List<Result> searchResults;
 				if (!queries.contains(queryLine)) {
 					queries.add(queryLine);
 					if (exact) {
-						List<Result> searchResults = index.exactSearch(uniqueWords);
-						queryMap.put(queryLine, searchResults);
+						searchResults = index.exactSearch(uniqueWords);
 					} else {
-						// TODO partial search
-						// TODO add the search result and queryLine to queryMap
+						searchResults = index.partialSearch(uniqueWords);
 					}
+					queryMap.put(queryLine, searchResults);
 				}
 			}
 		}
