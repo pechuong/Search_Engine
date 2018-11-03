@@ -9,13 +9,14 @@ import java.util.stream.Collectors;
 
 public class InvertedIndex {
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
-	// TODO private final TreeMap<String, Integer> location;
+	private final TreeMap<String, Integer> location;
 
 	/**
 	 * Initializes the inverted index
 	 */
 	public InvertedIndex() {
 		this.index = new TreeMap<>();
+		this.location = new TreeMap<>();
 	}
 
 	/**
