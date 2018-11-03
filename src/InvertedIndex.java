@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +49,7 @@ public class InvertedIndex {
 	 * @param queryLine
 	 * @return
 	 */
+	/*
 	public List<Result> exactSearch(LocationMap lMap, Set<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
@@ -84,7 +87,30 @@ public class InvertedIndex {
 
 
 		Collections.sort(results);
-		 */
+	 */
+	//}
+
+	public List<Result> exactSearch(Set<String> queryLine) {
+
+		HashMap<String, Result> lookUp = new HashMap<>();
+		ArrayList<Result> results = new ArrayList<>();
+
+		for (String query : queryLine) {
+			if (index.containsKey(query)) {
+				for (String path : index.get(query).keySet()) {
+					if (lookUp.containsKey(path)) {
+						lookUp.get(path).addMatches(index.get(query).get(path).size());
+					} else {
+						Result result = new Result(path, index.get(query).get(path).size(), location.get(path));
+						lookUp.put(path, result);
+						results.add(result);
+					}
+				}
+			}
+		}
+
+		Collections.sort(results);
+		return results;
 	}
 
 	public List<Result> partialSearch(LocationMap lMap, Set<String> queryLine) {
