@@ -45,55 +45,6 @@ public class InvertedIndex {
 		add(word, file, count);
 	}
 
-	// TODO Javadoc
-	/**
-	 * Performs an exact search on the inverted index set of queries
-	 *
-	 * @param lMap
-	 * @param queryLine
-	 * @return
-	 */
-	/*
-	public List<Result> exactSearch(LocationMap lMap, Set<String> queryLine) {
-		HashMap<String, Result> resultMap = new HashMap<>();
-
-		for (String word : this.index.keySet().stream()
-				.filter((word) -> queryLine.contains(word))
-				.collect(Collectors.toSet())) {
-
-			this.index.get(word).keySet().stream()
-			.forEach((fileName)-> {
-				if (resultMap.containsKey(fileName)) {
-					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
-				} else {
-					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
-				}
-			});
-		}
-
-		return resultMap.values().stream()
-				.sorted((result1, result2) -> result1.compareTo(result2))
-				.collect(Collectors.toList());
-
-		/*
-		HashMap<String, Result> lookup = new HashMap<>();
-		ArrayList<Result> results = ...
-
-		for every query word
-			if index contains the query as a key
-				loop through the locations
-					if we already ahve a result
-						update
-					else
-						Result result = new Result(...)
-						lookup.put(location, result);
-						results.add(result);
-
-
-		Collections.sort(results);
-	 */
-	//}
-
 	/**
 	 * Performs an exact search given a set of query words
 	 *
