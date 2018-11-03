@@ -77,28 +77,6 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
-	/*
-	public List<Result> partialSearch(LocationMap lMap, Set<String> queryLine) {
-		HashMap<String, Result> resultMap = new HashMap<>();
-
-		queryLine.stream()
-		.flatMap((word) -> this.index.keySet().stream()
-				.filter(key -> key.startsWith(word)))
-		.forEach((word) -> {
-			for (String fileName : this.index.get(word).keySet()) {
-				if (resultMap.containsKey(fileName)) {
-					resultMap.get(fileName).addMatches(this.index.get(word).get(fileName).size());
-				} else {
-					resultMap.put(fileName, new Result(fileName, this.index.get(word).get(fileName).size(), lMap.getFile(fileName)));
-				}
-			}
-		});
-
-		return resultMap.values().stream()
-				.sorted((result1, result2) -> result1.compareTo(result2))
-				.collect(Collectors.toList());
-	}
-	 */
 
 	/**
 	 * Performs a partial search on index given a set of query words
