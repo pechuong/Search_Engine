@@ -94,8 +94,8 @@ public class QueryMap {
 				if (!queries.contains(queryLine)) {
 					queries.add(queryLine);
 					if (exact) {
-						// TODO exact search
-						// TODO add the search result and queryLine to queryMap
+						List<Result> searchResults = index.exactSearch(uniqueWords);
+						queryMap.put(queryLine, searchResults);
 					} else {
 						// TODO partial search
 						// TODO add the search result and queryLine to queryMap
