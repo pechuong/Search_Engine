@@ -54,9 +54,6 @@ public class InvertedIndexBuilder {
 					index.build(stemmer.stem(word).toString(), filePath, count);
 				}
 			}
-			if (count > 0) {
-				locMap.buildLocation(inputFile, count);
-			}
 		}
 	}
 }
