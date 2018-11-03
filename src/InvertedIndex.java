@@ -26,7 +26,7 @@ public class InvertedIndex {
 	 * @param path The file to write the index to
 	 */
 	public void writeIndex(Path path) throws IOException {
-		TreeJSONWriter.asObject(index, path);
+		TreeJSONWriter.asDoubleNestedObject(index, path);
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class InvertedIndex {
 	 * @throws IOException
 	 */
 	public void writeLocation(Path output) throws IOException {
-		LocationJSON.asObject(location, output);
+		LocationJSON.asLocation(location, output);
 	}
 
 	/**
