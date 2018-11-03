@@ -13,7 +13,6 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index = new InvertedIndex();
-		LocationMap locMap = new LocationMap();
 		QueryMap queryMap = new QueryMap(index);
 
 		/**
@@ -22,7 +21,7 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				InvertedIndexBuilder.traverse(index, locMap, output);
+				InvertedIndexBuilder.traverse(index, output);
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + output);
 			}

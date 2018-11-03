@@ -17,15 +17,15 @@ public class InvertedIndexBuilder {
 	 * @param path The path to traverse and go thru
 	 * @throws IOException
 	 */
-	public static void traverse(InvertedIndex index, LocationMap locMap, Path path) throws IOException {
+	public static void traverse(InvertedIndex index, Path path) throws IOException {
 		if (Files.isDirectory(path)) {
 			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 				for (Path file : listing) {
-					traverse(index, locMap, file);
+					traverse(index, file);
 				}
 			}
 		} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-			stemFile(index, locMap, path);
+			stemFile(index, path);
 		}
 	}
 
@@ -39,7 +39,7 @@ public class InvertedIndexBuilder {
 	 *
 	 * @see TextParser#parse(String)
 	 */
-	public static void stemFile(InvertedIndex index, LocationMap locMap, Path inputFile) throws IOException {
+	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
