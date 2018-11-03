@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class InvertedIndex {
 	private final TreeMap<String, TreeMap<String, TreeSet<Integer>>> index;
@@ -30,6 +29,12 @@ public class InvertedIndex {
 		TreeJSONWriter.asObject(index, path);
 	}
 
+	/**
+	 * Writes the location to a JSON file given the output path
+	 *
+	 * @param output
+	 * @throws IOException
+	 */
 	public void writeLocation(Path output) throws IOException {
 		LocationJSON.asObject(location, output);
 	}
@@ -52,7 +57,6 @@ public class InvertedIndex {
 	 * @return List<Result> list of all the results from the search
 	 */
 	public List<Result> exactSearch(Set<String> queryLine) {
-
 		HashMap<String, Result> lookUp = new HashMap<>();
 		ArrayList<Result> results = new ArrayList<>();
 
@@ -73,7 +77,7 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
-
+	/*
 	public List<Result> partialSearch(LocationMap lMap, Set<String> queryLine) {
 		HashMap<String, Result> resultMap = new HashMap<>();
 
@@ -93,6 +97,29 @@ public class InvertedIndex {
 		return resultMap.values().stream()
 				.sorted((result1, result2) -> result1.compareTo(result2))
 				.collect(Collectors.toList());
+	}
+	 */
+
+	public List<Result> partialSearch(Set<String> queryLine) {
+		HashMap<String, Result> lookUp = new HashMap<>();
+		ArrayList<Result> results = new ArrayList<>();
+
+		for (String query : queryLine) {
+			if (index.containsKey(query)) {
+				for (String path : index.get(query).keySet()) {
+					if (lookUp.containsKey(path)) {
+						lookUp.get(path).addMatches(index.get(query).get(path).size());
+					} else {
+						Result result = new Result(path, index.get(query).get(path).size(), location.get(path));
+						lookUp.put(path, result);
+						results.add(result);
+					}
+				}
+			}
+		}
+
+		Collections.sort(results);
+		return results;
 	}
 
 	/**
