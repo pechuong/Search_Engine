@@ -94,6 +94,12 @@ public class InvertedIndex {
 	 */
 	//}
 
+	/**
+	 * Performs an exact search given a set of query words
+	 *
+	 * @param queryLine set of query words to perform one search on
+	 * @return List<Result> list of all the results from the search
+	 */
 	public List<Result> exactSearch(Set<String> queryLine) {
 
 		HashMap<String, Result> lookUp = new HashMap<>();
