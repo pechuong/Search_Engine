@@ -18,7 +18,6 @@ public class InvertedIndexBuilder {
 	 * @throws IOException
 	 */
 	public static void traverse(InvertedIndex index, Path path) throws IOException {
-		//
 		if (Files.isDirectory(path)) {
 			try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 				for (Path file : listing) {
