@@ -7,11 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.TreeMap;
 
-/*
- * TODO
- * Combine LocationJSON into TreeJSONWriter, rename TreeJSONWriter.asObject(...) asDoubleNestedObject
- */
-
 public class LocationJSON {
 
 	/**
