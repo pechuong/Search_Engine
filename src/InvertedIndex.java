@@ -51,7 +51,7 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * Performs an exact search given a set of query words
+	 * Performs an exact search on index given a set of query words
 	 *
 	 * @param queryLine set of query words to perform one search on
 	 * @return List<Result> list of all the results from the search
@@ -100,6 +100,12 @@ public class InvertedIndex {
 	}
 	 */
 
+	/**
+	 * Performs a partial search on index given a set of query words
+	 *
+	 * @param queryLine The set of query words to search for
+	 * @return List<Result> list of all results from the search
+	 */
 	public List<Result> partialSearch(Set<String> queryLine) {
 		HashMap<String, Result> lookUp = new HashMap<>();
 		ArrayList<Result> results = new ArrayList<>();
