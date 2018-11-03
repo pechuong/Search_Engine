@@ -168,8 +168,7 @@ public class InvertedIndex {
 			addFile(word, location);
 		}
 		addPosition(word, location, position);
-
-		// TODO Update locations (increase the count by 1)
+		updateLocation(location);
 	}
 
 	/**
@@ -204,6 +203,15 @@ public class InvertedIndex {
 	 */
 	private void addPosition(String word, String filePath, int position) {
 		this.index.get(word).get(filePath).add(position);
+	}
+
+	/**
+	 * Updates the word count at the specified location or file
+	 *
+	 * @param location The location to update the int value for
+	 */
+	private void updateLocation(String location) {
+		this.location.put(location, this.location.get(location) + 1);
 	}
 
 	@Override
