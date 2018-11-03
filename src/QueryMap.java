@@ -34,7 +34,7 @@ public class QueryMap {
 	 * @throws IOException
 	 */
 	public void writeJSON(Path path) throws IOException {
-		ResultsJSON.asArray(this.queryMap, path);
+		ResultsJSON.asArray(queryMap, path);
 	}
 
 	/**

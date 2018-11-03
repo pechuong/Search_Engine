@@ -197,38 +197,28 @@ public class ResultsJSON {
 		DecimalFormat FORMATTER = new DecimalFormat("0.000000");
 
 		for (Result result : results.subList(0, numResults - 1)) {
-			TreeJSONWriter.indent(level, writer);
-			writer.write("{" + System.lineSeparator());
-			TreeJSONWriter.indent(level + 1, writer);
-			TreeJSONWriter.quote("where", writer);
-			writer.write(": ");
-			TreeJSONWriter.quote(result.getFileName(), writer);
+			asOneResult(result, writer, FORMATTER, level);
 			writer.write("," + System.lineSeparator());
-			TreeJSONWriter.indent(level + 1, writer);
-			TreeJSONWriter.quote("count", writer);
-			writer.write(": " + result.getMatches() + "," + System.lineSeparator());
-			TreeJSONWriter.indent(level + 1, writer);
-			TreeJSONWriter.quote("score", writer);
-			writer.write(": " + FORMATTER.format(result.getScore()) + System.lineSeparator());
-			TreeJSONWriter.indent(level, writer);
-			writer.write("}," + System.lineSeparator());
 		}
+		asOneResult(results.get(numResults-1), writer, FORMATTER, level);
+		writer.write(System.lineSeparator());
+	}
+
+	public static void asOneResult(Result result, Writer writer, DecimalFormat FORMATTER, int level) throws IOException {
 		TreeJSONWriter.indent(level, writer);
 		writer.write("{" + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("where", writer);
 		writer.write(": ");
-		TreeJSONWriter.quote(results.get(numResults-1).getFileName(), writer);
+		TreeJSONWriter.quote(result.getFileName(), writer);
 		writer.write("," + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("count", writer);
-		writer.write(": " + results.get(numResults-1).getMatches() + "," + System.lineSeparator());
+		writer.write(": " + result.getMatches() + "," + System.lineSeparator());
 		TreeJSONWriter.indent(level + 1, writer);
 		TreeJSONWriter.quote("score", writer);
-		writer.write(": " + FORMATTER.format(results.get(numResults-1).getScore()) + System.lineSeparator());
+		writer.write(": " + FORMATTER.format(result.getScore()) + System.lineSeparator());
 		TreeJSONWriter.indent(level, writer);
-		writer.write("}" + System.lineSeparator());
+		writer.write("}");
 	}
-	
-	// TODO Try to create a helper that outputs a single Result object with a specified indentation level
 }
