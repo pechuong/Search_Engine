@@ -12,10 +12,6 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class QueryMap {
 
-	/**
-	 * Key - the queries that we use to search
-	 * Value - the list of results we get back from the search
-	 */
 	private final TreeMap<String, List<Result>> queryMap;
 	private final InvertedIndex index;
 
@@ -53,9 +49,11 @@ public class QueryMap {
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			HashSet<String> queries = new HashSet<>();
+			TreeSet<String> uniqueWords = new TreeSet<>();
+
 			while ((line = reader.readLine()) != null) {
 
-				TreeSet<String> uniqueWords = new TreeSet<>();
+				uniqueWords.clear();
 				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
 					uniqueWords.add(word.toLowerCase());
 				}
