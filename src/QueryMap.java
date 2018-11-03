@@ -37,47 +37,17 @@ public class QueryMap {
 		ResultsJSON.asArray(this.queryMap, path);
 	}
 
-	/*
-	 * TODO
-	 * When you stem each query line....
+	/**
+	 * Stems the query file, performs a search in the index, and then
+	 * stores the results of the search
 	 *
-	 * at some point you have:
-	 *
-	 * TreeSet<String> uniqueWords = ....
-	 * String queryLine = String.join(" ");
-	 *
-	 * only do this stuff if the queryLine is new
-	 * List<Result> results = index.partialSearch(uniqueWords);
-	 * addQuery(queryLine, results)
+	 * @param queryFile The file with all the queries to perform a search on
+	 * @param exact Determines if an exact search should be performed or not
+	 * @throws IOException If something goes wrong when trying to read query file
 	 */
-	/*
-	public List<Set<String>> stemQuery(Path inputFile) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
-				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-				) {
-
-			String line;
-			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			List<Set<String>> queries = new ArrayList<>();
-			while ((line = reader.readLine()) != null) {
-
-				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
-					uniqueWords.add(word.toLowerCase());
-				}
-				queries.add(uniqueWords);
-
-			}
-			return queries.stream()
-					.filter((list) -> list.size() > 0)
-					.collect(Collectors.toList());
-		}
-	}
-	 */
-
-	public void stemQuery(Path inputFile, boolean exact) throws IOException {
-		try (
-				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
+				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
 
 			String line;
