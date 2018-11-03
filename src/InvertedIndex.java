@@ -26,8 +26,12 @@ public class InvertedIndex {
 	 *
 	 * @param path The file to write the index to
 	 */
-	public void writeJSON(Path path) throws IOException {
+	public void writeIndex(Path path) throws IOException {
 		TreeJSONWriter.asObject(index, path);
+	}
+
+	public void writeLocation(Path output) throws IOException {
+		LocationJSON.asObject(location, output);
 	}
 
 	/**

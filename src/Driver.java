@@ -34,7 +34,7 @@ public class Driver {
 		if (argMap.hasFlag("-index")) {
 			Path output = argMap.getPath("-index", Paths.get("index.json"));
 			try {
-				index.writeJSON(output);
+				index.writeIndex(output);
 			} catch (IOException e) {
 				System.out.println("Error writing to: " + output);
 			}
@@ -99,7 +99,7 @@ public class Driver {
 		if (argMap.hasFlag("-locations")) {
 			Path output = argMap.getPath("-locations", Paths.get("locations.json"));
 			try {
-				locMap.writeJSON(output);
+				index.writeLocation(output);
 			} catch (IOException e) {
 				System.out.println("Something went wrong writing location to: " + output);
 			}
