@@ -11,11 +11,11 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class ThreadSafeQueryMap extends QueryMap {
 
-	public ThreadSafeQueryMap(ThreadSafeInvertedIndex index) {
+	public ThreadSafeQueryMap(InvertedIndex index) {
 		super(index);
 	}
 
-	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
+	public static void stemQuery(QueryMap queryMap, Path queryFile, boolean exact, int threads) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
@@ -37,11 +37,11 @@ public class ThreadSafeQueryMap extends QueryMap {
 				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
 					queries.add(queryLine);
 					if (exact) {
-						searchResults = getIndex().exactSearch(uniqueWords, threads);
+						searchResults = ((ThreadSafeInvertedIndex)queryMap.getInvertedIndex()).exactSearch(uniqueWords, threads);
 					} else {
-						searchResults = getIndex().partialSearch(uniqueWords, threads);
+						searchResults = ((ThreadSafeInvertedIndex)queryMap.getInvertedIndex()).partialSearch(uniqueWords, threads);
 					}
-					addQuery(queryLine, searchResults);
+					queryMap.addQuery(queryLine, searchResults);
 				}
 			}
 		}
@@ -58,8 +58,8 @@ public class ThreadSafeQueryMap extends QueryMap {
 	}
 
 	@Override
-	public synchronized ThreadSafeInvertedIndex getIndex() {
-		return getIndex();
+	public synchronized InvertedIndex getInvertedIndex() {
+		return super.getInvertedIndex();
 	}
 
 	@Override

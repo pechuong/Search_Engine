@@ -27,12 +27,18 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 		@Override
 		public void run() {
-			if (lookUp.containsKey(path)) {
-				lookUp.get(path).addMatches(index.getWordCount(word, path));
-			} else {
-				Result result = new Result(path, index.getWordCount(word, path), index.getLocationCount(path));
-				lookUp.put(path, result);
-				results.add(result);
+			synchronized (lookUp) {
+				if (lookUp.containsKey(path)) {
+					try {
+						lookUp.get(path).addMatches(index.getWordCount(word, path));
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+				} else {
+					Result result = new Result(path, index.getWordCount(word, path), index.getLocationCount(path));
+					lookUp.put(path, result);
+					results.add(result);
+				}
 			}
 		}
 
@@ -43,7 +49,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public void build(String word, String file, int count) {
+	public synchronized void build(String word, String file, int count) {
 		add(word, file, count);
 	}
 
@@ -54,7 +60,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 		for (String query : queryLine) {
 			if (hasWord(query)) {
-				for (String path : getFile(query).keySet()) {
+				for (String path : getFiles(query).keySet()) {
 					queue.execute(new ResultWork(this, lookUp, results, query, path));
 				}
 			}
@@ -74,12 +80,14 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		for (String query : queryLine) {
 			for (String word : getIndex().keySet()) {
 				if (word.startsWith(query) || word.equalsIgnoreCase(query)) {
-					for (String path : getFile(word).keySet()) {
-						queue.execute(new ResultWork(this, lookUp, results, query, path));
+					for (String path : getFiles(word).keySet()) {
+						queue.execute(new ResultWork(this, lookUp, results, word, path));
 					}
 				}
 			}
 		}
+		queue.finish();
+		queue.shutdown();
 
 		Collections.sort(results);
 		return results;
