@@ -223,6 +223,6 @@ public class InvertedIndex {
 
 	@Override
 	public String toString() {
-		return this.index.toString();
+		return this.index.toString() + this.location.toString();
 	}
 }

@@ -12,8 +12,21 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
-		InvertedIndex index = new InvertedIndex();
-		QueryMap queryMap = new QueryMap(index);
+		//InvertedIndex index = new InvertedIndex();
+		//QueryMap queryMap = new QueryMap(index);
+		InvertedIndex index;
+		QueryMap queryMap;
+		int numThreads = 1;
+		boolean multiThread = argMap.hasFlag("-threads");
+
+		if (multiThread) {
+			numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
+			index = new ThreadSafeInvertedIndex();
+			queryMap = new ThreadSafeQueryMap(index);
+		} else {
+			index = new InvertedIndex();
+			queryMap = new QueryMap(index);
+		}
 
 		/**
 		 *  Traverses and makes inverted index
@@ -21,7 +34,11 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				InvertedIndexBuilder.traverse(index, output);
+				if (multiThread) {
+					ThreadSafeInvertedIndexBuilder.traverse(index, output, numThreads);
+				} else {
+					InvertedIndexBuilder.traverse(index, output);
+				}
 			} catch (IOException e) {
 				System.out.println("Unable to build from: " + output);
 			}
