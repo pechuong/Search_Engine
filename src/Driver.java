@@ -15,7 +15,7 @@ public class Driver {
 		InvertedIndex index = new InvertedIndex();
 		QueryMap queryMap = new QueryMap(index);
 
-		/***
+		/**
 		 *  Traverses and makes inverted index
 		 */
 		if (argMap.hasValue("-path")) {
