@@ -26,7 +26,7 @@ public class Result implements Comparable<Result> {
 	 *
 	 * @param count The amount of matches found
 	 */
-	public void addMatches(int count) {
+	public synchronized void addMatches(int count) {
 		if (count > 0) {
 			this.matches += count;
 			calculateScore();
@@ -36,7 +36,7 @@ public class Result implements Comparable<Result> {
 	/**
 	 * Recalculates the score because matches changed
 	 */
-	public void calculateScore() {
+	public synchronized void calculateScore() {
 		this.score = (double)this.matches / this.wordCount;
 	}
 
