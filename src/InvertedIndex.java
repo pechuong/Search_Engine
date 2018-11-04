@@ -221,6 +221,24 @@ public class InvertedIndex {
 		}
 	}
 
+	/**
+	 * Gets the number of words in the file path or location
+	 *
+	 * @param location The location to get the num of words for
+	 * @return word count in the location
+	 */
+	public int getLocationCount(String location) {
+		return this.location.get(location);
+	}
+
+	public TreeMap<String, TreeSet<Integer>> getFile(String word) {
+		return this.index.get(word);
+	}
+
+	public int getWordCount(String word, String filePath) {
+		return this.index.get(word).get(filePath).size();
+	}
+
 	@Override
 	public String toString() {
 		return this.index.toString() + this.location.toString();

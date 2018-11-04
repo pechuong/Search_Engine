@@ -22,11 +22,10 @@ public class Driver {
 		if (multiThread) {
 			numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 			index = new ThreadSafeInvertedIndex();
-			queryMap = new ThreadSafeQueryMap(index);
 		} else {
 			index = new InvertedIndex();
-			queryMap = new QueryMap(index);
 		}
+		queryMap = new QueryMap(index);
 
 		/**
 		 *  Traverses and makes inverted index

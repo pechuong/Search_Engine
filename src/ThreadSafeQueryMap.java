@@ -9,7 +9,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 	}
 
 	@Override
-	public synchronized void stemQuery(Path queryFile, boolean exact) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		super.stemQuery(queryFile, exact);
 	}
 
