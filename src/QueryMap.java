@@ -67,7 +67,7 @@ public class QueryMap {
 					} else {
 						searchResults = index.partialSearch(uniqueWords);
 					}
-					queryMap.put(queryLine, searchResults);
+					addQuery(queryLine, searchResults);
 				}
 			}
 		}
@@ -94,6 +94,15 @@ public class QueryMap {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Gets the Inverted Index
+	 *
+	 * @return The inverted Index
+	 */
+	public InvertedIndex getIndex() {
+		return this.index;
 	}
 
 	@Override

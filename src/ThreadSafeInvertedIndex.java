@@ -3,6 +3,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class ThreadSafeInvertedIndex extends InvertedIndex {
 
@@ -45,16 +47,36 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		add(word, file, count);
 	}
 
-	@Override
-	public List<Result> exactSearch(Set<String> queryLine) {
+	public List<Result> exactSearch(Set<String> queryLine, int threads) {
 		HashMap<String, Result> lookUp = new HashMap<>();
 		ArrayList<Result> results = new ArrayList<>();
-		WorkQueue queue = new WorkQueue();
+		WorkQueue queue = new WorkQueue(threads);
 
 		for (String query : queryLine) {
 			if (hasWord(query)) {
 				for (String path : getFile(query).keySet()) {
 					queue.execute(new ResultWork(this, lookUp, results, query, path));
+				}
+			}
+		}
+		queue.finish();
+		queue.shutdown();
+
+		Collections.sort(results);
+		return results;
+	}
+
+	public List<Result> partialSearch(Set<String> queryLine, int threads) {
+		HashMap<String, Result> lookUp = new HashMap<>();
+		ArrayList<Result> results = new ArrayList<>();
+		WorkQueue queue = new WorkQueue(threads);
+
+		for (String query : queryLine) {
+			for (String word : getIndex().keySet()) {
+				if (word.startsWith(query) || word.equalsIgnoreCase(query)) {
+					for (String path : getFile(word).keySet()) {
+						queue.execute(new ResultWork(this, lookUp, results, query, path));
+					}
 				}
 			}
 		}
@@ -96,6 +118,21 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	@Override
 	public synchronized int getWordCount(String word, String filePath) {
 		return super.getWordCount(word, filePath);
+	}
+
+	@Override
+	public synchronized InvertedIndex getInvertedIndex() {
+		return super.getInvertedIndex();
+	}
+
+	@Override
+	public synchronized TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
+		return super.getIndex();
+	}
+
+	@Override
+	public synchronized TreeMap<String, Integer> getLocation() {
+		return super.getLocation();
 	}
 
 	@Override

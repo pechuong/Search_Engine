@@ -239,6 +239,18 @@ public class InvertedIndex {
 		return this.index.get(word).get(filePath).size();
 	}
 
+	public InvertedIndex getInvertedIndex() {
+		return this;
+	}
+
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
+		return this.index;
+	}
+
+	public TreeMap<String, Integer> getLocation() {
+		return this.location;
+	}
+
 	@Override
 	public String toString() {
 		return this.index.toString() + this.location.toString();

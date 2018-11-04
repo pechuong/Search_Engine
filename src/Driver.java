@@ -63,7 +63,11 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				try {
 					boolean exact = argMap.hasFlag("-exact");
-					queryMap.stemQuery(searchFile, exact);
+					if (multiThread) {
+						queryMap.stemQuery(searchFile, exact);
+					} else {
+						queryMap.stemQuery(searchFile, exact);
+					}
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
 				}
