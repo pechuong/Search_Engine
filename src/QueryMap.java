@@ -54,8 +54,8 @@ public class QueryMap {
 			while ((line = reader.readLine()) != null) {
 
 				uniqueWords.clear();
-				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
-					uniqueWords.add(word.toLowerCase());
+				for (String word : TextParser.parse(line)) {
+					uniqueWords.add(stemmer.stem(word).toString().toLowerCase());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
