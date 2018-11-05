@@ -18,7 +18,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 		lock = new ReadWriteLock();
 	}
 
-	public static void stemQuery(QueryMap queryMap, Path queryFile, boolean exact, int threads) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
@@ -40,11 +40,11 @@ public class ThreadSafeQueryMap extends QueryMap {
 				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
 					queries.add(queryLine);
 					if (exact) {
-						searchResults = ((ThreadSafeInvertedIndex)queryMap.getInvertedIndex()).exactSearch(uniqueWords, threads);
+						searchResults = getInvertedIndex().exactSearch(uniqueWords);
 					} else {
-						searchResults = ((ThreadSafeInvertedIndex)queryMap.getInvertedIndex()).partialSearch(uniqueWords, threads);
+						searchResults = getInvertedIndex().partialSearch(uniqueWords);
 					}
-					queryMap.addQuery(queryLine, searchResults);
+					addQuery(queryLine, searchResults);
 				}
 			}
 		}

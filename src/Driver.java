@@ -12,12 +12,10 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
-		//InvertedIndex index = new InvertedIndex();
-		//QueryMap queryMap = new QueryMap(index);
 		InvertedIndex index;
 		QueryMap queryMap;
-		int numThreads = 1;
 		boolean multiThread = argMap.hasFlag("-threads");
+		int numThreads = 1;
 
 		if (multiThread) {
 			numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
@@ -65,9 +63,9 @@ public class Driver {
 				try {
 					boolean exact = argMap.hasFlag("-exact");
 					if (multiThread) {
-						ThreadSafeQueryMap.stemQuery(queryMap, searchFile, exact, numThreads);
+						queryMap.stemQuery(searchFile, exact, numThreads);
 					} else {
-						QueryMap.stemQuery(queryMap, searchFile, exact);
+						queryMap.stemQuery(searchFile, exact);
 					}
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
