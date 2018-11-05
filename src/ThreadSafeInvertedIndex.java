@@ -8,6 +8,13 @@ import java.util.TreeSet;
 
 public class ThreadSafeInvertedIndex extends InvertedIndex {
 
+	private ReadWriteLock lock;
+
+	public ThreadSafeInvertedIndex() {
+		super();
+		lock = new ReadWriteLock();
+	}
+
 	// TODO add thread work for exact and partial search
 	public static class ResultWork implements Runnable {
 
@@ -44,12 +51,8 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	}
 
-	public ThreadSafeInvertedIndex() {
-		super();
-	}
-
 	@Override
-	public synchronized void build(String word, String file, int count) {
+	public void build(String word, String file, int count) {
 		add(word, file, count);
 	}
 
@@ -104,8 +107,13 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized boolean hasFile(String word, String path) {
-		return super.hasFile(word, path);
+	public boolean hasFile(String word, String path) {
+		lock.lockReadOnly();
+		try {
+			return super.hasFile(word, path);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -114,8 +122,10 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized void add(String word, String location, int position) {
+	public void add(String word, String location, int position) {
+		lock.lockReadWrite();
 		super.add(word, location, position);
+		lock.unlockReadWrite();
 	}
 
 	@Override
