@@ -90,10 +90,7 @@ public class QueryMap {
 	 * @return true if the Query Map has at least 1 entry.
 	 */
 	public boolean isEmpty() {
-		if (this.queryMap.size() < 1) {
-			return true;
-		}
-		return false;
+		return (this.queryMap.size() < 1) ? true : false;
 	}
 
 	@Override
