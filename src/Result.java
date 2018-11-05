@@ -100,8 +100,8 @@ public class Result implements Comparable<Result> {
 	@Override
 	public String toString() {
 		StringBuffer myString = new StringBuffer();
-		return myString.append("Where: " + this.where.toString() + System.lineSeparator() +
-				"Matches: " + Double.toString(this.matches) + System.lineSeparator() +
+		return myString.append("Where: " + this.where + System.lineSeparator() +
+				"Matches: " + this.matches + System.lineSeparator() +
 				"Score: " + Double.toString(this.score)).toString();
 	}
 
