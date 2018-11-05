@@ -133,8 +133,23 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized int getLocationCount(String location) {
-		return super.getLocationCount(location);
+	public int getLocationCount(String location) {
+		lock.lockReadOnly();
+		try {
+			return super.getLocationCount(location);
+		} finally {
+			lock.unlockReadOnly();
+		}
+	}
+
+	@Override
+	public void updateLocation(String path) {
+		lock.lockReadWrite();
+		try {
+			super.updateLocation(path);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	@Override
@@ -153,8 +168,13 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized TreeMap<String, Integer> getLocation() {
-		return super.getLocation();
+	public TreeMap<String, Integer> getLocation() {
+		lock.lockReadOnly();
+		try {
+			return super.getLocation();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override

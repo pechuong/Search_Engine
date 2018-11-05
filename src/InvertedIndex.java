@@ -213,7 +213,7 @@ public class InvertedIndex {
 	 *
 	 * @param path The location to update the int value for
 	 */
-	private void updateLocation(String path) {
+	public void updateLocation(String path) {
 		if (this.location.containsKey(path)) {
 			this.location.put(path, this.location.get(path) + 1);
 		} else {
