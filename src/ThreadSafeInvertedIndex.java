@@ -102,8 +102,14 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized boolean hasWord(String word) {
-		return super.hasWord(word);
+	public boolean hasWord(String word) {
+		lock.lockReadOnly();
+		try {
+			return super.hasWord(word);
+		} finally {
+			lock.unlockReadOnly();
+		}
+
 	}
 
 	@Override
@@ -123,9 +129,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public void add(String word, String location, int position) {
-		lock.lockReadWrite();
 		super.add(word, location, position);
-		lock.unlockReadWrite();
 	}
 
 	@Override
