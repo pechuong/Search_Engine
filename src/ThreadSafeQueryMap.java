@@ -11,8 +11,11 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class ThreadSafeQueryMap extends QueryMap {
 
+	private ReadWriteLock lock;
+
 	public ThreadSafeQueryMap(InvertedIndex index) {
 		super(index);
+		lock = new ReadWriteLock();
 	}
 
 	public static void stemQuery(QueryMap queryMap, Path queryFile, boolean exact, int threads) throws IOException {
@@ -48,22 +51,39 @@ public class ThreadSafeQueryMap extends QueryMap {
 	}
 
 	@Override
-	public synchronized void addQuery(String search, List<Result> results) {
+	public void addQuery(String search, List<Result> results) {
+		lock.lockReadWrite();
 		super.addQuery(search, results);
+		lock.unlockReadWrite();
 	}
 
 	@Override
-	public synchronized boolean isEmpty() {
-		return super.isEmpty();
+	public boolean isEmpty() {
+		lock.lockReadOnly();
+		try {
+			return super.isEmpty();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
-	public synchronized InvertedIndex getInvertedIndex() {
-		return super.getInvertedIndex();
+	public InvertedIndex getInvertedIndex() {
+		lock.lockReadOnly();
+		try {
+			return super.getInvertedIndex();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
 	public String toString() {
-		return super.toString();
+		lock.lockReadOnly();
+		try {
+			return super.toString();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 }

@@ -97,8 +97,13 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized boolean isEmpty() {
-		return super.isEmpty();
+	public boolean isEmpty() {
+		lock.lockReadOnly();
+		try {
+			return super.isEmpty();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -124,22 +129,17 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public synchronized boolean hasPosition(String word, String path, int position) {
-		return super.hasPosition(word, path, position);
+		lock.lockReadOnly();
+		try {
+			return super.hasPosition(word, path, position);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
 	public void add(String word, String location, int position) {
 		super.add(word, location, position);
-	}
-
-	@Override
-	public int getLocationCount(String location) {
-		lock.lockReadOnly();
-		try {
-			return super.getLocationCount(location);
-		} finally {
-			lock.unlockReadOnly();
-		}
 	}
 
 	@Override
@@ -153,13 +153,13 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized int getWordCount(String word, String filePath) {
-		return super.getWordCount(word, filePath);
-	}
-
-	@Override
-	public synchronized InvertedIndex getInvertedIndex() {
-		return super.getInvertedIndex();
+	public InvertedIndex getInvertedIndex() {
+		lock.lockReadOnly();
+		try {
+			return super.getInvertedIndex();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -168,10 +168,40 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
+	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
+		lock.lockReadOnly();
+		try {
+			return super.getFiles(word);
+		} finally {
+			lock.unlockReadOnly();
+		}
+	}
+
+	@Override
+	public int getWordCount(String word, String filePath) {
+		lock.lockReadOnly();
+		try {
+			return super.getWordCount(word, filePath);
+		} finally {
+			lock.unlockReadOnly();
+		}
+	}
+
+	@Override
 	public TreeMap<String, Integer> getLocation() {
 		lock.lockReadOnly();
 		try {
 			return super.getLocation();
+		} finally {
+			lock.unlockReadOnly();
+		}
+	}
+
+	@Override
+	public int getLocationCount(String location) {
+		lock.lockReadOnly();
+		try {
+			return super.getLocationCount(location);
 		} finally {
 			lock.unlockReadOnly();
 		}
