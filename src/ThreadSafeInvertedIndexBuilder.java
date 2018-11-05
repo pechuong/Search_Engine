@@ -1,7 +1,11 @@
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import opennlp.tools.stemmer.Stemmer;
+import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 //import org.apache.logging.log4j.LogManager;
 //import org.apache.logging.log4j.Logger;
@@ -33,7 +37,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 						}
 					}
 				} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-					ThreadSafeInvertedIndexBuilder.stemFile(index, path);
+					ThreadSafeInvertedIndexBuilder.stemFile(index, queue, path);
 				}
 			} catch (IOException e) {
 				//log.debug("Something went wrong with path: " + this.path);
@@ -42,6 +46,30 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
+	/*
+	public static class IndexWork implements Runnable {
+
+		private InvertedIndex index;
+		private Stemmer stemmer;
+		private String word;
+		private String filePath;
+		private int count;
+
+		public IndexWork(InvertedIndex index, Stemmer stemmer, String word, String filePath, int count) {
+			this.index = index;
+			this.stemmer = stemmer;
+			this.word = word;
+			this.filePath = filePath;
+			this.count = count;
+		}
+
+		@Override
+		public void run() {
+			index.build(stemmer.stem(word).toString(), filePath, count);
+		}
+
+	} */
+
 	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
 		queue.execute(new DirectoryWork(index, queue, path));
@@ -49,8 +77,25 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
-	public synchronized static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
+	public synchronized static void stemFile(InvertedIndex index, WorkQueue queue, Path inputFile) throws IOException {
 		InvertedIndexBuilder.stemFile(index, inputFile);
+		try (
+				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
+				) {
+			String line;
+			int count = 0;
+			String filePath = inputFile.toString();
+			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+
+			while ((line = reader.readLine()) != null) {
+				for (String word : TextParser.parse(line)) {
+					count++;
+					//queue.execute(new IndexWork(index, stemmer, word, filePath, count));
+					index.build(stemmer.stem(word).toString(), filePath, count);
+
+				}
+			}
+		}
 	}
 
 }
