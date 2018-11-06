@@ -92,7 +92,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public void add(String word, String location, int position) {
+	public synchronized void add(String word, String location, int position) {
 		super.add(word, location, position);
 	}
 
