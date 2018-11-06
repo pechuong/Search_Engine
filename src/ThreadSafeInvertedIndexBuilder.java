@@ -31,6 +31,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		public void run() {
 			try {
 				if (Files.isDirectory(path)) {
+					System.out.println("I got here in: " + path.toString());
 					try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 						for (Path file : listing) {
 							queue.execute(new DirectoryWork(index, queue, file));;
