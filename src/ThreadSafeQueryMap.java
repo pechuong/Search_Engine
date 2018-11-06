@@ -18,6 +18,44 @@ public class ThreadSafeQueryMap extends QueryMap {
 		lock = new ReadWriteLock();
 	}
 
+	public static class SearchWork implements Runnable {
+
+		private final QueryMap queryMap;
+		private HashSet<String> queries;
+		private TreeSet<String> uniqueWords;
+		private final String queryLine;
+		private final boolean exact;
+
+		public SearchWork(QueryMap queryMap, HashSet<String> queries, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
+			this.queryMap = queryMap;
+			this.queries = queries;
+			this.uniqueWords = uniqueWords;
+			this.queryLine = queryLine;
+			this.exact = exact;
+		}
+
+		@Override
+		public void run() {
+			try {
+				synchronized (uniqueWords) {
+					List<Result> searchResults;
+					if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
+						queries.add(queryLine);
+						if (exact) {
+							searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
+						} else {
+							searchResults = queryMap.getInvertedIndex().partialSearch(uniqueWords);
+						}
+						queryMap.addQuery(queryLine, searchResults);
+					}
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		}
+
+	}
+
 	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
@@ -26,27 +64,21 @@ public class ThreadSafeQueryMap extends QueryMap {
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			HashSet<String> queries = new HashSet<>();
-			TreeSet<String> uniqueWords = new TreeSet<>();
+			//TreeSet<String> uniqueWords = new TreeSet<>();
+			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
 
-				uniqueWords.clear();
+				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
 					uniqueWords.add(word.toLowerCase());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
-				List<Result> searchResults;
-				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-					queries.add(queryLine);
-					if (exact) {
-						searchResults = getInvertedIndex().exactSearch(uniqueWords);
-					} else {
-						searchResults = getInvertedIndex().partialSearch(uniqueWords);
-					}
-					addQuery(queryLine, searchResults);
-				}
+				queue.execute(new SearchWork(this, queries, uniqueWords, queryLine, exact));
 			}
+			queue.finish();
+			queue.shutdown();
 		}
 	}
 

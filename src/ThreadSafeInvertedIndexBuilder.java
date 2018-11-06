@@ -40,7 +40,9 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 					ThreadSafeInvertedIndexBuilder.stemFile(index, queue, path);
 				}
 			} catch (IOException e) {
-				//log.debug("Something went wrong with path: " + this.path);
+				System.out.println("Something went wrong with reading");
+			} catch (Exception e) {
+				System.out.println(e + " In index builder");
 			}
 		}
 
@@ -77,8 +79,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
-	public synchronized static void stemFile(InvertedIndex index, WorkQueue queue, Path inputFile) throws IOException {
-		InvertedIndexBuilder.stemFile(index, inputFile);
+	public static void stemFile(InvertedIndex index, WorkQueue queue, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
@@ -90,9 +91,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					count++;
-					//queue.execute(new IndexWork(index, stemmer, word, filePath, count));
 					index.build(stemmer.stem(word).toString(), filePath, count);
-
 				}
 			}
 		}

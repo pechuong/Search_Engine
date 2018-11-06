@@ -41,7 +41,7 @@ public class QueryMap {
 	 * @param exact Determines if an exact search should be performed or not
 	 * @throws IOException If something goes wrong when trying to read query file
 	 */
-	public static void stemQuery(QueryMap queryMap, Path queryFile, boolean exact) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
@@ -63,11 +63,11 @@ public class QueryMap {
 				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
 					queries.add(queryLine);
 					if (exact) {
-						searchResults = queryMap.index.exactSearch(uniqueWords);
+						searchResults = index.exactSearch(uniqueWords);
 					} else {
-						searchResults = queryMap.index.partialSearch(uniqueWords);
+						searchResults = index.partialSearch(uniqueWords);
 					}
-					queryMap.addQuery(queryLine, searchResults);
+					addQuery(queryLine, searchResults);
 				}
 			}
 		}

@@ -63,7 +63,7 @@ public class Driver {
 				try {
 					boolean exact = argMap.hasFlag("-exact");
 					if (multiThread) {
-						queryMap.stemQuery(searchFile, exact, numThreads);
+						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact, numThreads);
 					} else {
 						queryMap.stemQuery(searchFile, exact);
 					}
