@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -22,27 +19,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public List<Result> exactSearch(Set<String> queryLine) {
-		HashMap<String, Result> lookUp = new HashMap<>();
-		ArrayList<Result> results = new ArrayList<>();
-
-		for (String query : queryLine) {
-			if (hasWord(query)) {
-				for (String path : getFiles(query).keySet()) {
-					synchronized (results) {
-						if (lookUp.containsKey(path)) {
-							lookUp.get(path).addMatches(getWordCount(query, path));
-						} else {
-							Result result = new Result(path, getWordCount(query, path), getLocationCount(path));
-							lookUp.put(path, result);
-							results.add(result);
-						}
-					}
-				}
-			}
-		}
-
-		Collections.sort(results);
-		return results;
+		return super.exactSearch(queryLine);
 	}
 
 	@Override

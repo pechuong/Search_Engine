@@ -7,12 +7,7 @@ import java.nio.file.Path;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
-
 public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
-
-	//public static final Logger log = LogManager.getLogger(InvertedIndexBuilder.class);
 
 	public static class DirectoryWork implements Runnable {
 
@@ -31,7 +26,6 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		public void run() {
 			try {
 				if (Files.isDirectory(path)) {
-					System.out.println("I got here in: " + path.toString());
 					try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 						for (Path file : listing) {
 							queue.execute(new DirectoryWork(index, queue, file));;
@@ -42,36 +36,10 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 				}
 			} catch (IOException e) {
 				System.out.println("Something went wrong with reading");
-			} catch (Exception e) {
-				System.out.println(e + " In index builder");
 			}
 		}
 
 	}
-
-	/*
-	public static class IndexWork implements Runnable {
-
-		private InvertedIndex index;
-		private Stemmer stemmer;
-		private String word;
-		private String filePath;
-		private int count;
-
-		public IndexWork(InvertedIndex index, Stemmer stemmer, String word, String filePath, int count) {
-			this.index = index;
-			this.stemmer = stemmer;
-			this.word = word;
-			this.filePath = filePath;
-			this.count = count;
-		}
-
-		@Override
-		public void run() {
-			index.build(stemmer.stem(word).toString(), filePath, count);
-		}
-
-	} */
 
 	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);

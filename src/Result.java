@@ -29,9 +29,6 @@ public class Result implements Comparable<Result> {
 		if (count > 0) {
 			this.matches += count;
 			calculateScore();
-			//System.out.println(this.toString());
-			//System.out.println(this.wordCount);
-			//System.out.println();
 		}
 	}
 

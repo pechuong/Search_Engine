@@ -36,21 +36,17 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 		@Override
 		public void run() {
-			try {
-				synchronized (uniqueWords) {
-					List<Result> searchResults;
-					if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-						queries.add(queryLine);
-						if (exact) {
-							searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
-						} else {
-							searchResults = queryMap.getInvertedIndex().partialSearch(uniqueWords);
-						}
-						queryMap.addQuery(queryLine, searchResults);
+			synchronized (uniqueWords) {
+				List<Result> searchResults;
+				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
+					queries.add(queryLine);
+					if (exact) {
+						searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
+					} else {
+						searchResults = queryMap.getInvertedIndex().partialSearch(uniqueWords);
 					}
+					queryMap.addQuery(queryLine, searchResults);
 				}
-			} catch (Exception e) {
-				System.out.println(e);
 			}
 		}
 
@@ -64,7 +60,6 @@ public class ThreadSafeQueryMap extends QueryMap {
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			HashSet<String> queries = new HashSet<>();
-			//TreeSet<String> uniqueWords = new TreeSet<>();
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
