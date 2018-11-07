@@ -5,8 +5,11 @@ import java.util.TreeSet;
 
 public class ThreadSafeInvertedIndex extends InvertedIndex {
 
-	private ReadWriteLock lock;
+	private final ReadWriteLock lock;
 
+	/**
+	 * Initializes Thread Safe version of Inverted Index with a lock
+	 */
 	public ThreadSafeInvertedIndex() {
 		super();
 		lock = new ReadWriteLock();
@@ -59,7 +62,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized boolean hasPosition(String word, String path, int position) {
+	public boolean hasPosition(String word, String path, int position) {
 		lock.lockReadOnly();
 		try {
 			return super.hasPosition(word, path, position);
@@ -94,8 +97,13 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
-		return super.getIndex();
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
+		lock.lockReadOnly();
+		try {
+			return super.getIndex();
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override

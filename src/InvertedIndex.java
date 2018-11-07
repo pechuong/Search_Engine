@@ -64,9 +64,9 @@ public class InvertedIndex {
 			if (index.containsKey(query)) {
 				for (String path : index.get(query).keySet()) {
 					if (lookUp.containsKey(path)) {
-						lookUp.get(path).addMatches(index.get(query).get(path).size());
+						lookUp.get(path).addMatches(getWordCount(query, path));
 					} else {
-						Result result = new Result(path, index.get(query).get(path).size(), location.get(path));
+						Result result = new Result(path, getWordCount(query, path), location.get(path));
 						lookUp.put(path, result);
 						results.add(result);
 					}

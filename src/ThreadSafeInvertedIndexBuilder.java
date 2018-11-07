@@ -11,9 +11,9 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	public static class DirectoryWork implements Runnable {
 
-		private InvertedIndex index;
-		private Path path;
-		private WorkQueue queue;
+		private final InvertedIndex index;
+		private final Path path;
+		private final WorkQueue queue;
 
 
 		public DirectoryWork(InvertedIndex index, WorkQueue queue, Path path) {

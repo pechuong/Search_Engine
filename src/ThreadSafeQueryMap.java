@@ -52,6 +52,14 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 	}
 
+	/**
+	 * Stems the files of queries and performs searches on each line of query
+	 *
+	 * @param queryFile The files of queries
+	 * @param exact Whether or not to use exact search or partial search
+	 * @param threads The number of threads to give to use for workqueue
+	 * @throws IOException
+	 */
 	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
@@ -65,8 +73,8 @@ public class ThreadSafeQueryMap extends QueryMap {
 			while ((line = reader.readLine()) != null) {
 
 				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : TextFileStemmer.stemLine(line, stemmer)) {
-					uniqueWords.add(word.toLowerCase());
+				for (String word : TextParser.parse(line)) {
+					uniqueWords.add(stemmer.stem(word).toString().toLowerCase());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
