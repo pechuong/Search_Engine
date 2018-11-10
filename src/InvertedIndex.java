@@ -93,7 +93,13 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
-
+	/**
+	 * Handles what happens when a match or result is found
+	 *
+	 * @param word The word matched to the index
+	 * @param lookUp The map of existing results
+	 * @param results The list of result objects
+	 */
 	private void handleResults(String word, HashMap<String, Result> lookUp, ArrayList<Result> results) {
 		for (String path : index.get(word).keySet()) {
 			if (lookUp.containsKey(path)) {
