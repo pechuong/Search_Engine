@@ -57,19 +57,18 @@ public class QueryMap {
 
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
-				if (!queryMap.containsKey(queryLine) && uniqueWords.size() > 0) {
+				if (!hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
 						searchResults = index.exactSearch(uniqueWords);
 					} else {
 						searchResults = index.partialSearch(uniqueWords);
 					}
-					queryMap.put(queryLine, searchResults);
+					addQuery(queryLine, searchResults);
 				}
 			}
 		}
 	}
 
-	// TODO Use or remove!
 	/**
 	 * Adds a Query (one search) into the map w/ it's result(s).
 	 *
@@ -78,6 +77,16 @@ public class QueryMap {
 	 */
 	public void addQuery(String search, List<Result> results) {
 		this.queryMap.put(search, results);
+	}
+
+	/**
+	 * Checks the query map for the given query
+	 *
+	 * @param query The query to search for in the map
+	 * @return true if query is in the map
+	 */
+	public boolean hasQuery(String query) {
+		return this.queryMap.containsKey(query);
 	}
 
 	/**
