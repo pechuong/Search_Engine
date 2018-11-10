@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -48,22 +47,17 @@ public class QueryMap {
 
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			HashSet<String> queries = new HashSet<>(); // TODO Remove
-			TreeSet<String> uniqueWords = new TreeSet<>(); // TODO Move inside the while loop
 
 			while ((line = reader.readLine()) != null) {
 
-				uniqueWords.clear(); // TODO Remove
+				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString().toLowerCase()); // TODO Remove toLowerCase()
+					uniqueWords.add(stemmer.stem(word).toString());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
-				
-				// TODO if (!queryMap.contains(queryLine) && uniqueWords.size() > 0) {
-				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-					queries.add(queryLine); // TODO Remove
+				if (!queryMap.containsKey(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
 						searchResults = index.exactSearch(uniqueWords);
 					} else {
