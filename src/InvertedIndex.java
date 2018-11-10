@@ -62,15 +62,7 @@ public class InvertedIndex {
 
 		for (String query : queryLine) {
 			if (index.containsKey(query)) {
-				for (String path : index.get(query).keySet()) {
-					if (lookUp.containsKey(path)) {
-						lookUp.get(path).addMatches(index.get(query).get(path).size());
-					} else {
-						Result result = new Result(path, index.get(query).get(path).size(), location.get(path));
-						lookUp.put(path, result);
-						results.add(result);
-					}
-				}
+				handleResults(query, lookUp, results);
 			}
 		}
 
