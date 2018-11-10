@@ -84,6 +84,19 @@ public class Result implements Comparable<Result> {
 	 */
 	@Override
 	public int compareTo(Result o) {
+		/* TODO
+		int result = Double.compare(this.score, o.score);
+		
+		if (result == 0) {
+			result = Integer.compare(x, y);
+			
+			check once more and set to location compare it needed
+					
+		}
+		
+		return result;
+		*/
+		
 		if (this.score < o.score) {
 			return 1;
 		} else if (this.score == o.score) {

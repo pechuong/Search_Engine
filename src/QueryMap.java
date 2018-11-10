@@ -48,20 +48,22 @@ public class QueryMap {
 
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			HashSet<String> queries = new HashSet<>();
-			TreeSet<String> uniqueWords = new TreeSet<>();
+			HashSet<String> queries = new HashSet<>(); // TODO Remove
+			TreeSet<String> uniqueWords = new TreeSet<>(); // TODO Move inside the while loop
 
 			while ((line = reader.readLine()) != null) {
 
-				uniqueWords.clear();
+				uniqueWords.clear(); // TODO Remove
 				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString().toLowerCase());
+					uniqueWords.add(stemmer.stem(word).toString().toLowerCase()); // TODO Remove toLowerCase()
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
+				
+				// TODO if (!queryMap.contains(queryLine) && uniqueWords.size() > 0) {
 				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-					queries.add(queryLine);
+					queries.add(queryLine); // TODO Remove
 					if (exact) {
 						searchResults = index.exactSearch(uniqueWords);
 					} else {
@@ -73,6 +75,7 @@ public class QueryMap {
 		}
 	}
 
+	// TODO Use or remove!
 	/**
 	 * Adds a Query (one search) into the map w/ it's result(s).
 	 *
