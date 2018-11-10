@@ -84,30 +84,14 @@ public class Result implements Comparable<Result> {
 	 */
 	@Override
 	public int compareTo(Result o) {
-		/* TODO
-		int result = Double.compare(this.score, o.score);
-		
-		if (result == 0) {
-			result = Integer.compare(x, y);
-			
-			check once more and set to location compare it needed
-					
-		}
-		
-		return result;
-		*/
-		
-		if (this.score < o.score) {
-			return 1;
-		} else if (this.score == o.score) {
-			if (this.matches < o.matches) {
-				return 1;
-			} else if (this.matches == o.matches) {
-				return this.where.compareTo(o.where);
+		int resultScore = Double.compare(o.getScore(), getScore());
+		if (resultScore == 0) {
+			resultScore = Integer.compare(o.getMatches(), getMatches());
+			if (resultScore == 0) {
+				return getFileName().compareTo(o.getFileName());
 			}
-			return -1;
 		}
-		return -1;
+		return resultScore;
 	}
 
 	@Override
