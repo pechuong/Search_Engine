@@ -92,11 +92,11 @@ public class InvertedIndex {
 			/* TODO
 			 * If we can start in the "right" place, we can break our loop
 			 * after we find a key that no longer starts with our query.
-			 * 
+			 *
 			 * Check out what happens when you give headMap or tailMap something
-			 * that isn't a key in your map! And then decide which of these is 
+			 * that isn't a key in your map! And then decide which of these is
 			 * useful for this search loop.
-			 * 
+			 *
 			 * See: https://github.com/usf-cs212-fall2018/lectures/blob/master/Data%20Structures/src/FindDemo.java
 			 */
 			for (String word : index.keySet()) {
@@ -226,13 +226,7 @@ public class InvertedIndex {
 	 * @param path The location to update the int value for
 	 */
 	private void updateLocation(String path) {
-		// TODO this.location.put(path, this.location.getOrDefault(path, 0) + 1);
-		
-		if (this.location.containsKey(path)) {
-			this.location.put(path, this.location.get(path) + 1);
-		} else {
-			this.location.put(path, 1);
-		}
+		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
 	@Override
