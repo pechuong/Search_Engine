@@ -89,35 +89,29 @@ public class InvertedIndex {
 		ArrayList<Result> results = new ArrayList<>();
 
 		for (String query : queryLine) {
-			/* TODO
-			 * If we can start in the "right" place, we can break our loop
-			 * after we find a key that no longer starts with our query.
-			 *
-			 * Check out what happens when you give headMap or tailMap something
-			 * that isn't a key in your map! And then decide which of these is
-			 * useful for this search loop.
-			 *
-			 * See: https://github.com/usf-cs212-fall2018/lectures/blob/master/Data%20Structures/src/FindDemo.java
-			 */
-			for (String word : index.keySet()) {
+			for (String word : index.tailMap(query, true).keySet()) {
 				if (word.startsWith(query) || word.equalsIgnoreCase(query)) {
-					// TODO Pull this out into a private void searchHelper(String word, lookup, result) and call in both methods
-					for (String path : index.get(word).keySet()) {
-						if (lookUp.containsKey(path)) {
-							lookUp.get(path).addMatches(index.get(word).get(path).size());
-						} else {
-							Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
-							lookUp.put(path, result);
-							results.add(result);
-						}
-					}
+					handleResults(word, lookUp, results);
+				} else {
+					break;
 				}
-				// TODO else break;
 			}
 		}
 
 		Collections.sort(results);
 		return results;
+	}
+
+	private void handleResults(String word, HashMap<String, Result> lookUp, ArrayList<Result> results) {
+		for (String path : index.get(word).keySet()) {
+			if (lookUp.containsKey(path)) {
+				lookUp.get(path).addMatches(index.get(word).get(path).size());
+			} else {
+				Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
+				lookUp.put(path, result);
+				results.add(result);
+			}
+		}
 	}
 
 	/**
