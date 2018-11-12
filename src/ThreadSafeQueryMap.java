@@ -26,9 +26,8 @@ public class ThreadSafeQueryMap extends QueryMap {
 		private final String queryLine;
 		private final boolean exact;
 
-		public SearchWork(QueryMap queryMap, HashSet<String> queries, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
+		public SearchWork(QueryMap queryMap, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
 			this.queryMap = queryMap;
-			this.queries = queries;
 			this.uniqueWords = uniqueWords;
 			this.queryLine = queryLine;
 			this.exact = exact;
@@ -78,7 +77,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
-				queue.execute(new SearchWork(this, queries, uniqueWords, queryLine, exact));
+				queue.execute(new SearchWork(this, uniqueWords, queryLine, exact));
 			}
 			queue.finish();
 			queue.shutdown();
@@ -90,6 +89,16 @@ public class ThreadSafeQueryMap extends QueryMap {
 		lock.lockReadWrite();
 		super.addQuery(search, results);
 		lock.unlockReadWrite();
+	}
+
+	@Override
+	public boolean hasQuery(String query) {
+		lock.lockReadOnly();
+		try {
+			return super.hasQuery(query);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override

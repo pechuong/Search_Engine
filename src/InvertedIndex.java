@@ -61,7 +61,7 @@ public class InvertedIndex {
 		ArrayList<Result> results = new ArrayList<>();
 
 		for (String query : queryLine) {
-			if (index.containsKey(query)) {
+			if (hasWord(query)) {
 				handleResults(query, lookUp, results);
 			}
 		}
@@ -82,7 +82,7 @@ public class InvertedIndex {
 
 		for (String query : queryLine) {
 			for (String word : index.tailMap(query, true).keySet()) {
-				if (word.startsWith(query) || word.equalsIgnoreCase(query)) {
+				if (word.startsWith(query) || hasWord(query)) {
 					handleResults(word, lookUp, results);
 				} else {
 					break;
@@ -103,9 +103,9 @@ public class InvertedIndex {
 	private void handleResults(String word, HashMap<String, Result> lookUp, ArrayList<Result> results) {
 		for (String path : index.get(word).keySet()) {
 			if (lookUp.containsKey(path)) {
-				lookUp.get(path).addMatches(index.get(word).get(path).size());
+				lookUp.get(path).addMatches(getWordCount(word, path));
 			} else {
-				Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
+				Result result = new Result(path, getWordCount(word, path), getLocationCount(path));
 				lookUp.put(path, result);
 				results.add(result);
 			}
@@ -217,7 +217,7 @@ public class InvertedIndex {
 	 *
 	 * @param path The location to update the int value for
 	 */
-	private void updateLocation(String path) {
+	public void updateLocation(String path) {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
