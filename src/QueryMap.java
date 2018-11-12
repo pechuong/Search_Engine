@@ -99,6 +99,15 @@ public class QueryMap {
 		return (this.queryMap.size() < 1) ? true : false;
 	}
 
+	/**
+	 * Gets the Inverted Index
+	 *
+	 * @return The inverted Index
+	 */
+	public InvertedIndex getInvertedIndex() {
+		return this.index;
+	}
+
 	@Override
 	public String toString() {
 		return this.queryMap.toString();

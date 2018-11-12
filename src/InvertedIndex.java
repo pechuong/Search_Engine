@@ -221,8 +221,38 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
+	public InvertedIndex getInvertedIndex() {
+		return this;
+	}
+
+	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
+		return this.index;
+	}
+
+	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
+		return this.index.get(word);
+	}
+
+	public int getWordCount(String word, String filePath) {
+		return this.index.get(word).get(filePath).size();
+	}
+
+	public TreeMap<String, Integer> getLocation() {
+		return this.location;
+	}
+
+	/**
+	 * Gets the number of words in the file path or location
+	 *
+	 * @param location The location to get the num of words for
+	 * @return word count in the location
+	 */
+	public int getLocationCount(String location) {
+		return this.location.get(location);
+	}
+
 	@Override
 	public String toString() {
-		return this.index.toString();
+		return this.index.toString() + this.location.toString();
 	}
 }
