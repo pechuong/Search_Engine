@@ -103,9 +103,9 @@ public class InvertedIndex {
 	private void handleResults(String word, HashMap<String, Result> lookUp, ArrayList<Result> results) {
 		for (String path : index.get(word).keySet()) {
 			if (lookUp.containsKey(path)) {
-				lookUp.get(path).addMatches(index.get(word).get(path).size());
+				lookUp.get(path).addMatches(getWordCount(word, path));
 			} else {
-				Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
+				Result result = new Result(path, getWordCount(word, path), getLocationCount(path));
 				lookUp.put(path, result);
 				results.add(result);
 			}
