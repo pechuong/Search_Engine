@@ -12,6 +12,11 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 	private ReadWriteLock lock;
 
+	/**
+	 * Initializes a ThreadSafe Query Map
+	 *
+	 * @param index The inverted index that was already created
+	 */
 	public ThreadSafeQueryMap(InvertedIndex index) {
 		super(index);
 		lock = new ReadWriteLock();
@@ -33,7 +38,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 		@Override
 		public void run() {
-			synchronized (uniqueWords) {
+			synchronized (queryMap) {
 				List<Result> searchResults;
 				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
