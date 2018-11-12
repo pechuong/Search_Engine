@@ -83,24 +83,21 @@ public class Result implements Comparable<Result> {
 	 */
 	@Override
 	public int compareTo(Result o) {
-		if (this.score < o.score) {
-			return 1;
-		} else if (this.score == o.score) {
-			if (this.matches < o.matches) {
-				return 1;
-			} else if (this.matches == o.matches) {
-				return this.where.compareTo(o.where);
+		int resultScore = Double.compare(o.getScore(), getScore());
+		if (resultScore == 0) {
+			resultScore = Integer.compare(o.getMatches(), getMatches());
+			if (resultScore == 0) {
+				return getFileName().compareTo(o.getFileName());
 			}
-			return -1;
 		}
-		return -1;
+		return resultScore;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer myString = new StringBuffer();
-		return myString.append("Where: " + this.where.toString() + System.lineSeparator() +
-				"Matches: " + Double.toString(this.matches) + System.lineSeparator() +
+		return myString.append("Where: " + this.where + System.lineSeparator() +
+				"Matches: " + this.matches + System.lineSeparator() +
 				"Score: " + Double.toString(this.score)).toString();
 	}
 

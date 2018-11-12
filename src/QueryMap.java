@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -48,20 +47,17 @@ public class QueryMap {
 
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			HashSet<String> queries = new HashSet<>();
-			TreeSet<String> uniqueWords = new TreeSet<>();
 
 			while ((line = reader.readLine()) != null) {
 
-				uniqueWords.clear();
+				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString().toLowerCase());
+					uniqueWords.add(stemmer.stem(word).toString());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
-				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-					queries.add(queryLine);
+				if (!hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
 						searchResults = index.exactSearch(uniqueWords);
 					} else {
@@ -84,16 +80,23 @@ public class QueryMap {
 	}
 
 	/**
+	 * Checks the query map for the given query
+	 *
+	 * @param query The query to search for in the map
+	 * @return true if query is in the map
+	 */
+	public boolean hasQuery(String query) {
+		return this.queryMap.containsKey(query);
+	}
+
+	/**
 	 * Checks to see if the Query Map is empty or not.
 	 * This means that no search has been made or stored.
 	 *
 	 * @return true if the Query Map has at least 1 entry.
 	 */
 	public boolean isEmpty() {
-		if (this.queryMap.size() < 1) {
-			return true;
-		}
-		return false;
+		return (this.queryMap.size() < 1) ? true : false;
 	}
 
 	/**

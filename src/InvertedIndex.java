@@ -62,15 +62,7 @@ public class InvertedIndex {
 
 		for (String query : queryLine) {
 			if (index.containsKey(query)) {
-				for (String path : index.get(query).keySet()) {
-					if (lookUp.containsKey(path)) {
-						lookUp.get(path).addMatches(getWordCount(query, path));
-					} else {
-						Result result = new Result(path, getWordCount(query, path), location.get(path));
-						lookUp.put(path, result);
-						results.add(result);
-					}
-				}
+				handleResults(query, lookUp, results);
 			}
 		}
 
@@ -89,23 +81,35 @@ public class InvertedIndex {
 		ArrayList<Result> results = new ArrayList<>();
 
 		for (String query : queryLine) {
-			for (String word : index.keySet()) {
+			for (String word : index.tailMap(query, true).keySet()) {
 				if (word.startsWith(query) || word.equalsIgnoreCase(query)) {
-					for (String path : index.get(word).keySet()) {
-						if (lookUp.containsKey(path)) {
-							lookUp.get(path).addMatches(index.get(word).get(path).size());
-						} else {
-							Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
-							lookUp.put(path, result);
-							results.add(result);
-						}
-					}
+					handleResults(word, lookUp, results);
+				} else {
+					break;
 				}
 			}
 		}
 
 		Collections.sort(results);
 		return results;
+	}
+	/**
+	 * Handles what happens when a match or result is found
+	 *
+	 * @param word The word matched to the index
+	 * @param lookUp The map of existing results
+	 * @param results The list of result objects
+	 */
+	private void handleResults(String word, HashMap<String, Result> lookUp, ArrayList<Result> results) {
+		for (String path : index.get(word).keySet()) {
+			if (lookUp.containsKey(path)) {
+				lookUp.get(path).addMatches(index.get(word).get(path).size());
+			} else {
+				Result result = new Result(path, index.get(word).get(path).size(), location.get(path));
+				lookUp.put(path, result);
+				results.add(result);
+			}
+		}
 	}
 
 	/**
@@ -213,12 +217,8 @@ public class InvertedIndex {
 	 *
 	 * @param path The location to update the int value for
 	 */
-	public void updateLocation(String path) {
-		if (this.location.containsKey(path)) {
-			this.location.put(path, this.location.get(path) + 1);
-		} else {
-			this.location.put(path, 1);
-		}
+	private void updateLocation(String path) {
+		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
 	public InvertedIndex getInvertedIndex() {
