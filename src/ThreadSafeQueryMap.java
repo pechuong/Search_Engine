@@ -33,7 +33,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 		@Override
 		public void run() {
-			synchronized (queryMap) {
+			synchronized (uniqueWords) {
 				List<Result> searchResults;
 				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
@@ -69,7 +69,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString().toLowerCase());
+					uniqueWords.add(stemmer.stem(word).toString());
 				}
 
 				String queryLine = String.join(" ", uniqueWords);

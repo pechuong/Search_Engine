@@ -77,16 +77,6 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public void updateLocation(String path) {
-		lock.lockReadWrite();
-		try {
-			super.updateLocation(path);
-		} finally {
-			lock.unlockReadWrite();
-		}
-	}
-
-	@Override
 	public InvertedIndex getInvertedIndex() {
 		lock.lockReadOnly();
 		try {
