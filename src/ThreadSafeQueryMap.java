@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -21,7 +20,6 @@ public class ThreadSafeQueryMap extends QueryMap {
 	public static class SearchWork implements Runnable {
 
 		private final QueryMap queryMap;
-		private HashSet<String> queries;
 		private TreeSet<String> uniqueWords;
 		private final String queryLine;
 		private final boolean exact;
@@ -35,10 +33,9 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 		@Override
 		public void run() {
-			synchronized (uniqueWords) {
+			synchronized (queryMap) {
 				List<Result> searchResults;
-				if (!queries.contains(queryLine) && uniqueWords.size() > 0) {
-					queries.add(queryLine);
+				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
 						searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
 					} else {
@@ -66,7 +63,6 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 			String line;
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			HashSet<String> queries = new HashSet<>();
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
