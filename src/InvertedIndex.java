@@ -61,7 +61,7 @@ public class InvertedIndex {
 		ArrayList<Result> results = new ArrayList<>();
 
 		for (String query : queryLine) {
-			if (index.containsKey(query)) {
+			if (hasWord(query)) {
 				handleResults(query, lookUp, results);
 			}
 		}
