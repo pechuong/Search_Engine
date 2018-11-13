@@ -57,6 +57,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 
+			// Non-trivial commit
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					count++;
