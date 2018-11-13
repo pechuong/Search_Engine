@@ -15,7 +15,13 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		private final Path path;
 		private final WorkQueue queue;
 
-
+		/**
+		 * Initializes new directory work (traverse and stem)
+		 *
+		 * @param index The inverted index to build to
+		 * @param queue The queue to add work to
+		 * @param path The path to traverse or stem
+		 */
 		public DirectoryWork(InvertedIndex index, WorkQueue queue, Path path) {
 			this.index = index;
 			this.queue = queue;
