@@ -161,6 +161,28 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * Testing an addAll for inverted index that adds another inverted index
+	 * to the overall big inverted idnex
+	 *
+	 * @param other The other inverted index to add to the big index
+	 */
+	public void addAll(InvertedIndex other) {
+		for (String word : other.getIndex().keySet()) {
+			if (!hasWord(word)) {
+				this.index.put(word, other.getFiles(word));
+			} else {
+				for (String path : other.getFiles(word).keySet()) {
+					if (!hasFile(word, path)) {
+						addFile(word, path, other.getPositions(word, path));
+					} else {
+						getPositions(word, path).addAll(other.getPositions(word, path));
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Adds the word to the index given the word, location, and position
 	 *
 	 * @param word The word to add to the index
@@ -201,6 +223,10 @@ public class InvertedIndex {
 		this.index.get(word).put(filePath, new TreeSet<>());
 	}
 
+	private void addFile(String word, String filePath, TreeSet<Integer> positions) {
+		this.index.get(word).put(filePath, positions);
+	}
+
 	/**
 	 * Adds the position of the word to the index
 	 *
@@ -231,6 +257,10 @@ public class InvertedIndex {
 
 	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
 		return this.index.get(word);
+	}
+
+	public TreeSet<Integer> getPositions(String word, String filePath) {
+		return this.index.get(word).get(filePath);
 	}
 
 	public int getWordCount(String word, String filePath) {

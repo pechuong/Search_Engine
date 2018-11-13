@@ -25,7 +25,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 	public static class SearchWork implements Runnable {
 
 		private final QueryMap queryMap;
-		private TreeSet<String> uniqueWords;
+		private final TreeSet<String> uniqueWords;
 		private final String queryLine;
 		private final boolean exact;
 
@@ -55,10 +55,11 @@ public class ThreadSafeQueryMap extends QueryMap {
 
 	/**
 	 * Stems the files of queries and performs searches on each line of query
+	 * (Multi-threaded version)
 	 *
 	 * @param queryFile The files of queries
 	 * @param exact Whether or not to use exact search or partial search
-	 * @param threads The number of threads to give to use for workqueue
+	 * @param threads The number of threads to run the search with
 	 * @throws IOException
 	 */
 	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {

@@ -32,7 +32,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 						}
 					}
 				} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-					ThreadSafeInvertedIndexBuilder.stemFile(index, queue, path);
+					ThreadSafeInvertedIndexBuilder.stemFile(index, path);
 				}
 			} catch (IOException e) {
 				System.out.println("Something went wrong with reading");
@@ -48,7 +48,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
-	public static void stemFile(InvertedIndex index, WorkQueue queue, Path inputFile) throws IOException {
+	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
 				) {
