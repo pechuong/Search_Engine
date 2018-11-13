@@ -301,6 +301,11 @@ public class InvertedIndex {
 		return this.index.get(word).get(filePath).size();
 	}
 
+	/**
+	 * Gets the mapping of locations (file path and word count)
+	 *
+	 * @return a map of all the locations and the word count
+	 */
 	public TreeMap<String, Integer> getLocation() {
 		return this.location;
 	}
