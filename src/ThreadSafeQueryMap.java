@@ -22,6 +22,10 @@ public class ThreadSafeQueryMap extends QueryMap {
 		lock = new ReadWriteLock();
 	}
 
+	/**
+	 * Handles all of the searching the will be performed on the
+	 * inverted index
+	 */
 	public static class SearchWork implements Runnable {
 
 		private final QueryMap queryMap;
