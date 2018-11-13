@@ -93,6 +93,7 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
+
 	/**
 	 * Handles what happens when a match or result is found
 	 *
@@ -139,10 +140,7 @@ public class InvertedIndex {
 	 * @return true if the path exists in the specific word's index
 	 */
 	public boolean hasFile(String word, String path) {
-		if (hasWord(word)) {
-			return this.index.get(word).containsKey(path);
-		}
-		return false;
+		return hasWord(word) ? this.index.get(word).containsKey(path) : false;
 	}
 
 	/**
@@ -167,7 +165,7 @@ public class InvertedIndex {
 	 * @param other The other inverted index to add to the big index
 	 */
 	public void addAll(InvertedIndex other) {
-		for (String word : other.getIndex().keySet()) {
+		for (String word : other.getWords()) {
 			if (!hasWord(word)) {
 				this.index.put(word, other.getFiles(word));
 			} else {
@@ -257,6 +255,15 @@ public class InvertedIndex {
 
 	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
 		return this.index;
+	}
+
+	/**
+	 * Gets a set of all the words in the inverted index
+	 *
+	 * @return Set<String> set of words in index
+	 */
+	public Set<String> getWords() {
+		return this.index.keySet();
 	}
 
 	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
