@@ -290,6 +290,13 @@ public class InvertedIndex {
 		return this.index.get(word).get(filePath);
 	}
 
+	/**
+	 * Gets the number of times a word was found under a file path
+	 *
+	 * @param word The word to find the number of occurences
+	 * @param filePath The file path to find number of appearances of the word
+	 * @return int The number of times the word was found in the file
+	 */
 	public int getWordCount(String word, String filePath) {
 		return this.index.get(word).get(filePath).size();
 	}
