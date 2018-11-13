@@ -104,7 +104,7 @@ public class QueryMap {
 	 *
 	 * @return The inverted Index
 	 */
-	public InvertedIndex getInvertedIndex() {
+	public InvertedIndex getIndex() {
 		return this.index;
 	}
 

@@ -42,9 +42,9 @@ public class ThreadSafeQueryMap extends QueryMap {
 				List<Result> searchResults;
 				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
-						searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
+						searchResults = queryMap.getIndex().exactSearch(uniqueWords);
 					} else {
-						searchResults = queryMap.getInvertedIndex().partialSearch(uniqueWords);
+						searchResults = queryMap.getIndex().partialSearch(uniqueWords);
 					}
 					queryMap.addQuery(queryLine, searchResults);
 				}
@@ -114,10 +114,10 @@ public class ThreadSafeQueryMap extends QueryMap {
 	}
 
 	@Override
-	public InvertedIndex getInvertedIndex() {
+	public InvertedIndex getIndex() {
 		lock.lockReadOnly();
 		try {
-			return super.getInvertedIndex();
+			return super.getIndex();
 		} finally {
 			lock.unlockReadOnly();
 		}
