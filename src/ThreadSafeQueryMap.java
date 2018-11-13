@@ -22,6 +22,10 @@ public class ThreadSafeQueryMap extends QueryMap {
 		lock = new ReadWriteLock();
 	}
 
+	/**
+	 * Handles all of the searching the will be performed on the
+	 * inverted index
+	 */
 	public static class SearchWork implements Runnable {
 
 		private final QueryMap queryMap;
@@ -29,6 +33,14 @@ public class ThreadSafeQueryMap extends QueryMap {
 		private final String queryLine;
 		private final boolean exact;
 
+		/**
+		 * Initializes new search work
+		 *
+		 * @param queryMap The mapping of all the results of searching and an index
+		 * @param uniqueWords The query words to search
+		 * @param queryLine The line of combined query words
+		 * @param exact Boolean deciding whether or not to use exact search
+		 */
 		public SearchWork(QueryMap queryMap, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
 			this.queryMap = queryMap;
 			this.uniqueWords = uniqueWords;
@@ -42,9 +54,9 @@ public class ThreadSafeQueryMap extends QueryMap {
 				List<Result> searchResults;
 				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
-						searchResults = queryMap.getInvertedIndex().exactSearch(uniqueWords);
+						searchResults = queryMap.getIndex().exactSearch(uniqueWords);
 					} else {
-						searchResults = queryMap.getInvertedIndex().partialSearch(uniqueWords);
+						searchResults = queryMap.getIndex().partialSearch(uniqueWords);
 					}
 					queryMap.addQuery(queryLine, searchResults);
 				}
@@ -114,10 +126,10 @@ public class ThreadSafeQueryMap extends QueryMap {
 	}
 
 	@Override
-	public InvertedIndex getInvertedIndex() {
+	public InvertedIndex getIndex() {
 		lock.lockReadOnly();
 		try {
-			return super.getInvertedIndex();
+			return super.getIndex();
 		} finally {
 			lock.unlockReadOnly();
 		}

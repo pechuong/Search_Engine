@@ -41,6 +41,14 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
+	/**
+	 * Start the traversing and multithreads it
+	 *
+	 * @param index The index to build to
+	 * @param path The path to traverse
+	 * @param threads The number of threads to use
+	 * @throws IOException
+	 */
 	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
 		queue.execute(new DirectoryWork(index, queue, path));
@@ -48,6 +56,13 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
+	/**
+	 * Builds a file to a local index which is added to the overall index
+	 *
+	 * @param index The overall big index to add to
+	 * @param inputFile The file to stem and build the index from
+	 * @throws IOException
+	 */
 	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
@@ -56,13 +71,16 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 			int count = 0;
 			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+			InvertedIndex local = new InvertedIndex();
 
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					count++;
-					index.build(stemmer.stem(word).toString(), filePath, count);
+					local.build(stemmer.stem(word).toString(), filePath, count);
 				}
 			}
+
+			index.addAll(local);
 		}
 	}
 

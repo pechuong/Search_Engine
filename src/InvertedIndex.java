@@ -61,7 +61,7 @@ public class InvertedIndex {
 		ArrayList<Result> results = new ArrayList<>();
 
 		for (String query : queryLine) {
-			if (index.containsKey(query)) {
+			if (hasWord(query)) {
 				handleResults(query, lookUp, results);
 			}
 		}
@@ -93,6 +93,7 @@ public class InvertedIndex {
 		Collections.sort(results);
 		return results;
 	}
+
 	/**
 	 * Handles what happens when a match or result is found
 	 *
@@ -139,10 +140,7 @@ public class InvertedIndex {
 	 * @return true if the path exists in the specific word's index
 	 */
 	public boolean hasFile(String word, String path) {
-		if (hasWord(word)) {
-			return this.index.get(word).containsKey(path);
-		}
-		return false;
+		return hasWord(word) ? this.index.get(word).containsKey(path) : false;
 	}
 
 	/**
@@ -162,23 +160,27 @@ public class InvertedIndex {
 
 	/**
 	 * Testing an addAll for inverted index that adds another inverted index
-	 * to the overall big inverted idnex
+	 * to the overall big inverted index
 	 *
 	 * @param other The other inverted index to add to the big index
 	 */
 	public void addAll(InvertedIndex other) {
-		for (String word : other.getIndex().keySet()) {
+		for (String word : other.getWords()) {
 			if (!hasWord(word)) {
 				this.index.put(word, other.getFiles(word));
 			} else {
 				for (String path : other.getFiles(word).keySet()) {
 					if (!hasFile(word, path)) {
-						addFile(word, path, other.getPositions(word, path));
+						addPosition(word, path, other.getPositions(word, path));
 					} else {
 						getPositions(word, path).addAll(other.getPositions(word, path));
 					}
 				}
 			}
+		}
+
+		for (String path : other.getLocation().keySet()) {
+			this.location.put(path, this.location.getOrDefault(path, 0) + other.getLocationCount(path));
 		}
 	}
 
@@ -223,10 +225,6 @@ public class InvertedIndex {
 		this.index.get(word).put(filePath, new TreeSet<>());
 	}
 
-	private void addFile(String word, String filePath, TreeSet<Integer> positions) {
-		this.index.get(word).put(filePath, positions);
-	}
-
 	/**
 	 * Adds the position of the word to the index
 	 *
@@ -239,6 +237,17 @@ public class InvertedIndex {
 	}
 
 	/**
+	 * Adds a set of positions under the filename or path
+	 *
+	 * @param word The word to find the file under
+	 * @param filePath The file path to put the positions under
+	 * @param positions The set of positions to add under the filename / path
+	 */
+	private void addPosition(String word, String filePath, TreeSet<Integer> positions) {
+		this.index.get(word).put(filePath, positions);
+	}
+
+	/**
 	 * Updates the word count at the specified location or file
 	 *
 	 * @param path The location to update the int value for
@@ -247,26 +256,52 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
-	public InvertedIndex getInvertedIndex() {
-		return this;
+	/**
+	 * Gets a set of all the words in the inverted index
+	 *
+	 * @return Set<String> set of words in index
+	 */
+	public Set<String> getWords() {
+		return this.index.keySet();
 	}
 
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
-		return this.index;
-	}
-
+	/**
+	 * Gets a map of all the file paths under a given word
+	 *
+	 * @param word The word to find all the paths under
+	 * @return A map of all the file paths
+	 */
 	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
 		return this.index.get(word);
 	}
 
+	/**
+	 * Gets the set of positions the word was found under a file name / path
+	 *
+	 * @param word The word found some number of times
+	 * @param filePath The file path the word was found under
+	 * @return TreeSet<Integer> set of position in the file the word was found in
+	 */
 	public TreeSet<Integer> getPositions(String word, String filePath) {
 		return this.index.get(word).get(filePath);
 	}
 
+	/**
+	 * Gets the number of times a word was found under a file path
+	 *
+	 * @param word The word to find the number of occurences
+	 * @param filePath The file path to find number of appearances of the word
+	 * @return int The number of times the word was found in the file
+	 */
 	public int getWordCount(String word, String filePath) {
 		return this.index.get(word).get(filePath).size();
 	}
 
+	/**
+	 * Gets the mapping of locations (file path and word count)
+	 *
+	 * @return a map of all the locations and the word count
+	 */
 	public TreeMap<String, Integer> getLocation() {
 		return this.location;
 	}

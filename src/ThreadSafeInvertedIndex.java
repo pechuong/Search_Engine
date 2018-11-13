@@ -77,24 +77,10 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public InvertedIndex getInvertedIndex() {
-		lock.lockReadOnly();
-		try {
-			return super.getInvertedIndex();
-		} finally {
-			lock.unlockReadOnly();
-		}
+	public synchronized void addAll(InvertedIndex other) {
+		super.addAll(other);
 	}
 
-	@Override
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
-		lock.lockReadOnly();
-		try {
-			return super.getIndex();
-		} finally {
-			lock.unlockReadOnly();
-		}
-	}
 
 	@Override
 	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
