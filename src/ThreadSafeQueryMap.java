@@ -10,7 +10,7 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class ThreadSafeQueryMap extends QueryMap {
 
-	private ReadWriteLock lock;
+	private final ReadWriteLock lock;
 
 	/**
 	 * Initializes a ThreadSafe Query Map
