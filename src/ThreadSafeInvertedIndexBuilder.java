@@ -9,6 +9,9 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
+	/**
+	 * Handles traversing the path and stemming each file to the index
+	 */
 	public static class DirectoryWork implements Runnable {
 
 		private final InvertedIndex index;
