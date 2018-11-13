@@ -269,6 +269,12 @@ public class InvertedIndex {
 		return this.index.keySet();
 	}
 
+	/**
+	 * Gets a map of all the file paths under a given word
+	 *
+	 * @param word The word to find all the paths under
+	 * @return A map of all the file paths
+	 */
 	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
 		return this.index.get(word);
 	}
