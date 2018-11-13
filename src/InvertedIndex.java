@@ -162,7 +162,7 @@ public class InvertedIndex {
 
 	/**
 	 * Testing an addAll for inverted index that adds another inverted index
-	 * to the overall big inverted idnex
+	 * to the overall big inverted index
 	 *
 	 * @param other The other inverted index to add to the big index
 	 */
@@ -179,6 +179,10 @@ public class InvertedIndex {
 					}
 				}
 			}
+		}
+
+		for (String path : other.getLocation().keySet()) {
+			this.location.put(path, this.location.getOrDefault(path, 0) + other.getLocationCount(path));
 		}
 	}
 

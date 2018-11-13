@@ -56,14 +56,16 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 			int count = 0;
 			String filePath = inputFile.toString();
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+			InvertedIndex local = new InvertedIndex();
 
-			// Non-trivial commit
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					count++;
-					index.build(stemmer.stem(word).toString(), filePath, count);
+					local.build(stemmer.stem(word).toString(), filePath, count);
 				}
 			}
+
+			index.addAll(local);
 		}
 	}
 
