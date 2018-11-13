@@ -41,6 +41,14 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
+	/**
+	 * Start the traversing and multithreads it
+	 *
+	 * @param index The index to build to
+	 * @param path The path to traverse
+	 * @param threads The number of threads to use
+	 * @throws IOException
+	 */
 	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
 		queue.execute(new DirectoryWork(index, queue, path));
