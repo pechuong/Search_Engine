@@ -29,6 +29,14 @@ public class ThreadSafeQueryMap extends QueryMap {
 		private final String queryLine;
 		private final boolean exact;
 
+		/**
+		 * Initializes new search work
+		 *
+		 * @param queryMap The mapping of all the results of searching and an index
+		 * @param uniqueWords The query words to search
+		 * @param queryLine The line of combined query words
+		 * @param exact Boolean deciding whether or not to use exact search
+		 */
 		public SearchWork(QueryMap queryMap, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
 			this.queryMap = queryMap;
 			this.uniqueWords = uniqueWords;
