@@ -56,6 +56,13 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
+	/**
+	 * Builds a file to a local index which is added to the overall index
+	 *
+	 * @param index The overall big index to add to
+	 * @param inputFile The file to stem and build the index from
+	 * @throws IOException
+	 */
 	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
