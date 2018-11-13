@@ -256,10 +256,6 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
-	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
-		return this.index;
-	}
-
 	/**
 	 * Gets a set of all the words in the inverted index
 	 *
