@@ -279,6 +279,13 @@ public class InvertedIndex {
 		return this.index.get(word);
 	}
 
+	/**
+	 * Gets the set of positions the word was found under a file name / path
+	 *
+	 * @param word The word found some number of times
+	 * @param filePath The file path the word was found under
+	 * @return TreeSet<Integer> set of position in the file the word was found in
+	 */
 	public TreeSet<Integer> getPositions(String word, String filePath) {
 		return this.index.get(word).get(filePath);
 	}
