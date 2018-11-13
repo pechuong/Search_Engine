@@ -256,10 +256,6 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
-	public InvertedIndex getInvertedIndex() {
-		return this;
-	}
-
 	public TreeMap<String, TreeMap<String, TreeSet<Integer>>> getIndex() {
 		return this.index;
 	}
