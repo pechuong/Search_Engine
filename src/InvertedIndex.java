@@ -171,7 +171,7 @@ public class InvertedIndex {
 			} else {
 				for (String path : other.getFiles(word).keySet()) {
 					if (!hasFile(word, path)) {
-						addFile(word, path, other.getPositions(word, path));
+						addPosition(word, path, other.getPositions(word, path));
 					} else {
 						getPositions(word, path).addAll(other.getPositions(word, path));
 					}
@@ -225,10 +225,6 @@ public class InvertedIndex {
 		this.index.get(word).put(filePath, new TreeSet<>());
 	}
 
-	private void addFile(String word, String filePath, TreeSet<Integer> positions) {
-		this.index.get(word).put(filePath, positions);
-	}
-
 	/**
 	 * Adds the position of the word to the index
 	 *
@@ -238,6 +234,17 @@ public class InvertedIndex {
 	 */
 	private void addPosition(String word, String filePath, int position) {
 		this.index.get(word).get(filePath).add(position);
+	}
+
+	/**
+	 * Adds a set of positions under the filename or path
+	 *
+	 * @param word The word to find the file under
+	 * @param filePath The file path to put the positions under
+	 * @param positions The set of positions to add under the filename / path
+	 */
+	private void addPosition(String word, String filePath, TreeSet<Integer> positions) {
+		this.index.get(word).put(filePath, positions);
 	}
 
 	/**
