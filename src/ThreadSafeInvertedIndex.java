@@ -103,10 +103,10 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public TreeMap<String, Integer> getLocation() {
+	public TreeMap<String, Integer> getLocations() {
 		lock.lockReadOnly();
 		try {
-			return super.getLocation();
+			return super.getLocations();
 		} finally {
 			lock.unlockReadOnly();
 		}

@@ -179,7 +179,7 @@ public class InvertedIndex {
 			}
 		}
 
-		for (String path : other.getLocation().keySet()) {
+		for (String path : other.getLocations().keySet()) {
 			this.location.put(path, this.location.getOrDefault(path, 0) + other.getLocationCount(path));
 		}
 	}
@@ -302,7 +302,7 @@ public class InvertedIndex {
 	 *
 	 * @return a map of all the locations and the word count
 	 */
-	public TreeMap<String, Integer> getLocation() {
+	public TreeMap<String, Integer> getLocations() {
 		return this.location;
 	}
 
