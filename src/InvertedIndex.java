@@ -165,6 +165,15 @@ public class InvertedIndex {
 	 * @param other The other inverted index to add to the big index
 	 */
 	public void addAll(InvertedIndex other) {
+		/*
+		 * TODO This is the InvertedIndex class. The other object is an InvertedIndex
+		 * object. Within this class you can access private data... both of "this" index
+		 * AND of the "other" index. Meaning...
+		 * 
+		 * for (String word : other.index.keySet())
+		 * 
+		 * ... is possible within this class. You can access other's private data!
+		 */
 		for (String word : other.getWords()) {
 			if (!hasWord(word)) {
 				this.index.put(word, other.getFiles(word));
@@ -256,6 +265,13 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
+	/*
+	 * TODO
+	 * WHHHHHHHHHHYYYYYYYY are you breaking encapsulation again? Never return
+	 * a private mutable reference, even if its nested inside of a private mutable
+	 * reference. Any of these that return a mutable data structure must be removed. 
+	 */
+	
 	/**
 	 * Gets a set of all the words in the inverted index
 	 *

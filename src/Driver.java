@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+// TODO Remove old TODO comments from the homework classes.
+
 public class Driver {
 
 	/**

@@ -8,6 +8,14 @@ import java.util.TreeSet;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
+/*
+ * TODO It is hard to get this to work with the extends QueryMap relationship.
+ * You really need access to the private data to efficiently synchronize it.
+ * I recommend instead you create a QueryMapInterface that is implemented by
+ * both QueryMap and ThreadSafeQueryMap, then the classes can each have their own
+ * private data and separate implementations. Does that make sense?
+ */
+
 public class ThreadSafeQueryMap extends QueryMap {
 
 	private final ReadWriteLock lock;
@@ -84,7 +92,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
-
+				// TODO Pretty much everything that used to be in this while loop should be in the task instead
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
 					uniqueWords.add(stemmer.stem(word).toString());
