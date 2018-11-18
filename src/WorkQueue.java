@@ -56,6 +56,11 @@ public class WorkQueue {
 		}
 	}
 
+	/*
+	 * TODO Do you really want incrementPending and decrementPending public?
+	 * What could go wrong?
+	 */
+	
 	/**
 	 * Increases the value of pending
 	 */
@@ -97,7 +102,7 @@ public class WorkQueue {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // TODO Fix!
 		}
 		// TODO Implement this!
 	}

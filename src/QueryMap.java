@@ -99,6 +99,8 @@ public class QueryMap {
 		return (this.queryMap.size() < 1) ? true : false;
 	}
 
+	// TODO Hmmm, this shouldn't be necessary. Whatever created this class had to have a reference to the index already.
+	// TODO It also complicates your multithreading.
 	/**
 	 * Gets the Inverted Index
 	 *

@@ -14,6 +14,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		super();
 		lock = new ReadWriteLock();
 	}
+	
+	/*
+	 * TODO Not only do you have to override *every* public method
+	 * in InvertedIndex for this to be thread-safe, you also have
+	 * to use your read write lock in every single one of these too!
+	 * 
+	 * Until then, your class is NOT thread-safe.
+	 * 
+	 * Also, do not mix the lock and the synchronized keyword.
+	 */
 
 	@Override
 	public void build(String word, String file, int count) {

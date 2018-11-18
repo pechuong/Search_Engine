@@ -7,6 +7,12 @@ import java.nio.file.Path;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
+/*
+ * TODO This multithreading follows the lecture example, because traversing
+ * directories was where the "work" was located. But, this project specifically
+ * asked you to create a task PER FILE. You need to change the task!
+ */
+
 public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	/**
@@ -41,6 +47,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 						}
 					}
 				} else if (path.toString().matches("(?i).*\\.te?xt$")) {
+					// TODO This is what each task should do, not the directory traversal.
 					ThreadSafeInvertedIndexBuilder.stemFile(index, path);
 				}
 			} catch (IOException e) {
@@ -65,6 +72,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
+	// TODO Do not reimplement stemFile... reuse InvertedIndexBuilder where possible!
 	/**
 	 * Builds a file to a local index which is added to the overall index
 	 *
