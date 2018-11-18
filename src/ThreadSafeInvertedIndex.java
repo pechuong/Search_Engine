@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
@@ -24,9 +26,23 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	 */
 
 	@Override
+	public void writeIndex(Path path) throws IOException {
+		lock.lockReadOnly();
+		super.writeIndex(path);
+		lock.unlockReadOnly();
+	}
+
+	@Override
+	public void writeLocation(Path output) throws IOException {
+		lock.lockReadOnly();
+		super.writeLocation(output);
+		lock.unlockReadOnly();
+	}
+
+	@Override
 	public void build(String word, String file, int count) {
 		lock.lockReadWrite();
-		add(word, file, count);
+		super.build(word, file, count);
 		lock.unlockReadWrite();
 	}
 
@@ -42,7 +58,12 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public List<Result> partialSearch(Set<String> queryLine) {
-		return super.partialSearch(queryLine);
+		lock.lockReadOnly();
+		try {
+			return super.partialSearch(queryLine);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -87,13 +108,17 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public synchronized void add(String word, String location, int position) {
+	public void add(String word, String location, int position) {
+		lock.lockReadWrite();
 		super.add(word, location, position);
+		lock.unlockReadWrite();
 	}
 
 	@Override
-	public synchronized void addAll(InvertedIndex other) {
+	public void addAll(InvertedIndex other) {
+		lock.lockReadOnly();
 		super.addAll(other);
+		lock.unlockReadOnly();
 	}
 
 	@Override
