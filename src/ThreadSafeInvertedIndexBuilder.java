@@ -61,11 +61,21 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param threads The number of threads to use
 	 * @throws IOException
 	 */
-	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
-		WorkQueue queue = new WorkQueue(threads);
-		queue.execute(new DirectoryWork(index, queue, path));
-		queue.finish();
-		queue.shutdown();
+	public static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
+		try {
+			if (Files.isDirectory(path)) {
+				try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
+					for (Path file : listing) {
+						queue.execute(new DirectoryWork(index, queue, file));;
+					}
+				}
+			} else if (path.toString().matches("(?i).*\\.te?xt$")) {
+				// TODO This is what each task should do, not the directory traversal.
+				ThreadSafeInvertedIndexBuilder.stemFile(index, path);
+			}
+		} catch (IOException e) {
+			System.out.println("Something went wrong with reading");
+		}
 	}
 
 	/**
