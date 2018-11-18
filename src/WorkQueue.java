@@ -25,7 +25,6 @@ public class WorkQueue {
 	/** The default number of threads to use when not specified. */
 	public static final int DEFAULT = 5;
 
-	// TODO Add variables as necessary (DONE)?
 	private int pending;
 
 	/**
@@ -42,7 +41,6 @@ public class WorkQueue {
 	 *
 	 * @param threads number of worker threads; should be greater than 1
 	 */
-	// TODO Modify if necessary(DONE?)
 	public WorkQueue(int threads) {
 		this.queue = new LinkedList<Runnable>();
 		this.workers = new PoolWorker[threads];
@@ -56,22 +54,17 @@ public class WorkQueue {
 		}
 	}
 
-	/*
-	 * TODO Do you really want incrementPending and decrementPending public?
-	 * What could go wrong?
-	 */
-	
 	/**
 	 * Increases the value of pending
 	 */
-	public synchronized void incrementPending() {
+	private synchronized void incrementPending() {
 		this.pending++;
 	}
 
 	/**
 	 * Decreases the value of pending
 	 */
-	public synchronized void decrementPending() {
+	private synchronized void decrementPending() {
 		this.pending--;
 		if (pending == 0) {
 			this.notifyAll();
@@ -84,7 +77,6 @@ public class WorkQueue {
 	 *
 	 * @param r work request (in the form of a {@link Runnable} object)
 	 */
-	// TODO Modify if necessary
 	public void execute(Runnable r) {
 		incrementPending();
 		synchronized (queue) {
@@ -104,14 +96,12 @@ public class WorkQueue {
 		} catch (InterruptedException e) {
 			e.printStackTrace(); // TODO Fix!
 		}
-		// TODO Implement this!
 	}
 
 	/**
 	 * Asks the queue to shutdown. Any unprocessed work will not be finished,
 	 * but threads in-progress will not be interrupted.
 	 */
-	// TODO Modify if necessary
 	public void shutdown() {
 		// safe to do unsynchronized due to volatile keyword
 		shutdown = true;
@@ -126,7 +116,6 @@ public class WorkQueue {
 	 *
 	 * @return number of worker threads
 	 */
-	// TODO Modify if necessary
 	public int size() {
 		return workers.length;
 	}
@@ -139,7 +128,6 @@ public class WorkQueue {
 	 */
 	private class PoolWorker extends Thread {
 
-		// TODO Modify if necessary
 		@Override
 		public void run() {
 			Runnable r = null;
@@ -158,7 +146,6 @@ public class WorkQueue {
 
 					// exit while for one of two reasons:
 					// (a) queue has work, or (b) shutdown has been called
-
 					if (shutdown) {
 						break;
 					}
