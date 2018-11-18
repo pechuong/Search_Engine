@@ -1,7 +1,5 @@
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class ThreadSafeInvertedIndex extends InvertedIndex {
 
@@ -27,12 +25,19 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public void build(String word, String file, int count) {
+		lock.lockReadWrite();
 		add(word, file, count);
+		lock.unlockReadWrite();
 	}
 
 	@Override
 	public List<Result> exactSearch(Set<String> queryLine) {
-		return super.exactSearch(queryLine);
+		lock.lockReadOnly();
+		try {
+			return super.exactSearch(queryLine);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -91,32 +96,11 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		super.addAll(other);
 	}
 
-
-	@Override
-	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
-		lock.lockReadOnly();
-		try {
-			return super.getFiles(word);
-		} finally {
-			lock.unlockReadOnly();
-		}
-	}
-
 	@Override
 	public int getWordCount(String word, String filePath) {
 		lock.lockReadOnly();
 		try {
 			return super.getWordCount(word, filePath);
-		} finally {
-			lock.unlockReadOnly();
-		}
-	}
-
-	@Override
-	public TreeMap<String, Integer> getLocations() {
-		lock.lockReadOnly();
-		try {
-			return super.getLocations();
 		} finally {
 			lock.unlockReadOnly();
 		}
