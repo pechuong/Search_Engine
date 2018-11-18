@@ -165,30 +165,21 @@ public class InvertedIndex {
 	 * @param other The other inverted index to add to the big index
 	 */
 	public void addAll(InvertedIndex other) {
-		/*
-		 * TODO This is the InvertedIndex class. The other object is an InvertedIndex
-		 * object. Within this class you can access private data... both of "this" index
-		 * AND of the "other" index. Meaning...
-		 * 
-		 * for (String word : other.index.keySet())
-		 * 
-		 * ... is possible within this class. You can access other's private data!
-		 */
-		for (String word : other.getWords()) {
+		for (String word : other.index.keySet()) {
 			if (!hasWord(word)) {
-				this.index.put(word, other.getFiles(word));
+				this.index.put(word, other.index.get(word));
 			} else {
-				for (String path : other.getFiles(word).keySet()) {
+				for (String path : other.index.get(word).keySet()) {
 					if (!hasFile(word, path)) {
-						addPosition(word, path, other.getPositions(word, path));
+						addPosition(word, path, other.index.get(word).get(path));
 					} else {
-						getPositions(word, path).addAll(other.getPositions(word, path));
+						index.get(word).get(path).addAll(other.index.get(word).get(path));
 					}
 				}
 			}
 		}
 
-		for (String path : other.getLocations().keySet()) {
+		for (String path : other.location.keySet()) {
 			this.location.put(path, this.location.getOrDefault(path, 0) + other.getLocationCount(path));
 		}
 	}
@@ -269,38 +260,8 @@ public class InvertedIndex {
 	 * TODO
 	 * WHHHHHHHHHHYYYYYYYY are you breaking encapsulation again? Never return
 	 * a private mutable reference, even if its nested inside of a private mutable
-	 * reference. Any of these that return a mutable data structure must be removed. 
+	 * reference. Any of these that return a mutable data structure must be removed.
 	 */
-	
-	/**
-	 * Gets a set of all the words in the inverted index
-	 *
-	 * @return Set<String> set of words in index
-	 */
-	public Set<String> getWords() {
-		return this.index.keySet();
-	}
-
-	/**
-	 * Gets a map of all the file paths under a given word
-	 *
-	 * @param word The word to find all the paths under
-	 * @return A map of all the file paths
-	 */
-	public TreeMap<String, TreeSet<Integer>> getFiles(String word) {
-		return this.index.get(word);
-	}
-
-	/**
-	 * Gets the set of positions the word was found under a file name / path
-	 *
-	 * @param word The word found some number of times
-	 * @param filePath The file path the word was found under
-	 * @return TreeSet<Integer> set of position in the file the word was found in
-	 */
-	public TreeSet<Integer> getPositions(String word, String filePath) {
-		return this.index.get(word).get(filePath);
-	}
 
 	/**
 	 * Gets the number of times a word was found under a file path
@@ -311,15 +272,6 @@ public class InvertedIndex {
 	 */
 	public int getWordCount(String word, String filePath) {
 		return this.index.get(word).get(filePath).size();
-	}
-
-	/**
-	 * Gets the mapping of locations (file path and word count)
-	 *
-	 * @return a map of all the locations and the word count
-	 */
-	public TreeMap<String, Integer> getLocations() {
-		return this.location;
 	}
 
 	/**
