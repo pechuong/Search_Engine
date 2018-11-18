@@ -6,7 +6,7 @@ import java.nio.file.Path;
 public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	/**
-	 * Handles traversing the path and stemming each file to the index
+	 * Handles stemming each file to the index
 	 */
 	public static class FileWork implements Runnable {
 
@@ -37,11 +37,11 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	}
 
 	/**
-	 * Start the traversing and multithreads it
+	 * Start traversing a path and creates new File work when a file is found
 	 *
 	 * @param index The index to build to
+	 * @param queue The workqueue to add file work to
 	 * @param path The path to traverse
-	 * @param threads The number of threads to use
 	 * @throws IOException
 	 */
 	public static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
