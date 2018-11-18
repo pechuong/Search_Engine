@@ -3,6 +3,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -16,8 +17,10 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
  * private data and separate implementations. Does that make sense?
  */
 
-public class ThreadSafeQueryMap extends QueryMap {
+public class ThreadSafeQueryMap implements Query {
 
+	private final TreeMap<String, List<Result>> queryMap;
+	private final InvertedIndex index;
 	private final ReadWriteLock lock;
 
 	/**
@@ -26,7 +29,8 @@ public class ThreadSafeQueryMap extends QueryMap {
 	 * @param index The inverted index that was already created
 	 */
 	public ThreadSafeQueryMap(InvertedIndex index) {
-		super(index);
+		this.queryMap = new TreeMap<>();
+		this.index = index;
 		lock = new ReadWriteLock();
 	}
 
@@ -36,9 +40,9 @@ public class ThreadSafeQueryMap extends QueryMap {
 	 */
 	public static class SearchWork implements Runnable {
 
-		private final QueryMap queryMap;
-		private final TreeSet<String> uniqueWords;
-		private final String queryLine;
+		private final ThreadSafeQueryMap safeQueryMap;
+		private final Stemmer stemmer;
+		private final String line;
 		private final boolean exact;
 
 		/**
@@ -49,28 +53,39 @@ public class ThreadSafeQueryMap extends QueryMap {
 		 * @param queryLine The line of combined query words
 		 * @param exact Boolean deciding whether or not to use exact search
 		 */
-		public SearchWork(QueryMap queryMap, TreeSet<String> uniqueWords, String queryLine, boolean exact) {
-			this.queryMap = queryMap;
-			this.uniqueWords = uniqueWords;
-			this.queryLine = queryLine;
+		public SearchWork(ThreadSafeQueryMap queryMap, Stemmer stemmer, String line, boolean exact) {
+			this.safeQueryMap = queryMap;
+			this.stemmer = stemmer;
+			this.line = line;
 			this.exact = exact;
 		}
 
 		@Override
 		public void run() {
-			synchronized (queryMap) {
+			synchronized (safeQueryMap.queryMap) {
+				TreeSet<String> uniqueWords = new TreeSet<>();
+				for (String word : TextParser.parse(line)) {
+					uniqueWords.add(stemmer.stem(word).toString());
+				}
+
+				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
-				if (!queryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
+
+				if (!safeQueryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
-						searchResults = queryMap.getIndex().exactSearch(uniqueWords);
+						searchResults = safeQueryMap.index.exactSearch(uniqueWords);
 					} else {
-						searchResults = queryMap.getIndex().partialSearch(uniqueWords);
+						searchResults = safeQueryMap.index.partialSearch(uniqueWords);
 					}
-					queryMap.addQuery(queryLine, searchResults);
+					safeQueryMap.addQuery(queryLine, searchResults);
 				}
 			}
 		}
+	}
 
+	@Override
+	public void writeJSON(Path path) throws IOException {
+		ResultsJSON.asArray(queryMap, path);
 	}
 
 	/**
@@ -92,14 +107,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
-				// TODO Pretty much everything that used to be in this while loop should be in the task instead
-				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString());
-				}
-
-				String queryLine = String.join(" ", uniqueWords);
-				queue.execute(new SearchWork(this, uniqueWords, queryLine, exact));
+				queue.execute(new SearchWork(this, stemmer, line, exact));
 			}
 			queue.finish();
 			queue.shutdown();
@@ -109,7 +117,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 	@Override
 	public void addQuery(String search, List<Result> results) {
 		lock.lockReadWrite();
-		super.addQuery(search, results);
+		this.queryMap.put(search, results);
 		lock.unlockReadWrite();
 	}
 
@@ -117,27 +125,16 @@ public class ThreadSafeQueryMap extends QueryMap {
 	public boolean hasQuery(String query) {
 		lock.lockReadOnly();
 		try {
-			return super.hasQuery(query);
+			return this.queryMap.containsKey(query);
 		} finally {
 			lock.unlockReadOnly();
 		}
 	}
 
-	@Override
 	public boolean isEmpty() {
 		lock.lockReadOnly();
 		try {
-			return super.isEmpty();
-		} finally {
-			lock.unlockReadOnly();
-		}
-	}
-
-	@Override
-	public InvertedIndex getIndex() {
-		lock.lockReadOnly();
-		try {
-			return super.getIndex();
+			return queryMap.isEmpty();
 		} finally {
 			lock.unlockReadOnly();
 		}
@@ -147,7 +144,7 @@ public class ThreadSafeQueryMap extends QueryMap {
 	public String toString() {
 		lock.lockReadOnly();
 		try {
-			return super.toString();
+			return this.queryMap.toString();
 		} finally {
 			lock.unlockReadOnly();
 		}
