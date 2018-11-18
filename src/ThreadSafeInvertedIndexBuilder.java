@@ -3,22 +3,15 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/*
- * TODO This multithreading follows the lecture example, because traversing
- * directories was where the "work" was located. But, this project specifically
- * asked you to create a task PER FILE. You need to change the task!
- */
-
 public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	/**
 	 * Handles traversing the path and stemming each file to the index
 	 */
-	public static class DirectoryWork implements Runnable {
+	public static class FileWork implements Runnable {
 
 		private final InvertedIndex index;
 		private final Path path;
-		private final WorkQueue queue;
 
 		/**
 		 * Initializes new directory work (traverse and stem)
@@ -27,27 +20,17 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		 * @param queue The queue to add work to
 		 * @param path The path to traverse or stem
 		 */
-		public DirectoryWork(InvertedIndex index, WorkQueue queue, Path path) {
+		public FileWork(InvertedIndex index, Path path) {
 			this.index = index;
-			this.queue = queue;
 			this.path = path;
 		}
 
 		@Override
 		public void run() {
 			try {
-				if (Files.isDirectory(path)) {
-					try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
-						for (Path file : listing) {
-							queue.execute(new DirectoryWork(index, queue, file));;
-						}
-					}
-				} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-					// TODO This is what each task should do, not the directory traversal.
-					ThreadSafeInvertedIndexBuilder.stemFile(index, path);
-				}
+				stemFile(index, path);
 			} catch (IOException e) {
-				System.out.println("Something went wrong with reading");
+				System.out.println("Error occured with path: " + path.toString());
 			}
 		}
 
@@ -66,12 +49,11 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 			if (Files.isDirectory(path)) {
 				try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
 					for (Path file : listing) {
-						queue.execute(new DirectoryWork(index, queue, file));;
+						traverse(index, queue, file);
 					}
 				}
 			} else if (path.toString().matches("(?i).*\\.te?xt$")) {
-				// TODO This is what each task should do, not the directory traversal.
-				ThreadSafeInvertedIndexBuilder.stemFile(index, path);
+				queue.execute(new FileWork(index, path));;
 			}
 		} catch (IOException e) {
 			System.out.println("Something went wrong with reading");
