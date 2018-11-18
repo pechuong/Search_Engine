@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-// TODO Remove old TODO comments from the homework classes.
-
 public class Driver {
 
 	/**
@@ -14,18 +12,11 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
-		InvertedIndex index;
-		QueryMap queryMap;
 		boolean multiThread = argMap.hasFlag("-threads");
+		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
+		QueryMap queryMap = new QueryMap(index);
+		ThreadSafeQueryMap safeQueryMap = new ThreadSafeQueryMap(index);
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
-
-		if (multiThread) {
-			index = new ThreadSafeInvertedIndex();
-			queryMap = new ThreadSafeQueryMap(index);
-		} else {
-			index = new InvertedIndex();
-			queryMap = new QueryMap(index);
-		}
 
 		/**
 		 *  Traverses and makes inverted index
@@ -67,7 +58,7 @@ public class Driver {
 				try {
 					boolean exact = argMap.hasFlag("-exact");
 					if (multiThread) {
-						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact, numThreads);
+						safeQueryMap.stemQuery(searchFile, exact, numThreads);
 					} else {
 						queryMap.stemQuery(searchFile, exact);
 					}
@@ -83,7 +74,11 @@ public class Driver {
 		if (argMap.hasFlag("-results")) {
 			Path output = argMap.getPath("-results", Paths.get("results.json"));
 			try {
-				queryMap.writeJSON(output);
+				if (multiThread) {
+					safeQueryMap.writeJSON(output);
+				} else {
+					queryMap.writeJSON(output);
+				}
 			} catch (IOException e) {
 				System.out.println("Something went wrong writing search results to: " + output);
 			}
