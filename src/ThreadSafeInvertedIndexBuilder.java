@@ -1,11 +1,7 @@
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import opennlp.tools.stemmer.Stemmer;
-import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 /*
  * TODO This multithreading follows the lecture example, because traversing
@@ -72,7 +68,6 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		queue.shutdown();
 	}
 
-	// TODO Do not reimplement stemFile... reuse InvertedIndexBuilder where possible!
 	/**
 	 * Builds a file to a local index which is added to the overall index
 	 *
@@ -81,24 +76,9 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @throws IOException
 	 */
 	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
-		try (
-				var reader = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8);
-				) {
-			String line;
-			int count = 0;
-			String filePath = inputFile.toString();
-			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			InvertedIndex local = new InvertedIndex();
-
-			while ((line = reader.readLine()) != null) {
-				for (String word : TextParser.parse(line)) {
-					count++;
-					local.build(stemmer.stem(word).toString(), filePath, count);
-				}
-			}
-
-			index.addAll(local);
-		}
+		InvertedIndex local = new InvertedIndex();
+		InvertedIndexBuilder.stemFile(local, inputFile);
+		index.addAll(local);
 	}
 
 }
