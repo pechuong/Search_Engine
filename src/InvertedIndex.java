@@ -256,13 +256,6 @@ public class InvertedIndex {
 		this.location.put(path, this.location.getOrDefault(path, 0) + 1);
 	}
 
-	/*
-	 * TODO
-	 * WHHHHHHHHHHYYYYYYYY are you breaking encapsulation again? Never return
-	 * a private mutable reference, even if its nested inside of a private mutable
-	 * reference. Any of these that return a mutable data structure must be removed.
-	 */
-
 	/**
 	 * Gets the number of times a word was found under a file path
 	 *
