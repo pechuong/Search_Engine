@@ -159,8 +159,7 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * Testing an addAll for inverted index that adds another inverted index
-	 * to the overall big inverted index
+	 * Adds all the content of one inverted index into another inverted index
 	 *
 	 * @param other The other inverted index to add to the big index
 	 */
