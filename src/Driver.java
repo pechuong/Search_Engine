@@ -25,10 +25,7 @@ public class Driver {
 			Path output = argMap.getPath("-path");
 			try {
 				if (multiThread) {
-					WorkQueue queue = new WorkQueue(numThreads);
-					ThreadSafeInvertedIndexBuilder.traverse(index, queue, output);
-					queue.finish();
-					queue.shutdown();
+					ThreadSafeInvertedIndexBuilder.traverse(index, output, numThreads);
 				} else {
 					InvertedIndexBuilder.traverse(index, output);
 				}

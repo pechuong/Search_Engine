@@ -61,6 +61,20 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	}
 
 	/**
+	 * Starts the traversing and makes a workqueue
+	 *
+	 * @param index The big index to build to
+	 * @param path The path to start traversing from
+	 * @param threads The number of threads to use in our workqueue
+	 */
+	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException{
+		WorkQueue queue = new WorkQueue(threads);
+		traverse(index, queue, path);
+		queue.finish();
+		queue.shutdown();
+	}
+
+	/**
 	 * Builds a file to a local index which is added to the overall index
 	 *
 	 * @param index The overall big index to add to
