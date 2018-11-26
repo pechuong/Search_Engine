@@ -9,14 +9,6 @@ import java.util.TreeSet;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
-/*
- * TODO It is hard to get this to work with the extends QueryMap relationship.
- * You really need access to the private data to efficiently synchronize it.
- * I recommend instead you create a QueryMapInterface that is implemented by
- * both QueryMap and ThreadSafeQueryMap, then the classes can each have their own
- * private data and separate implementations. Does that make sense?
- */
-
 public class ThreadSafeQueryMap implements Query {
 
 	private final TreeMap<String, List<Result>> queryMap;
@@ -131,10 +123,11 @@ public class ThreadSafeQueryMap implements Query {
 		}
 	}
 
+	@Override
 	public boolean isEmpty() {
 		lock.lockReadOnly();
 		try {
-			return queryMap.isEmpty();
+			return this.queryMap.isEmpty();
 		} finally {
 			lock.unlockReadOnly();
 		}
