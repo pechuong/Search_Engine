@@ -75,12 +75,6 @@ public class Result implements Comparable<Result> {
 		return this.score;
 	}
 
-	/**
-	 * compareTo function that sorts the Result objects by
-	 * 1.) Score
-	 * 2.) Raw Matches
-	 * 3.) Location (alphabetically)
-	 */
 	@Override
 	public int compareTo(Result o) {
 		int resultScore = Double.compare(o.getScore(), getScore());
