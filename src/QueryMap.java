@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import opennlp.tools.stemmer.Stemmer;
 import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
-public class QueryMap {
+public class QueryMap implements Query {
 
 	private final TreeMap<String, List<Result>> queryMap;
 	private final InvertedIndex index;
@@ -22,12 +22,7 @@ public class QueryMap {
 		this.index = index;
 	}
 
-	/**
-	 * Writes the Query Map to a JSON file given a JSON output path.
-	 *
-	 * @param path The path to write the map to
-	 * @throws IOException
-	 */
+	@Override
 	public void writeJSON(Path path) throws IOException {
 		ResultsJSON.asArray(queryMap, path);
 	}
@@ -69,34 +64,19 @@ public class QueryMap {
 		}
 	}
 
-	/**
-	 * Adds a Query (one search) into the map w/ it's result(s).
-	 *
-	 * @param search The search query made to store in the map
-	 * @param results The list of results to store into the map
-	 */
+	@Override
 	public void addQuery(String search, List<Result> results) {
 		this.queryMap.put(search, results);
 	}
 
-	/**
-	 * Checks the query map for the given query
-	 *
-	 * @param query The query to search for in the map
-	 * @return true if query is in the map
-	 */
+	@Override
 	public boolean hasQuery(String query) {
 		return this.queryMap.containsKey(query);
 	}
 
-	/**
-	 * Checks to see if the Query Map is empty or not.
-	 * This means that no search has been made or stored.
-	 *
-	 * @return true if the Query Map has at least 1 entry.
-	 */
+	@Override
 	public boolean isEmpty() {
-		return (this.queryMap.size() < 1) ? true : false;
+		return this.queryMap.isEmpty();
 	}
 
 	@Override
