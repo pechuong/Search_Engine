@@ -54,7 +54,7 @@ public class ThreadSafeQueryMap implements Query {
 
 		@Override
 		public void run() {
-			synchronized (safeQueryMap.queryMap) {
+			synchronized (safeQueryMap) {
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
 					uniqueWords.add(stemmer.stem(word).toString());
