@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public class HTMLFetcher {
 
+	private static final Pattern HTML_TEST = Pattern.compile("(?is).*?/??html;.*?");
 	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d.\\d (.*?) \\w+?$");
 
 	/**
@@ -22,7 +23,12 @@ public class HTMLFetcher {
 	 * @see HttpsFetcher#fetchURL(URL)
 	 */
 	public static boolean isHTML(Map<String, List<String>> headers) {
-		return headers.get("Content-Type") != null ? headers.get("Content-Type").get(0).split(" ")[0].matches("(?i).*?html;$") : false;
+		if (headers.get("Content-Type") == null) {
+			return false;
+		}
+		Matcher matcher = HTML_TEST.matcher(headers.get("Content-Type").get(0));
+		return matcher.matches();
+		//return headers.get("Content-Type") != null ? headers.get("Content-Type").get(0).split(" ")[0].matches("(?i).*?html;$") : false;
 	}
 
 	/**
