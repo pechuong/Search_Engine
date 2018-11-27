@@ -12,7 +12,7 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
-		boolean multiThread = argMap.hasFlag("-threads");
+		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
 		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
 		var queryMap = multiThread ? new ThreadSafeQueryMap(index) : new QueryMap(index);
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
