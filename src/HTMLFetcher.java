@@ -3,8 +3,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HTMLFetcher {
+
+	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d.\\d (.*?) \\w+?$");
 
 	/**
 	 * Given a map of headers (as returned either by {@link URLConnection#getHeaderFields()}
@@ -33,7 +37,12 @@ public class HTMLFetcher {
 	 * @see HttpsFetcher#fetchURL(URL)
 	 */
 	public static int getStatusCode(Map<String, List<String>> headers) {
-		return headers.get(null) != null ? Integer.parseInt(headers.get(null).get(0).split(" ")[1]) : -1;
+		if (headers.get(null) == null) {
+			return -1;
+		}
+		Matcher matcher = STATUS_CODE.matcher(headers.get(null).get(0));
+		return matcher.find() ? Integer.parseInt(matcher.group(1)) : -1;
+		//return headers.get(null) != null ? Integer.parseInt(headers.get(null).get(0).split(" ")[1]) : -1;
 	}
 
 	/**
