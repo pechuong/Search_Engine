@@ -27,7 +27,7 @@ public class HTMLFetcher {
 			return false;
 		}
 		Matcher matcher = HTML_TEST.matcher(headers.get("Content-Type").get(0));
-		return matcher.matches();
+		return matcher.find();
 		//return headers.get("Content-Type") != null ? headers.get("Content-Type").get(0).split(" ")[0].matches("(?i).*?html;$") : false;
 	}
 
