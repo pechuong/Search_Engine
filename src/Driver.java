@@ -13,9 +13,11 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
+		int limit = Integer.parseInt(argMap.getString("-limit", "50"));
+		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
 		var queryMap = multiThread ? new ThreadSafeQueryMap(index) : new QueryMap(index);
-		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
+		WebCrawler crawler = new WebCrawler(index, argMap.getString("-seed"), limit, numThreads);
 
 		/**
 		 *  Traverses and makes inverted index
