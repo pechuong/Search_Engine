@@ -51,33 +51,8 @@ public class ThreadSafeQueryMap implements Query {
 		@Override
 		public void run() {
 			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
-			/*
 			TreeSet<String> uniqueWords = new TreeSet<>();
-			for (String word : TextParser.parse(line)) {
-				uniqueWords.add(stemmer.stem(word).toString());
-			}
 
-			String queryLine = String.join(" ", uniqueWords);
-			List<Result> searchResults;
-
-			sync(queryMap) {
-				if (safeQueryMap.hasQuery(queryLine) || uniqueWords.isEmpty) {
-					return
-				}
-			}
-
-			if (exact) {
-				searchResults = index.exactSearch(uniqueWords);
-			} else {
-				searchResults = index.partialSearch(uniqueWords);
-			}
-
-			sync(queryMap) {
-				put
-			}
-			 */
-
-			TreeSet<String> uniqueWords = new TreeSet<>();
 			for (String word : TextParser.parse(line)) {
 				uniqueWords.add(stemmer.stem(word).toString());
 			}
@@ -86,7 +61,7 @@ public class ThreadSafeQueryMap implements Query {
 			List<Result> searchResults;
 
 			synchronized (queryMap) {
-				if (hasQuery(queryLine) && uniqueWords.isEmpty()) {
+				if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
 					return;
 				}
 			}
@@ -97,9 +72,7 @@ public class ThreadSafeQueryMap implements Query {
 				searchResults = index.partialSearch(uniqueWords);
 			}
 
-			synchronized (queryMap) {
-				addQuery(queryLine, searchResults);
-			}
+			addQuery(queryLine, searchResults);
 		}
 	}
 
