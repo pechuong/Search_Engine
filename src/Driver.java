@@ -31,6 +31,8 @@ public class Driver {
 			limit = 50;
 		}
 
+		System.out.println("My limit is: " + limit);
+		System.out.println("limit from argmap is: " + argMap.getString("-limit"));
 		//!argMap.hasValue("-flags") ? Integer.parseInt(argMap.getString("-limit")) : 50;
 		WebCrawler crawler = new WebCrawler(index, argMap.getString("-url"), limit, numThreads);
 

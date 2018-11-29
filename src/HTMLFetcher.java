@@ -86,6 +86,8 @@ public class HTMLFetcher {
 	public static String fetchHTML(URL url, int redirects) throws IOException {
 		Map<String, List<String>> headers = HttpsFetcher.fetchURL(url);
 		int statusCode = getStatusCode(headers);
+		System.out.println("Status Code: " + statusCode);
+		System.out.println("Redirects: " + redirects);
 		if (isRedirect(headers)) {
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
@@ -99,6 +101,8 @@ public class HTMLFetcher {
 				}
 				allHTML.append(last);
 				return allHTML.toString();
+			} else {
+				return null;
 			}
 		}
 		return null;

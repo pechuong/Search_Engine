@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import opennlp.tools.stemmer.Stemmer;
@@ -46,7 +45,6 @@ public class WebCrawler {
 							queue.execute(new LinkWork(webCrawl, queue, link));
 						}
 						webCrawl.stemHTML(HTMLCleaner.stripHTML(html), url);
-						System.out.println("Finished stemming HTML");
 					}
 				} catch (IOException e) {
 					System.out.println("Something went wrong with: " + url + System.lineSeparator() + e);
@@ -101,19 +99,12 @@ public class WebCrawler {
 		Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 		int count = 0;
 
-		//System.out.println("Starting stem");
-		//System.out.println(html);
-		System.out.println(Arrays.toString(TextParser.parse(html)));
-
 		for (String word : TextParser.parse(html)) {
-			System.out.println(word);
 			count++;
 			local.add(stemmer.stem(word).toString(), filePath, count);
 		}
 
-		//System.out.println("Adding to big inverted index");
 		index.addAll(local);
-		//System.out.println("Finished adding to big inverted index");
 	}
 
 }
