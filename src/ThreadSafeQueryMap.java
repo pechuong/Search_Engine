@@ -82,15 +82,7 @@ public class ThreadSafeQueryMap implements Query {
 		ResultsJSON.asArray(queryMap, path);
 	}
 
-	/**
-	 * Stems the files of queries and performs searches on each line of query
-	 * (Multi-threaded version)
-	 *
-	 * @param queryFile The files of queries
-	 * @param exact Whether or not to use exact search or partial search
-	 * @param threads The number of threads to run the search with
-	 * @throws IOException
-	 */
+	@Override
 	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);

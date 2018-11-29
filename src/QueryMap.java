@@ -27,14 +27,7 @@ public class QueryMap implements Query {
 		ResultsJSON.asArray(queryMap, path);
 	}
 
-	/**
-	 * Stems the query file, performs a search in the index, and then
-	 * stores the results of the search
-	 *
-	 * @param queryFile The file with all the queries to perform a search on
-	 * @param exact Determines if an exact search should be performed or not
-	 * @throws IOException If something goes wrong when trying to read query file
-	 */
+	@Override
 	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
