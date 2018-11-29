@@ -78,8 +78,9 @@ public class ThreadSafeQueryMap implements Query {
 
 	@Override
 	public void writeJSON(Path path) throws IOException {
-		// TODO protect
-		ResultsJSON.asArray(queryMap, path);
+		synchronized (queryMap) {
+			ResultsJSON.asArray(queryMap, path);
+		}
 	}
 
 	@Override
