@@ -40,17 +40,6 @@ public class InvertedIndex {
 	}
 
 	/**
-	 * Builds / adds to the inverted index
-	 *
-	 * @param word The word to add to the index
-	 * @param file The file the word was stemmed from
-	 * @param count The position the word is found in from the file
-	 */
-	public void build(String word, String file, int count) {
-		add(word, file, count);
-	}
-
-	/**
 	 * Performs an exact search on index given a set of query words
 	 *
 	 * @param queryLine set of query words to perform one search on
@@ -165,7 +154,6 @@ public class InvertedIndex {
 	 */
 	public void addAll(InvertedIndex other) {
 		for (String word : other.index.keySet()) {
-			// TODO Don't use your own methods
 			if (!index.containsKey(word)) {
 				this.index.put(word, other.index.get(word));
 			} else {

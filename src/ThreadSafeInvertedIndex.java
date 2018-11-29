@@ -37,14 +37,6 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		}
 	}
 
-	// TODO Remove this method in both places
-	@Override
-	public void build(String word, String file, int count) {
-		lock.lockReadWrite();
-		super.build(word, file, count);
-		lock.unlockReadWrite();
-	}
-
 	@Override
 	public List<Result> exactSearch(Set<String> queryLine) {
 		lock.lockReadOnly();
