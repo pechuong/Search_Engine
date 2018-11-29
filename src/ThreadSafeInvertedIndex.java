@@ -15,8 +15,6 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock = new ReadWriteLock();
 	}
 
-	// TODO Always use try/finally
-
 	@Override
 	public void writeIndex(Path path) throws IOException {
 		lock.lockReadOnly();
