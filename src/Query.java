@@ -36,6 +36,8 @@ public interface Query {
 	 */
 	public boolean isEmpty();
 
+	// TODO public void stemQuery(Path queryFile, boolean exact) throws IOException
+	
 	@Override
 	public String toString();
 

@@ -36,6 +36,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
+	// TODO Private
 	/**
 	 * Start traversing a path and creates new File work when a file is found
 	 *
