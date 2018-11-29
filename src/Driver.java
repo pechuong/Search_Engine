@@ -23,7 +23,7 @@ public class Driver {
 		var queryMap;
 		
 		if (-threads) {
-			ThreadSafeInvertedIndex threadSafe = new ThreadSafe...
+			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex(...)
 			index = threadSafe;
 			
 			queryMap = new ThreadSafeQuerymap(threadSafe, numThreads)
