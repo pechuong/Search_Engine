@@ -60,10 +60,8 @@ public class ThreadSafeQueryMap implements Query {
 			String queryLine = String.join(" ", uniqueWords);
 			List<Result> searchResults;
 
-			synchronized (queryMap) {
-				if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
-					return;
-				}
+			if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
+				return;
 			}
 
 			if (exact) {
@@ -72,9 +70,7 @@ public class ThreadSafeQueryMap implements Query {
 				searchResults = index.partialSearch(uniqueWords);
 			}
 
-			synchronized (queryMap) {
-				addQuery(queryLine, searchResults);
-			}
+			addQuery(queryLine, searchResults);
 		}
 	}
 
