@@ -19,7 +19,7 @@ public class Driver {
 		/*
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;
-		var queryMap;
+		var queryMap;    // TODO ask sophie about this
 
 		if (-threads) {
 			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex(...)
