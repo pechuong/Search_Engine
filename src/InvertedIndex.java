@@ -180,10 +180,10 @@ public class InvertedIndex {
 	 * @param position The position that word is right now
 	 */
 	public void add(String word, String location, int position) {
-		if (!hasWord(word)) {
+		if (!index.containsKey(word)) {
 			addWord(word);
 		}
-		if (!hasFile(word, location)) {
+		if (!index.get(word).containsKey(location)) {
 			addFile(word, location);
 		}
 		addPosition(word, location, position);
