@@ -77,24 +77,28 @@ public class ThreadSafeQueryMap implements Query {
 			}
 			 */
 
+			TreeSet<String> uniqueWords = new TreeSet<>();
+			for (String word : TextParser.parse(line)) {
+				uniqueWords.add(stemmer.stem(word).toString());
+			}
+
+			String queryLine = String.join(" ", uniqueWords);
+			List<Result> searchResults;
 
 			synchronized (queryMap) {
-				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString());
+				if (hasQuery(queryLine) && uniqueWords.isEmpty()) {
+					return;
 				}
+			}
 
-				String queryLine = String.join(" ", uniqueWords);
-				List<Result> searchResults;
+			if (exact) {
+				searchResults = index.exactSearch(uniqueWords);
+			} else {
+				searchResults = index.partialSearch(uniqueWords);
+			}
 
-				if (!hasQuery(queryLine) && uniqueWords.size() > 0) {
-					if (exact) {
-						searchResults = index.exactSearch(uniqueWords);
-					} else {
-						searchResults = index.partialSearch(uniqueWords);
-					}
-					addQuery(queryLine, searchResults);
-				}
+			synchronized (queryMap) {
+				addQuery(queryLine, searchResults);
 			}
 		}
 	}
