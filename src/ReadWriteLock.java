@@ -29,6 +29,7 @@ public class ReadWriteLock {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
+			// TODO Not user-friendly.. but good debug? Could just log it.
 			System.out.println("Thread " + this.toString() + " woke up in lockReadOnly()");
 		}
 		readers++;

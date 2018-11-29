@@ -12,28 +12,32 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class ThreadSafeQueryMap implements Query {
 
 	private final TreeMap<String, List<Result>> queryMap;
-	private final InvertedIndex index;
+	private final InvertedIndex index; // TODO thread-safe
 	private final ReadWriteLock lock;
 
+	// TODO Add a private final int threads;
+	
 	/**
 	 * Initializes a ThreadSafe Query Map
 	 *
 	 * @param index The inverted index that was already created
 	 */
-	public ThreadSafeQueryMap(InvertedIndex index) {
+	// TODO Pass # of threads to the constructor
+	public ThreadSafeQueryMap(InvertedIndex index) { // TODO thread-safe
 		this.queryMap = new TreeMap<>();
 		this.index = index;
-		lock = new ReadWriteLock();
+		lock = new ReadWriteLock(); // TODO Remove, use synchronized (queryMap) instead
 	}
 
+	// TODO Make non-static, remove passing around the references to the outer instance members
 	/**
 	 * Handles all of the searching the will be performed on the
 	 * inverted index
 	 */
 	public static class SearchWork implements Runnable {
 
-		private final ThreadSafeQueryMap safeQueryMap;
-		private final Stemmer stemmer;
+		private final ThreadSafeQueryMap safeQueryMap; // TODO Remove
+		private final Stemmer stemmer; // TODO Remove
 		private final String line;
 		private final boolean exact;
 
@@ -54,6 +58,34 @@ public class ThreadSafeQueryMap implements Query {
 
 		@Override
 		public void run() {
+			// TODO Create a stemmer here
+			/*
+			TreeSet<String> uniqueWords = new TreeSet<>();
+			for (String word : TextParser.parse(line)) {
+				uniqueWords.add(stemmer.stem(word).toString());
+			}
+	
+			String queryLine = String.join(" ", uniqueWords);
+			List<Result> searchResults;
+			
+			sync(queryMap) {
+				if (safeQueryMap.hasQuery(queryLine) || uniqueWords.isEmpty) {
+					return
+				}
+			}
+			
+			if (exact) {
+				searchResults = index.exactSearch(uniqueWords);
+			} else {
+				searchResults = index.partialSearch(uniqueWords);
+			}
+			
+			sync(queryMap) {
+				put
+			}
+			 */
+			
+			
 			synchronized (safeQueryMap.queryMap) {
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
@@ -77,6 +109,7 @@ public class ThreadSafeQueryMap implements Query {
 
 	@Override
 	public void writeJSON(Path path) throws IOException {
+		// TODO protect
 		ResultsJSON.asArray(queryMap, path);
 	}
 
@@ -89,6 +122,7 @@ public class ThreadSafeQueryMap implements Query {
 	 * @param threads The number of threads to run the search with
 	 * @throws IOException
 	 */
+	// TODO Remove threads parameter
 	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
