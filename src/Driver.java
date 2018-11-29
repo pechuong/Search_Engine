@@ -13,27 +13,27 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		boolean multiThread = argMap.hasFlag("-threads");
-		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
-		var queryMap = multiThread ? new ThreadSafeQueryMap(index) : new QueryMap(index);
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
+		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
+		var queryMap = multiThread ? new ThreadSafeQueryMap((ThreadSafeInvertedIndex)index, numThreads) : new QueryMap(index);
 
 		/*
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;
 		var queryMap;
-		
+
 		if (-threads) {
 			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex(...)
 			index = threadSafe;
-			
+
 			queryMap = new ThreadSafeQuerymap(threadSafe, numThreads)
 		}
 		else {
 			...
 		}
-		
-		*/
-		
+
+		 */
+
 		/**
 		 *  Traverses and makes inverted index
 		 */
@@ -70,11 +70,11 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				try {
 					boolean exact = argMap.hasFlag("-exact");
-					
+
 					// TODO queryMap.stemQuery(...)
-					
+
 					if (multiThread) {
-						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact, numThreads);
+						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact);
 					} else {
 						((QueryMap)queryMap).stemQuery(searchFile, exact);
 					}
@@ -90,13 +90,7 @@ public class Driver {
 		if (argMap.hasFlag("-results")) {
 			Path output = argMap.getPath("-results", Paths.get("results.json"));
 			try {
-				// TODO Just this: queryMap.writeJSON(output);
-				
-				if (multiThread) {
-					queryMap.writeJSON(output);
-				} else {
-					queryMap.writeJSON(output);
-				}
+				queryMap.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Something went wrong writing search results to: " + output);
 			}
