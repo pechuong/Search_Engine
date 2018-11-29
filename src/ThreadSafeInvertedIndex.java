@@ -30,13 +30,6 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	}
 
 	@Override
-	public void build(String word, String file, int count) {
-		lock.lockReadWrite();
-		super.build(word, file, count);
-		lock.unlockReadWrite();
-	}
-
-	@Override
 	public List<Result> exactSearch(Set<String> queryLine) {
 		lock.lockReadOnly();
 		try {
@@ -106,9 +99,9 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 
 	@Override
 	public void addAll(InvertedIndex other) {
-		lock.lockReadOnly();
+		lock.lockReadWrite();
 		super.addAll(other);
-		lock.unlockReadOnly();
+		lock.unlockReadWrite();
 	}
 
 	@Override

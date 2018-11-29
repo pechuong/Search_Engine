@@ -20,13 +20,11 @@ public class Driver {
 
 		if (argMap.hasFlag("-limit")) {
 			try {
-				if (argMap.hasValue("-limit")) {
-					limit = Integer.parseInt(argMap.getString("limit"));
-				} else {
-					limit = 50;
-				}
+				limit = Integer.parseInt(argMap.getString("-limit"));
 			} catch (NumberFormatException e) {
 				System.out.println("Invalid value for limit.. defaulting to 50");
+				limit = 50;
+			} catch (Exception e) {
 				limit = 50;
 			}
 		} else {

@@ -51,7 +51,7 @@ public class InvertedIndexBuilder {
 			while ((line = reader.readLine()) != null) {
 				for (String word : TextParser.parse(line)) {
 					count++;
-					index.build(stemmer.stem(word).toString(), filePath, count);
+					index.add(stemmer.stem(word).toString(), filePath, count);
 				}
 			}
 		}
