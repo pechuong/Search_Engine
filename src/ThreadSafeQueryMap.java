@@ -12,32 +12,26 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class ThreadSafeQueryMap implements Query {
 
 	private final TreeMap<String, List<Result>> queryMap;
-	private final InvertedIndex index; // TODO thread-safe
-	private final ReadWriteLock lock;
+	private final ThreadSafeInvertedIndex index;
+	private final int threads;
 
-	// TODO Add a private final int threads;
-	
 	/**
 	 * Initializes a ThreadSafe Query Map
 	 *
 	 * @param index The inverted index that was already created
 	 */
-	// TODO Pass # of threads to the constructor
-	public ThreadSafeQueryMap(InvertedIndex index) { // TODO thread-safe
+	public ThreadSafeQueryMap(ThreadSafeInvertedIndex index, int threads) {
 		this.queryMap = new TreeMap<>();
 		this.index = index;
-		lock = new ReadWriteLock(); // TODO Remove, use synchronized (queryMap) instead
+		this.threads = threads;
 	}
 
-	// TODO Make non-static, remove passing around the references to the outer instance members
 	/**
 	 * Handles all of the searching the will be performed on the
 	 * inverted index
 	 */
-	public static class SearchWork implements Runnable {
+	public class SearchWork implements Runnable {
 
-		private final ThreadSafeQueryMap safeQueryMap; // TODO Remove
-		private final Stemmer stemmer; // TODO Remove
 		private final String line;
 		private final boolean exact;
 
@@ -49,44 +43,42 @@ public class ThreadSafeQueryMap implements Query {
 		 * @param queryLine The line of combined query words
 		 * @param exact Boolean deciding whether or not to use exact search
 		 */
-		public SearchWork(ThreadSafeQueryMap queryMap, Stemmer stemmer, String line, boolean exact) {
-			this.safeQueryMap = queryMap;
-			this.stemmer = stemmer;
+		public SearchWork(String line, boolean exact) {
 			this.line = line;
 			this.exact = exact;
 		}
 
 		@Override
 		public void run() {
-			// TODO Create a stemmer here
+			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			/*
 			TreeSet<String> uniqueWords = new TreeSet<>();
 			for (String word : TextParser.parse(line)) {
 				uniqueWords.add(stemmer.stem(word).toString());
 			}
-	
+
 			String queryLine = String.join(" ", uniqueWords);
 			List<Result> searchResults;
-			
+
 			sync(queryMap) {
 				if (safeQueryMap.hasQuery(queryLine) || uniqueWords.isEmpty) {
 					return
 				}
 			}
-			
+
 			if (exact) {
 				searchResults = index.exactSearch(uniqueWords);
 			} else {
 				searchResults = index.partialSearch(uniqueWords);
 			}
-			
+
 			sync(queryMap) {
 				put
 			}
 			 */
-			
-			
-			synchronized (safeQueryMap.queryMap) {
+
+
+			synchronized (queryMap) {
 				TreeSet<String> uniqueWords = new TreeSet<>();
 				for (String word : TextParser.parse(line)) {
 					uniqueWords.add(stemmer.stem(word).toString());
@@ -95,13 +87,13 @@ public class ThreadSafeQueryMap implements Query {
 				String queryLine = String.join(" ", uniqueWords);
 				List<Result> searchResults;
 
-				if (!safeQueryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
+				if (!hasQuery(queryLine) && uniqueWords.size() > 0) {
 					if (exact) {
-						searchResults = safeQueryMap.index.exactSearch(uniqueWords);
+						searchResults = index.exactSearch(uniqueWords);
 					} else {
-						searchResults = safeQueryMap.index.partialSearch(uniqueWords);
+						searchResults = index.partialSearch(uniqueWords);
 					}
-					safeQueryMap.addQuery(queryLine, searchResults);
+					addQuery(queryLine, searchResults);
 				}
 			}
 		}
@@ -122,18 +114,16 @@ public class ThreadSafeQueryMap implements Query {
 	 * @param threads The number of threads to run the search with
 	 * @throws IOException
 	 */
-	// TODO Remove threads parameter
-	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
 
 			String line;
-			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
-				queue.execute(new SearchWork(this, stemmer, line, exact));
+				queue.execute(new SearchWork(line, exact));
 			}
 			queue.finish();
 			queue.shutdown();
@@ -142,38 +132,29 @@ public class ThreadSafeQueryMap implements Query {
 
 	@Override
 	public void addQuery(String search, List<Result> results) {
-		lock.lockReadWrite();
-		this.queryMap.put(search, results);
-		lock.unlockReadWrite();
+		synchronized(queryMap) {
+			this.queryMap.put(search, results);
+		}
 	}
 
 	@Override
 	public boolean hasQuery(String query) {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.containsKey(query);
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
 	@Override
 	public boolean isEmpty() {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.isEmpty();
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
 	@Override
 	public String toString() {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.toString();
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 }
