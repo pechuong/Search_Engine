@@ -13,11 +13,29 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
-		int limit = Integer.parseInt(argMap.getString("-limit", "50"));
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
 		var queryMap = multiThread ? new ThreadSafeQueryMap(index) : new QueryMap(index);
-		WebCrawler crawler = new WebCrawler(index, argMap.getString("-seed"), limit, numThreads);
+		int limit;
+
+		if (argMap.hasFlag("-limit")) {
+			try {
+				if (argMap.hasValue("-limit")) {
+					limit = Integer.parseInt(argMap.getString("limit"));
+				} else {
+					limit = 50;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid value for limit.. defaulting to 50");
+				limit = 50;
+			}
+		} else {
+			limit = 50;
+		}
+
+		//!argMap.hasValue("-flags") ? Integer.parseInt(argMap.getString("-limit")) : 50;
+		WebCrawler crawler = new WebCrawler(index, argMap.getString("-url"), limit, numThreads);
+
 
 		/**
 		 *  Traverses and makes inverted index
@@ -34,6 +52,7 @@ public class Driver {
 				System.out.println("Unable to build from: " + output);
 			}
 		}
+
 
 		/**
 		 * Outputs inverted index to Json

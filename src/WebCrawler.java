@@ -3,6 +3,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import opennlp.tools.stemmer.Stemmer;
+import opennlp.tools.stemmer.snowball.SnowballStemmer;
+
 public class WebCrawler {
 
 	private final InvertedIndex index;
@@ -15,6 +18,7 @@ public class WebCrawler {
 		this.links = new HashMap<>();
 		this.limit = limit;
 		this.lock = new ReadWriteLock();
+		System.out.println(Url);
 		crawl(Url, threads);
 	}
 
@@ -32,7 +36,7 @@ public class WebCrawler {
 
 		@Override
 		public void run() {
-			if (!webCrawl.isFull()) {
+			if (webCrawl.hasSpace()) {
 				try {
 					String html = HTMLFetcher.fetchHTML(url, 3);
 					if (html != null) {
@@ -40,7 +44,7 @@ public class WebCrawler {
 						for (URL link : LinkParser.listLinks(url, html)) {
 							queue.execute(new LinkWork(webCrawl, queue, link));
 						}
-						HTMLCleaner.stripHTML(html);
+						webCrawl.stemHTML(HTMLCleaner.stripHTML(html), url);
 					}
 				} catch (IOException e) {
 					System.out.println("Something went wrong with: " + url + System.lineSeparator() + e);
@@ -57,7 +61,7 @@ public class WebCrawler {
 	public void crawl(String url, int threads) {
 		WorkQueue queue = new WorkQueue(threads);
 		try {
-			crawl(LinkParser.clean(new URL(url)));
+			queue.execute(new LinkWork(this, queue, LinkParser.clean(new URL(url))));
 		} catch (IOException e) {
 			System.out.println("Something went wrong with url: " + url);
 		}
@@ -80,7 +84,7 @@ public class WebCrawler {
 		}
 	}
 
-	public boolean isFull() {
+	public boolean hasSpace() {
 		lock.lockReadOnly();
 		try {
 			return links.size() < limit;
@@ -90,7 +94,17 @@ public class WebCrawler {
 	}
 
 	public void stemHTML(String html, URL url) {
+		InvertedIndex local = new ThreadSafeInvertedIndex();
+		String filePath = url.toString();
+		Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+		int count = 0;
 
+		for (String word : TextParser.parse(html)) {
+			count++;
+			local.build(stemmer.stem(word).toString(), filePath, count);
+		}
+
+		index.addAll(local);
 	}
 
 }
