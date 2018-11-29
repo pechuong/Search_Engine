@@ -12,28 +12,26 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class ThreadSafeQueryMap implements Query {
 
 	private final TreeMap<String, List<Result>> queryMap;
-	private final InvertedIndex index;
-	private final ReadWriteLock lock;
+	private final ThreadSafeInvertedIndex index;
+	private final int threads;
 
 	/**
 	 * Initializes a ThreadSafe Query Map
 	 *
 	 * @param index The inverted index that was already created
 	 */
-	public ThreadSafeQueryMap(InvertedIndex index) {
+	public ThreadSafeQueryMap(ThreadSafeInvertedIndex index, int threads) {
 		this.queryMap = new TreeMap<>();
 		this.index = index;
-		lock = new ReadWriteLock();
+		this.threads = threads;
 	}
 
 	/**
 	 * Handles all of the searching the will be performed on the
 	 * inverted index
 	 */
-	public static class SearchWork implements Runnable {
+	public class SearchWork implements Runnable {
 
-		private final ThreadSafeQueryMap safeQueryMap;
-		private final Stemmer stemmer;
 		private final String line;
 		private final boolean exact;
 
@@ -45,38 +43,44 @@ public class ThreadSafeQueryMap implements Query {
 		 * @param queryLine The line of combined query words
 		 * @param exact Boolean deciding whether or not to use exact search
 		 */
-		public SearchWork(ThreadSafeQueryMap queryMap, Stemmer stemmer, String line, boolean exact) {
-			this.safeQueryMap = queryMap;
-			this.stemmer = stemmer;
+		public SearchWork(String line, boolean exact) {
 			this.line = line;
 			this.exact = exact;
 		}
 
 		@Override
 		public void run() {
-			synchronized (safeQueryMap.queryMap) {
-				TreeSet<String> uniqueWords = new TreeSet<>();
-				for (String word : TextParser.parse(line)) {
-					uniqueWords.add(stemmer.stem(word).toString());
-				}
+			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
+			TreeSet<String> uniqueWords = new TreeSet<>();
 
-				String queryLine = String.join(" ", uniqueWords);
-				List<Result> searchResults;
+			for (String word : TextParser.parse(line)) {
+				uniqueWords.add(stemmer.stem(word).toString());
+			}
 
-				if (!safeQueryMap.hasQuery(queryLine) && uniqueWords.size() > 0) {
-					if (exact) {
-						searchResults = safeQueryMap.index.exactSearch(uniqueWords);
-					} else {
-						searchResults = safeQueryMap.index.partialSearch(uniqueWords);
-					}
-					safeQueryMap.addQuery(queryLine, searchResults);
+			String queryLine = String.join(" ", uniqueWords);
+			List<Result> searchResults;
+
+			synchronized (queryMap) {
+				if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
+					return;
 				}
+			}
+
+			if (exact) {
+				searchResults = index.exactSearch(uniqueWords);
+			} else {
+				searchResults = index.partialSearch(uniqueWords);
+			}
+
+			synchronized (queryMap) {
+				addQuery(queryLine, searchResults);
 			}
 		}
 	}
 
 	@Override
 	public void writeJSON(Path path) throws IOException {
+		// TODO protect
 		ResultsJSON.asArray(queryMap, path);
 	}
 
@@ -89,17 +93,16 @@ public class ThreadSafeQueryMap implements Query {
 	 * @param threads The number of threads to run the search with
 	 * @throws IOException
 	 */
-	public void stemQuery(Path queryFile, boolean exact, int threads) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException {
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
 
 			String line;
-			Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 			WorkQueue queue = new WorkQueue(threads);
 
 			while ((line = reader.readLine()) != null) {
-				queue.execute(new SearchWork(this, stemmer, line, exact));
+				queue.execute(new SearchWork(line, exact));
 			}
 			queue.finish();
 			queue.shutdown();
@@ -108,38 +111,29 @@ public class ThreadSafeQueryMap implements Query {
 
 	@Override
 	public void addQuery(String search, List<Result> results) {
-		lock.lockReadWrite();
-		this.queryMap.put(search, results);
-		lock.unlockReadWrite();
+		synchronized(queryMap) {
+			this.queryMap.put(search, results);
+		}
 	}
 
 	@Override
 	public boolean hasQuery(String query) {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.containsKey(query);
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
 	@Override
 	public boolean isEmpty() {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.isEmpty();
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
 	@Override
 	public String toString() {
-		lock.lockReadOnly();
-		try {
+		synchronized(queryMap) {
 			return this.queryMap.toString();
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 }

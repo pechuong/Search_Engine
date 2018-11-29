@@ -15,7 +15,7 @@ public class Driver {
 		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
-		var queryMap = multiThread ? new ThreadSafeQueryMap(index) : new QueryMap(index);
+		var queryMap = multiThread ? new ThreadSafeQueryMap((ThreadSafeInvertedIndex)index, numThreads) : new QueryMap(index);
 		int limit;
 
 		if (argMap.hasFlag("-limit")) {
@@ -75,7 +75,7 @@ public class Driver {
 				try {
 					boolean exact = argMap.hasFlag("-exact");
 					if (multiThread) {
-						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact, numThreads);
+						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact);
 					} else {
 						((QueryMap)queryMap).stemQuery(searchFile, exact);
 					}
