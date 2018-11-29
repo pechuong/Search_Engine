@@ -166,12 +166,11 @@ public class InvertedIndex {
 	public void addAll(InvertedIndex other) {
 		for (String word : other.index.keySet()) {
 			// TODO Don't use your own methods
-			// TODO if (this.index.containsKey(...))
-			if (!hasWord(word)) {
+			if (!index.containsKey(word)) {
 				this.index.put(word, other.index.get(word));
 			} else {
 				for (String path : other.index.get(word).keySet()) {
-					if (!hasFile(word, path)) { // TODO Fix
+					if (!index.get(word).containsKey(path)) {
 						index.get(word).put(path, other.index.get(word).get(path));
 					} else {
 						index.get(word).get(path).addAll(other.index.get(word).get(path));
