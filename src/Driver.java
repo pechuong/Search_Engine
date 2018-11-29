@@ -14,24 +14,17 @@ public class Driver {
 		ArgumentMap argMap = new ArgumentMap(args);
 		boolean multiThread = argMap.hasFlag("-threads");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
-		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
-		var queryMap = multiThread ? new ThreadSafeQueryMap((ThreadSafeInvertedIndex)index, numThreads) : new QueryMap(index);
-		/*
-		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;
-		var queryMap;    // TODO ask sophie about this
+		Query queryMap;
 
-		if (-threads) {
-			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex(...)
+		if (multiThread) {
+			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex();
 			index = threadSafe;
-
-			queryMap = new ThreadSafeQuerymap(threadSafe, numThreads)
+			queryMap = new ThreadSafeQueryMap(threadSafe, numThreads);
+		} else {
+			index = new InvertedIndex();
+			queryMap = new QueryMap(index);
 		}
-		else {
-			...
-		}
-
-		 */
 
 		/**
 		 *  Traverses and makes inverted index
@@ -69,14 +62,7 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				try {
 					boolean exact = argMap.hasFlag("-exact");
-
-					// TODO queryMap.stemQuery(...)
-
-					if (multiThread) {
-						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact);
-					} else {
-						((QueryMap)queryMap).stemQuery(searchFile, exact);
-					}
+					queryMap.stemQuery(searchFile, exact);
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
 				}
