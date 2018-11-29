@@ -16,7 +16,6 @@ public class Driver {
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
 		var queryMap = multiThread ? new ThreadSafeQueryMap((ThreadSafeInvertedIndex)index, numThreads) : new QueryMap(index);
-
 		/*
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;

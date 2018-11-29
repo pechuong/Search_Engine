@@ -159,7 +159,6 @@ public class WorkQueue {
 				}
 				catch (RuntimeException ex) {
 					// catch runtime exceptions to avoid leaking threads
-					// TODO Have to figure out why search causes this output!
 					System.err.println("Warning: Work queue encountered an exception while running.");
 				}
 				decrementPending();
