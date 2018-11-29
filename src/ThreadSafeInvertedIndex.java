@@ -14,21 +14,27 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		super();
 		lock = new ReadWriteLock();
 	}
-	
+
 	// TODO Always use try/finally
 
 	@Override
 	public void writeIndex(Path path) throws IOException {
 		lock.lockReadOnly();
-		super.writeIndex(path);
-		lock.unlockReadOnly();
+		try {
+			super.writeIndex(path);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
 	public void writeLocation(Path output) throws IOException {
 		lock.lockReadOnly();
-		super.writeLocation(output);
-		lock.unlockReadOnly();
+		try {
+			super.writeLocation(output);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	// TODO Remove this method in both places
@@ -103,16 +109,21 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	@Override
 	public void add(String word, String location, int position) {
 		lock.lockReadWrite();
-		super.add(word, location, position);
-		lock.unlockReadWrite();
+		try {
+			super.add(word, location, position);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	@Override
 	public void addAll(InvertedIndex other) {
-		// TODO lock for read/write
-		lock.lockReadOnly();
-		super.addAll(other);
-		lock.unlockReadOnly();
+		lock.lockReadWrite();
+		try {
+			super.addAll(other);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	@Override
