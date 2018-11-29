@@ -94,7 +94,7 @@ public class WorkQueue {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace(); // TODO Fix!
+			System.out.println("Woke up from wait");
 		}
 	}
 
