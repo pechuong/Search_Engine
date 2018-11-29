@@ -72,7 +72,9 @@ public class ThreadSafeQueryMap implements Query {
 				searchResults = index.partialSearch(uniqueWords);
 			}
 
-			addQuery(queryLine, searchResults);
+			synchronized (queryMap) {
+				addQuery(queryLine, searchResults);
+			}
 		}
 	}
 
