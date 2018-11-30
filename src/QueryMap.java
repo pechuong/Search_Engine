@@ -28,7 +28,7 @@ public class QueryMap implements Query {
 	}
 
 	@Override
-	public void stemQuery(Path queryFile, boolean exact) throws IOException {
+	public void stemQuery(Path queryFile, boolean exact) throws IOException{
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
