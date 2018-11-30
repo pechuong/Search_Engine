@@ -68,7 +68,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to start traversing from
 	 * @param threads The number of threads to use in our workqueue
 	 */
-	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException{
+	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
 		traverse(index, queue, path);
 		queue.finish();
