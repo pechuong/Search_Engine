@@ -36,7 +36,7 @@ public class WebCrawler {
 
 		@Override
 		public void run() {
-			if (webCrawl.hasSpace()) {
+			if (webCrawl.hasSpace() && !webCrawl.links.containsKey(url.toString())) {
 				try {
 					String html = HTMLFetcher.fetchHTML(url, 3);
 					if (html != null) {
