@@ -36,7 +36,6 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
-	// TODO Private
 	/**
 	 * Start traversing a path and creates new File work when a file is found
 	 *
@@ -45,7 +44,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to traverse
 	 * @throws IOException
 	 */
-	public static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
+	private static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
 		try {
 			if (Files.isDirectory(path)) {
 				try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
