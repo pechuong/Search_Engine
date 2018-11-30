@@ -33,7 +33,7 @@ public class ReadWriteLock {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			log.debug("Thread " + this.toString() + " woke up in lockReadOnly()");
+			log.debug("Woke up in lockReadOnly()");
 		}
 		readers++;
 	}
@@ -59,7 +59,7 @@ public class ReadWriteLock {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			log.debug("Thread " + this.toString() + " woke up in lockReadWrite()");
+			log.debug("Woke up in lockReadWrite()");
 		} finally {
 			writers++;
 		}
