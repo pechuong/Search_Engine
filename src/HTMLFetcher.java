@@ -100,7 +100,10 @@ public class HTMLFetcher {
 			if (isHTML(headers)) {
 				List<String> content = headers.get("Content");
 				StringBuilder allHTML = new StringBuilder();
-				String last = content.remove(content.size() - 1);
+				String last = "";
+				if (content.size() > 0) {
+					last = content.remove(content.size() - 1);
+				}
 				for (String line : content) {
 					allHTML.append(line + System.lineSeparator());
 				}
