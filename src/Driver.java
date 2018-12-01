@@ -13,6 +13,7 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;
+		// TODO ThreadSafeInvertedIndex threadSafe;
 		Query queryMap;
 
 		boolean multiThread = argMap.hasFlag("-threads");
@@ -33,6 +34,9 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
+				/* TODO if (threadSafe != null) {
+					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
+				} */
 				if (multiThread) {
 					ThreadSafeInvertedIndexBuilder.traverse(index, output, numThreads);
 				} else {
