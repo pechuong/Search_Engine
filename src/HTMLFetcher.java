@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class HTMLFetcher {
 
 	private static final Pattern HTML_TEST = Pattern.compile("(?is).*?/??html;.*?");
-	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d.\\d (.*?) \\w+?$");
+	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d.\\d (\\d{3}) \\w+?$");
 
 	/**
 	 * Given a map of headers (as returned either by {@link URLConnection#getHeaderFields()}
