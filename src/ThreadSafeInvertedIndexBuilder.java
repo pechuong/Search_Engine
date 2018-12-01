@@ -10,7 +10,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 */
 	public static class FileWork implements Runnable {
 
-		private final InvertedIndex index; // TODO Should be ThreadSafeInvertedIndex
+		private final ThreadSafeInvertedIndex index;
 		private final Path path;
 
 		/**
@@ -20,7 +20,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		 * @param queue The queue to add work to
 		 * @param path The path to traverse or stem
 		 */
-		public FileWork(InvertedIndex index, Path path) {  // TODO Should be ThreadSafeInvertedIndex
+		public FileWork(ThreadSafeInvertedIndex index, Path path) {
 			this.index = index;
 			this.path = path;
 		}
@@ -36,7 +36,6 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
-	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Start traversing a path and creates new File work when a file is found
 	 *
@@ -45,7 +44,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to traverse
 	 * @throws IOException
 	 */
-	private static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
+	private static void traverse(ThreadSafeInvertedIndex index, WorkQueue queue, Path path) throws IOException {
 		try {
 			if (Files.isDirectory(path)) {
 				try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
@@ -61,7 +60,6 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		}
 	}
 
-	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Starts the traversing and makes a workqueue
 	 *
@@ -69,14 +67,16 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to start traversing from
 	 * @param threads The number of threads to use in our workqueue
 	 */
-	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
+	public static void traverse(ThreadSafeInvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
-		traverse(index, queue, path); // TODO put into try
-		queue.finish(); // TODO put into finally
-		queue.shutdown(); // TODO put into finally
+		try {
+			traverse(index, queue, path);
+		} finally {
+			queue.finish();
+			queue.shutdown();
+		}
 	}
 
-	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Builds a file to a local index which is added to the overall index
 	 *
@@ -84,7 +84,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param inputFile The file to stem and build the index from
 	 * @throws IOException
 	 */
-	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
+	public static void stemFile(ThreadSafeInvertedIndex index, Path inputFile) throws IOException {
 		InvertedIndex local = new InvertedIndex();
 		InvertedIndexBuilder.stemFile(local, inputFile);
 		index.addAll(local);
