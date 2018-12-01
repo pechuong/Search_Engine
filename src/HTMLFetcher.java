@@ -88,9 +88,13 @@ public class HTMLFetcher {
 		int statusCode = getStatusCode(headers);
 		System.out.println("Status Code: " + statusCode);
 		System.out.println("Redirects: " + redirects);
+		//System.out.println("Headers: " + headers);
+		System.out.println("URL: " + url.toString());
+
 		if (isRedirect(headers)) {
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
+
 		if (statusCode >= 200 && statusCode < 300) {
 			System.out.println("isHtml = " + isHTML(headers));
 			if (isHTML(headers)) {

@@ -71,8 +71,11 @@ public class WebCrawler {
 
 	private void addLink(URL url) {
 		lock.lockReadWrite();
-		links.put(url.toString(), url);
-		lock.unlockReadWrite();
+		try {
+			links.put(url.toString(), url);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	public boolean hasLink(URL url) {
