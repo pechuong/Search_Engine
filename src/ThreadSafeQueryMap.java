@@ -83,19 +83,17 @@ public class ThreadSafeQueryMap implements Query {
 
 	@Override
 	public void stemQuery(Path queryFile, boolean exact) throws IOException {
-		// TODO Move here: WorkQueue queue = new WorkQueue(threads); 
+		WorkQueue queue = new WorkQueue(threads);
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
 
 			String line;
-			WorkQueue queue = new WorkQueue(threads);
-
 			while ((line = reader.readLine()) != null) {
 				queue.execute(new SearchWork(line, exact));
 			}
-			
-			// TODO Move queue.finish() and shutdown() into a finally block
+
+		} finally {
 			queue.finish();
 			queue.shutdown();
 		}
