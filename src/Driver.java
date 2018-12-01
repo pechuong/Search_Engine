@@ -13,14 +13,14 @@ public class Driver {
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
 		InvertedIndex index;
-		// TODO ThreadSafeInvertedIndex threadSafe;
+		ThreadSafeInvertedIndex threadSafe = null;
 		Query queryMap;
 
 		boolean multiThread = argMap.hasFlag("-threads");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 
 		if (multiThread) {
-			ThreadSafeInvertedIndex threadSafe = new ThreadSafeInvertedIndex();
+			threadSafe = new ThreadSafeInvertedIndex();
 			index = threadSafe;
 			queryMap = new ThreadSafeQueryMap(threadSafe, numThreads);
 		} else {
