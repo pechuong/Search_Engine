@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -36,7 +35,7 @@ public class WebCrawler {
 
 		@Override
 		public void run() {
-			if (webCrawl.hasSpace() && !webCrawl.links.containsKey(url.toString())) {
+			if (webCrawl.hasSpace() && !webCrawl.hasLink(url)) {
 				try {
 					String html = HTMLFetcher.fetchHTML(url, 3);
 					if (html != null) {
@@ -51,10 +50,6 @@ public class WebCrawler {
 				}
 			}
 		}
-
-	}
-
-	public void crawl(URL url) throws MalformedURLException, IOException {
 
 	}
 
