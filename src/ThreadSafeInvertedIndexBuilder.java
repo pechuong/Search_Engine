@@ -10,7 +10,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 */
 	public static class FileWork implements Runnable {
 
-		private final InvertedIndex index;
+		private final InvertedIndex index; // TODO Should be ThreadSafeInvertedIndex
 		private final Path path;
 
 		/**
@@ -20,7 +20,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		 * @param queue The queue to add work to
 		 * @param path The path to traverse or stem
 		 */
-		public FileWork(InvertedIndex index, Path path) {
+		public FileWork(InvertedIndex index, Path path) {  // TODO Should be ThreadSafeInvertedIndex
 			this.index = index;
 			this.path = path;
 		}
@@ -36,6 +36,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 
 	}
 
+	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Start traversing a path and creates new File work when a file is found
 	 *
@@ -60,6 +61,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		}
 	}
 
+	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Starts the traversing and makes a workqueue
 	 *
@@ -69,11 +71,12 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 */
 	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
-		traverse(index, queue, path);
-		queue.finish();
-		queue.shutdown();
+		traverse(index, queue, path); // TODO put into try
+		queue.finish(); // TODO put into finally
+		queue.shutdown(); // TODO put into finally
 	}
 
+	 // TODO Should be ThreadSafeInvertedIndex
 	/**
 	 * Builds a file to a local index which is added to the overall index
 	 *
