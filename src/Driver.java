@@ -34,11 +34,8 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				/* TODO if (threadSafe != null) {
+				if (threadSafe != null) {
 					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
-				} */
-				if (multiThread) {
-					ThreadSafeInvertedIndexBuilder.traverse(index, output, numThreads);
 				} else {
 					InvertedIndexBuilder.traverse(index, output);
 				}
