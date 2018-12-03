@@ -16,8 +16,28 @@ public class Driver {
 		ThreadSafeInvertedIndex threadSafe = null;
 		Query queryMap;
 
-		boolean multiThread = argMap.hasFlag("-threads");
+		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
+		int limit;
+
+		if (argMap.hasFlag("-limit")) {
+			try {
+				limit = Integer.parseInt(argMap.getString("-limit"));
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid value for limit.. defaulting to 50");
+				limit = 50;
+			} catch (Exception e) {
+				limit = 50;
+			}
+		} else {
+			limit = 50;
+		}
+
+		//System.out.println("My limit is: " + limit);
+		//System.out.println("limit from argmap is: " + argMap.getString("-limit"));
+		//!argMap.hasValue("-flags") ? Integer.parseInt(argMap.getString("-limit")) : 50;
+		WebCrawler crawler = new WebCrawler(index, argMap.getString("-url"), limit, numThreads);
+
 
 		if (multiThread) {
 			threadSafe = new ThreadSafeInvertedIndex();
@@ -43,6 +63,7 @@ public class Driver {
 				System.out.println("Unable to build from: " + output);
 			}
 		}
+
 
 		/**
 		 * Outputs inverted index to Json

@@ -168,7 +168,7 @@ public class InvertedIndex {
 		}
 
 		for (String path : other.location.keySet()) {
-			this.location.put(path, location.getOrDefault(path, 0) + other.location.get(path));
+			location.put(path, location.getOrDefault(path, 0) + other.location.get(path));
 		}
 	}
 
