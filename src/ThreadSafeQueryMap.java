@@ -60,10 +60,8 @@ public class ThreadSafeQueryMap implements Query {
 			String queryLine = String.join(" ", uniqueWords);
 			List<Result> searchResults;
 
-			synchronized (queryMap) {
-				if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
-					return;
-				}
+			if (hasQuery(queryLine) || uniqueWords.isEmpty()) {
+				return;
 			}
 
 			if (exact) {
@@ -72,38 +70,30 @@ public class ThreadSafeQueryMap implements Query {
 				searchResults = index.partialSearch(uniqueWords);
 			}
 
-			synchronized (queryMap) {
-				addQuery(queryLine, searchResults);
-			}
+			addQuery(queryLine, searchResults);
 		}
 	}
 
 	@Override
 	public void writeJSON(Path path) throws IOException {
-		// TODO protect
-		ResultsJSON.asArray(queryMap, path);
+		synchronized (queryMap) {
+			ResultsJSON.asArray(queryMap, path);
+		}
 	}
 
-	/**
-	 * Stems the files of queries and performs searches on each line of query
-	 * (Multi-threaded version)
-	 *
-	 * @param queryFile The files of queries
-	 * @param exact Whether or not to use exact search or partial search
-	 * @param threads The number of threads to run the search with
-	 * @throws IOException
-	 */
+	@Override
 	public void stemQuery(Path queryFile, boolean exact) throws IOException {
+		WorkQueue queue = new WorkQueue(threads);
 		try (
 				var reader = Files.newBufferedReader(queryFile, StandardCharsets.UTF_8);
 				) {
 
 			String line;
-			WorkQueue queue = new WorkQueue(threads);
-
 			while ((line = reader.readLine()) != null) {
 				queue.execute(new SearchWork(line, exact));
 			}
+
+		} finally {
 			queue.finish();
 			queue.shutdown();
 		}

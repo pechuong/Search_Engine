@@ -18,15 +18,21 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	@Override
 	public void writeIndex(Path path) throws IOException {
 		lock.lockReadOnly();
-		super.writeIndex(path);
-		lock.unlockReadOnly();
+		try {
+			super.writeIndex(path);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
 	public void writeLocation(Path output) throws IOException {
 		lock.lockReadOnly();
-		super.writeLocation(output);
-		lock.unlockReadOnly();
+		try {
+			super.writeLocation(output);
+		} finally {
+			lock.unlockReadOnly();
+		}
 	}
 
 	@Override
@@ -93,15 +99,21 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 	@Override
 	public void add(String word, String location, int position) {
 		lock.lockReadWrite();
-		super.add(word, location, position);
-		lock.unlockReadWrite();
+		try {
+			super.add(word, location, position);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	@Override
 	public void addAll(InvertedIndex other) {
 		lock.lockReadWrite();
-		super.addAll(other);
-		lock.unlockReadWrite();
+		try {
+			super.addAll(other);
+		} finally {
+			lock.unlockReadWrite();
+		}
 	}
 
 	@Override
@@ -130,7 +142,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		try {
 			return super.toString();
 		} finally {
-			lock.unlockReadOnly();;
+			lock.unlockReadOnly();
 		}
 	}
 }

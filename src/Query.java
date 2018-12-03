@@ -36,6 +36,16 @@ public interface Query {
 	 */
 	public boolean isEmpty();
 
+	/**
+	 * Stems the query file, performs a search in the index, and then
+	 * stores the results of the search
+	 *
+	 * @param queryFile The file with all the queries to perform a search on
+	 * @param exact Determines if an exact search should be performed or not
+	 * @throws IOException If something goes wrong when trying to read query file
+	 */
+	public void stemQuery(Path queryFile, boolean exact) throws IOException;
+
 	@Override
 	public String toString();
 

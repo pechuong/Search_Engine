@@ -10,7 +10,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 */
 	public static class FileWork implements Runnable {
 
-		private final InvertedIndex index;
+		private final ThreadSafeInvertedIndex index;
 		private final Path path;
 
 		/**
@@ -20,7 +20,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 		 * @param queue The queue to add work to
 		 * @param path The path to traverse or stem
 		 */
-		public FileWork(InvertedIndex index, Path path) {
+		public FileWork(ThreadSafeInvertedIndex index, Path path) {
 			this.index = index;
 			this.path = path;
 		}
@@ -44,7 +44,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to traverse
 	 * @throws IOException
 	 */
-	public static void traverse(InvertedIndex index, WorkQueue queue, Path path) throws IOException {
+	private static void traverse(ThreadSafeInvertedIndex index, WorkQueue queue, Path path) throws IOException {
 		try {
 			if (Files.isDirectory(path)) {
 				try (DirectoryStream<Path> listing = Files.newDirectoryStream(path)) {
@@ -67,11 +67,14 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param path The path to start traversing from
 	 * @param threads The number of threads to use in our workqueue
 	 */
-	public static void traverse(InvertedIndex index, Path path, int threads) throws IOException{
+	public static void traverse(ThreadSafeInvertedIndex index, Path path, int threads) throws IOException {
 		WorkQueue queue = new WorkQueue(threads);
-		traverse(index, queue, path);
-		queue.finish();
-		queue.shutdown();
+		try {
+			traverse(index, queue, path);
+		} finally {
+			queue.finish();
+			queue.shutdown();
+		}
 	}
 
 	/**
@@ -81,7 +84,7 @@ public class ThreadSafeInvertedIndexBuilder extends InvertedIndexBuilder {
 	 * @param inputFile The file to stem and build the index from
 	 * @throws IOException
 	 */
-	public static void stemFile(InvertedIndex index, Path inputFile) throws IOException {
+	public static void stemFile(ThreadSafeInvertedIndex index, Path inputFile) throws IOException {
 		InvertedIndex local = new InvertedIndex();
 		InvertedIndexBuilder.stemFile(local, inputFile);
 		index.addAll(local);

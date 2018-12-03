@@ -12,10 +12,12 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		ArgumentMap argMap = new ArgumentMap(args);
+		InvertedIndex index;
+		ThreadSafeInvertedIndex threadSafe = null;
+		Query queryMap;
+
 		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
-		InvertedIndex index = multiThread ? new ThreadSafeInvertedIndex() : new InvertedIndex();
-		var queryMap = multiThread ? new ThreadSafeQueryMap((ThreadSafeInvertedIndex)index, numThreads) : new QueryMap(index);
 		int limit;
 
 		if (argMap.hasFlag("-limit")) {
@@ -37,14 +39,23 @@ public class Driver {
 		WebCrawler crawler = new WebCrawler(index, argMap.getString("-url"), limit, numThreads);
 
 
+		if (multiThread) {
+			threadSafe = new ThreadSafeInvertedIndex();
+			index = threadSafe;
+			queryMap = new ThreadSafeQueryMap(threadSafe, numThreads);
+		} else {
+			index = new InvertedIndex();
+			queryMap = new QueryMap(index);
+		}
+
 		/**
 		 *  Traverses and makes inverted index
 		 */
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				if (multiThread) {
-					ThreadSafeInvertedIndexBuilder.traverse(index, output, numThreads);
+				if (threadSafe != null) {
+					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
 				} else {
 					InvertedIndexBuilder.traverse(index, output);
 				}
@@ -74,11 +85,7 @@ public class Driver {
 				Path searchFile = argMap.getPath("-search");
 				try {
 					boolean exact = argMap.hasFlag("-exact");
-					if (multiThread) {
-						((ThreadSafeQueryMap)queryMap).stemQuery(searchFile, exact);
-					} else {
-						((QueryMap)queryMap).stemQuery(searchFile, exact);
-					}
+					queryMap.stemQuery(searchFile, exact);
 				} catch (IOException e){
 					System.out.println("Something went wrong with searching: " + searchFile);
 				}
@@ -91,11 +98,7 @@ public class Driver {
 		if (argMap.hasFlag("-results")) {
 			Path output = argMap.getPath("-results", Paths.get("results.json"));
 			try {
-				if (multiThread) {
-					queryMap.writeJSON(output);
-				} else {
-					queryMap.writeJSON(output);
-				}
+				queryMap.writeJSON(output);
 			} catch (IOException e) {
 				System.out.println("Something went wrong writing search results to: " + output);
 			}

@@ -168,7 +168,7 @@ public class InvertedIndex {
 		}
 
 		for (String path : other.location.keySet()) {
-			this.location.put(path, this.location.getOrDefault(path, 0) + other.location.get(path));
+			location.put(path, location.getOrDefault(path, 0) + other.location.get(path));
 		}
 	}
 
@@ -183,7 +183,7 @@ public class InvertedIndex {
 		if (!index.containsKey(word)) {
 			addWord(word);
 		}
-		if (!this.index.get(word).containsKey(location)) {
+		if (!index.get(word).containsKey(location)) {
 			addFile(word, location);
 		}
 		addPosition(word, location, position);

@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A simple custom lock that allows simultaneously read operations, but
@@ -8,6 +10,8 @@
  * continue.
  */
 public class ReadWriteLock {
+
+	public static final Logger log = LogManager.getLogger(ReadWriteLock.class);
 	private int readers;
 	private int writers;
 
@@ -29,7 +33,7 @@ public class ReadWriteLock {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			System.out.println("Thread " + this.toString() + " woke up in lockReadOnly()");
+			log.debug("Woke up in lockReadOnly()");
 		}
 		readers++;
 	}
@@ -55,7 +59,7 @@ public class ReadWriteLock {
 				this.wait();
 			}
 		} catch (InterruptedException e) {
-			System.out.println("Thread " + this.toString() + " woke up in lockReadWrite()");
+			log.debug("Woke up in lockReadWrite()");
 		} finally {
 			writers++;
 		}
