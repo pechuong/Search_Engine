@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class HTMLFetcher {
 
 	private static final Pattern HTML_TEST = Pattern.compile("(?is).*?/??html;.*?");
-	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d.\\d (\\d{3}) \\w+?$");
+	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d\\.\\d (\\d{3}) .+?$");
 
 	/**
 	 * Given a map of headers (as returned either by {@link URLConnection#getHeaderFields()}
@@ -87,16 +87,19 @@ public class HTMLFetcher {
 		Map<String, List<String>> headers = HttpsFetcher.fetchURL(url);
 		int statusCode = getStatusCode(headers);
 		System.out.println("Status Code: " + statusCode);
+		//System.out.println("Actual Status Code: " + headers.get(null));
 		System.out.println("Redirects: " + redirects);
 		//System.out.println("Headers: " + headers);
 		System.out.println("URL: " + url.toString());
 
 		if (isRedirect(headers)) {
+			//System.out.println("Hello I got here");
+			//System.out.println(headers.get("Location").size());
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
 
 		if (statusCode >= 200 && statusCode < 300) {
-			System.out.println("isHtml = " + isHTML(headers));
+			//System.out.println("isHtml = " + isHTML(headers));
 			if (isHTML(headers)) {
 				List<String> content = headers.get("Content");
 				StringBuilder allHTML = new StringBuilder();
