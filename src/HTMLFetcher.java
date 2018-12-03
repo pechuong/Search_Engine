@@ -86,15 +86,13 @@ public class HTMLFetcher {
 	public static String fetchHTML(URL url, int redirects) throws IOException {
 		Map<String, List<String>> headers = HttpsFetcher.fetchURL(url);
 		int statusCode = getStatusCode(headers);
-		System.out.println("Status Code: " + statusCode);
+		//System.out.println("Status Code: " + statusCode);
 		//System.out.println("Actual Status Code: " + headers.get(null));
-		System.out.println("Redirects: " + redirects);
+		//System.out.println("Redirects: " + redirects);
 		//System.out.println("Headers: " + headers);
 		System.out.println("URL: " + url.toString());
 
 		if (isRedirect(headers)) {
-			//System.out.println("Hello I got here");
-			//System.out.println(headers.get("Location").size());
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
 
@@ -111,6 +109,7 @@ public class HTMLFetcher {
 					allHTML.append(line + System.lineSeparator());
 				}
 				allHTML.append(last);
+				//System.out.println(allHTML);
 				return allHTML.toString();
 			} else {
 				return null;

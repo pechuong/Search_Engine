@@ -36,8 +36,6 @@ public class Driver {
 		//System.out.println("My limit is: " + limit);
 		//System.out.println("limit from argmap is: " + argMap.getString("-limit"));
 		//!argMap.hasValue("-flags") ? Integer.parseInt(argMap.getString("-limit")) : 50;
-		WebCrawler crawler = new WebCrawler(index, argMap.getString("-url"), limit, numThreads);
-
 
 		if (multiThread) {
 			threadSafe = new ThreadSafeInvertedIndex();
@@ -47,6 +45,8 @@ public class Driver {
 			index = new InvertedIndex();
 			queryMap = new QueryMap(index);
 		}
+
+		WebCrawler crawler = new WebCrawler(threadSafe, argMap.getString("-url"), limit, numThreads);
 
 		/**
 		 *  Traverses and makes inverted index

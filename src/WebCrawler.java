@@ -7,12 +7,12 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 
 public class WebCrawler {
 
-	private final InvertedIndex index;
+	private final ThreadSafeInvertedIndex index;
 	private final ReadWriteLock lock;
 	private final HashMap<String, URL> links;
 	private final int limit;
 
-	public WebCrawler(InvertedIndex index, String Url, int limit, int threads) {
+	public WebCrawler(ThreadSafeInvertedIndex index, String Url, int limit, int threads) {
 		this.index = index;
 		this.links = new HashMap<>();
 		this.limit = limit;
@@ -35,6 +35,9 @@ public class WebCrawler {
 
 		@Override
 		public void run() {
+			System.out.println("Num of Links: " + webCrawl.links.size());
+			System.out.println("Limit: " + webCrawl.limit);
+			//System.out.println("hasSpace: " + webCrawl.hasSpace());
 			if (webCrawl.hasSpace() && !webCrawl.hasLink(url)) {
 				try {
 					String html = HTMLFetcher.fetchHTML(url, 3);
@@ -67,6 +70,7 @@ public class WebCrawler {
 	private void addLink(URL url) {
 		lock.lockReadWrite();
 		try {
+			System.out.println("Added a link");
 			links.put(url.toString(), url);
 		} finally {
 			lock.unlockReadWrite();
@@ -92,10 +96,12 @@ public class WebCrawler {
 	}
 
 	public void stemHTML(String html, URL url) {
-		InvertedIndex local = new ThreadSafeInvertedIndex();
+		ThreadSafeInvertedIndex local = new ThreadSafeInvertedIndex();
 		String filePath = url.toString();
 		Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 		int count = 0;
+
+		//System.out.println(html);
 
 		for (String word : TextParser.parse(html)) {
 			count++;
