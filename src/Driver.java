@@ -56,11 +56,6 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				/*
-				if (argMap.hasFlag("-url")) {
-					crawler.crawl(argMap.getString("-url"), numThreads);
-				}
-				 */
 				if (threadSafe != null) {
 					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
 				} else {
