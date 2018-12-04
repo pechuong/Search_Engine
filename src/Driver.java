@@ -2,7 +2,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Driver {
+
+	public static final Logger log = LogManager.getLogger(Driver.class);
 
 	/**
 	 * Parses the command-line arguments to build and use an in-memory search
@@ -24,7 +29,7 @@ public class Driver {
 			try {
 				limit = Integer.parseInt(argMap.getString("-limit"));
 			} catch (NumberFormatException e) {
-				System.out.println("Invalid value for limit.. defaulting to 50");
+				log.debug("Invalid value for limit.. defaulting to 50");
 				limit = 50;
 			} catch (Exception e) {
 				limit = 50;
@@ -32,10 +37,6 @@ public class Driver {
 		} else {
 			limit = 50;
 		}
-
-		//System.out.println("My limit is: " + limit);
-		//System.out.println("limit from argmap is: " + argMap.getString("-limit"));
-		//!argMap.hasValue("-flags") ? Integer.parseInt(argMap.getString("-limit")) : 50;
 
 		if (multiThread) {
 			threadSafe = new ThreadSafeInvertedIndex();
@@ -60,7 +61,7 @@ public class Driver {
 					InvertedIndexBuilder.traverse(index, output);
 				}
 			} catch (IOException e) {
-				System.out.println("Unable to build from: " + output);
+				log.debug("Unable to build from: " + output);
 			}
 		}
 
@@ -73,7 +74,7 @@ public class Driver {
 			try {
 				index.writeIndex(output);
 			} catch (IOException e) {
-				System.out.println("Error writing to: " + output);
+				log.debug("Error writing to: " + output);
 			}
 		}
 
@@ -87,7 +88,7 @@ public class Driver {
 					boolean exact = argMap.hasFlag("-exact");
 					queryMap.stemQuery(searchFile, exact);
 				} catch (IOException e){
-					System.out.println("Something went wrong with searching: " + searchFile);
+					log.debug("Something went wrong with searching: " + searchFile);
 				}
 			}
 		}
@@ -100,7 +101,7 @@ public class Driver {
 			try {
 				queryMap.writeJSON(output);
 			} catch (IOException e) {
-				System.out.println("Something went wrong writing search results to: " + output);
+				log.debug("Something went wrong writing search results to: " + output);
 			}
 		}
 
@@ -112,7 +113,7 @@ public class Driver {
 			try {
 				index.writeLocation(output);
 			} catch (IOException e) {
-				System.out.println("Something went wrong writing location to: " + output);
+				log.debug("Something went wrong writing location to: " + output);
 			}
 		}
 	}
