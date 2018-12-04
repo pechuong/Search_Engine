@@ -21,6 +21,10 @@
 		<Logger name="ThreadSafeInvertedIndexBuilder" level="FATAL" additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>
+		
+		<Logger name="HTMLFetcher" level="FATAL" additivity="false">
+			<AppenderRef ref="FileLog" />
+		</Logger>
 
 		<!-- This is the configuration used by all other loggers. -->
 		<Root level="ALL">
