@@ -64,25 +64,47 @@ public class WebCrawler {
 		queue.shutdown();
 	}
 
+	/**
+	 * Adds a link to the list of visited links
+	 *
+	 * @param url The url to add to visited links list
+	 */
 	private void addLink(URL url) {
 		synchronized (links) {
 			links.put(url.toString(), url);
 		}
 	}
 
+	/**
+	 * Checks if the link already exists or was already visited
+	 *
+	 * @param url The url to check
+	 * @return true if link was already visited otherwise false
+	 */
 	public boolean hasLink(URL url) {
 		synchronized (links) {
 			return links.containsKey(url.toString());
 		}
 	}
 
+	/**
+	 * Checks if the limit for the amount of links to visit has been reached.
+	 *
+	 * @return true if number of links visited has reached the limit otherwise false
+	 */
 	public boolean hasSpace() {
 		synchronized (links) {
 			return links.size() < limit;
 		}
 	}
 
-	public void stemHTML(String html, URL url) {
+	/**
+	 * Builds the index from the cleaned up html
+	 *
+	 * @param html The cleaned up html
+	 * @param url The link / location to associate with the html
+	 */
+	private void stemHTML(String html, URL url) {
 		ThreadSafeInvertedIndex local = new ThreadSafeInvertedIndex();
 		String filePath = url.toString();
 		Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
