@@ -99,28 +99,27 @@ public class HTMLFetcher {
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
 
-		if (statusCode >= 200 && statusCode < 300) {
+		if (statusCode != 200) {
+			return null;
+		}
 
-			log.debug("isHtml = " + isHTML(headers));
+		log.debug("isHtml = " + isHTML(headers));
 
-			if (isHTML(headers)) {
-				List<String> content = headers.get("Content");
-				StringBuilder allHTML = new StringBuilder();
-				String last = "";
-				if (content.size() > 0) {
-					last = content.remove(content.size() - 1);
-				}
-				for (String line : content) {
-					allHTML.append(line + System.lineSeparator());
-				}
-				allHTML.append(last);
-
-				log.debug("HTML: " + System.lineSeparator() + allHTML);
-
-				return allHTML.toString();
-			} else {
-				return null;
+		if (isHTML(headers)) {
+			List<String> content = headers.get("Content");
+			StringBuilder allHTML = new StringBuilder();
+			String last = "";
+			if (content.size() > 0) {
+				last = content.remove(content.size() - 1);
 			}
+			for (String line : content) {
+				allHTML.append(line + System.lineSeparator());
+			}
+			allHTML.append(last);
+
+			log.debug("HTML: " + System.lineSeparator() + allHTML);
+
+			return allHTML.toString();
 		}
 		return null;
 	}
