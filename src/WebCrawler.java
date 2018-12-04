@@ -11,10 +11,11 @@ public class WebCrawler {
 	private final HashMap<String, URL> links;
 	private final int limit;
 
-	public WebCrawler(ThreadSafeInvertedIndex index, int limit) {
+	public WebCrawler(ThreadSafeInvertedIndex index, String Url, int limit, int threads) {
 		this.index = index;
 		this.links = new HashMap<>();
 		this.limit = limit;
+		crawl(Url, threads);
 	}
 
 	public static class LinkWork implements Runnable {

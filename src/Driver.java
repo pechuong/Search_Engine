@@ -48,7 +48,7 @@ public class Driver {
 			queryMap = new QueryMap(index);
 		}
 
-		WebCrawler crawler = new WebCrawler(threadSafe, limit);
+		WebCrawler crawler = new WebCrawler(threadSafe, argMap.getString("-url"), limit, numThreads);
 
 		/**
 		 *  Traverses and makes inverted index
@@ -56,9 +56,12 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
+				/*
 				if (argMap.hasFlag("-url")) {
 					crawler.crawl(argMap.getString("-url"), numThreads);
-				} else if (threadSafe != null) {
+				}
+				 */
+				if (threadSafe != null) {
 					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
 				} else {
 					InvertedIndexBuilder.traverse(index, output);
