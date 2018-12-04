@@ -6,8 +6,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class HTMLFetcher {
 
+	public static final Logger log = LogManager.getLogger(HTMLFetcher.class);
 	private static final Pattern HTML_TEST = Pattern.compile("(?is).*?/??html;.*?");
 	private static final Pattern STATUS_CODE = Pattern.compile("(?is)^HTTPS??/\\d\\.\\d (\\d{3}) .+?$");
 
@@ -28,7 +32,6 @@ public class HTMLFetcher {
 		}
 		Matcher matcher = HTML_TEST.matcher(headers.get("Content-Type").get(0));
 		return matcher.find();
-		//return headers.get("Content-Type") != null ? headers.get("Content-Type").get(0).split(" ")[0].matches("(?i).*?html;$") : false;
 	}
 
 	/**
@@ -48,7 +51,6 @@ public class HTMLFetcher {
 		}
 		Matcher matcher = STATUS_CODE.matcher(headers.get(null).get(0));
 		return matcher.find() ? Integer.parseInt(matcher.group(1)) : -1;
-		//return headers.get(null) != null ? Integer.parseInt(headers.get(null).get(0).split(" ")[1]) : -1;
 	}
 
 	/**
@@ -86,18 +88,21 @@ public class HTMLFetcher {
 	public static String fetchHTML(URL url, int redirects) throws IOException {
 		Map<String, List<String>> headers = HttpsFetcher.fetchURL(url);
 		int statusCode = getStatusCode(headers);
-		//System.out.println("Status Code: " + statusCode);
-		//System.out.println("Actual Status Code: " + headers.get(null));
-		//System.out.println("Redirects: " + redirects);
-		//System.out.println("Headers: " + headers);
-		System.out.println("URL: " + url.toString());
+
+		log.debug("URL: " + url.toString());
+		log.debug("Status Code: " + statusCode);
+		log.debug("Actual Status Code: " + headers.get(null));
+		log.debug("Redirects: " + redirects);
+		log.debug("Headers: " + headers);
 
 		if (isRedirect(headers)) {
 			return redirects > 0 ? fetchHTML(new URL(headers.get("Location").get(0)), redirects - 1) : null;
 		}
 
 		if (statusCode >= 200 && statusCode < 300) {
-			//System.out.println("isHtml = " + isHTML(headers));
+
+			log.debug("isHtml = " + isHTML(headers));
+
 			if (isHTML(headers)) {
 				List<String> content = headers.get("Content");
 				StringBuilder allHTML = new StringBuilder();
@@ -109,7 +114,9 @@ public class HTMLFetcher {
 					allHTML.append(line + System.lineSeparator());
 				}
 				allHTML.append(last);
-				//System.out.println(allHTML);
+
+				log.debug("HTML: " + System.lineSeparator() + allHTML);
+
 				return allHTML.toString();
 			} else {
 				return null;

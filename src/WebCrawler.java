@@ -17,7 +17,6 @@ public class WebCrawler {
 		this.links = new HashMap<>();
 		this.limit = limit;
 		this.lock = new ReadWriteLock();
-		System.out.println(Url);
 		crawl(Url, threads);
 	}
 
@@ -35,9 +34,6 @@ public class WebCrawler {
 
 		@Override
 		public void run() {
-			System.out.println("Num of Links: " + webCrawl.links.size());
-			System.out.println("Limit: " + webCrawl.limit);
-			//System.out.println("hasSpace: " + webCrawl.hasSpace());
 			if (!webCrawl.hasSpace() || webCrawl.hasLink(url)) {
 				return;
 			}
@@ -46,7 +42,6 @@ public class WebCrawler {
 			try {
 				String html = HTMLFetcher.fetchHTML(url, 3);
 				if (html != null) {
-
 					for (URL link : LinkParser.listLinks(url, html)) {
 						queue.execute(new LinkWork(webCrawl, queue, link));
 					}
@@ -94,8 +89,6 @@ public class WebCrawler {
 		String filePath = url.toString();
 		Stemmer stemmer = new SnowballStemmer(SnowballStemmer.ALGORITHM.ENGLISH);
 		int count = 0;
-
-		//System.out.println(html);
 
 		for (String word : TextParser.parse(html)) {
 			count++;
