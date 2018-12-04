@@ -32,6 +32,7 @@ public class Driver {
 				log.debug("Invalid value for limit.. defaulting to 50");
 				limit = 50;
 			} catch (Exception e) {
+				log.debug(e);
 				limit = 50;
 			}
 		} else {
@@ -47,7 +48,7 @@ public class Driver {
 			queryMap = new QueryMap(index);
 		}
 
-		WebCrawler crawler = new WebCrawler(threadSafe, argMap.getString("-url"), limit, numThreads);
+		WebCrawler crawler = new WebCrawler(threadSafe, limit);
 
 		/**
 		 *  Traverses and makes inverted index
@@ -55,7 +56,9 @@ public class Driver {
 		if (argMap.hasValue("-path")) {
 			Path output = argMap.getPath("-path");
 			try {
-				if (threadSafe != null) {
+				if (argMap.hasFlag("-url")) {
+					crawler.crawl(argMap.getString("-url"), numThreads);
+				} else if (threadSafe != null) {
 					ThreadSafeInvertedIndexBuilder.traverse(threadSafe, output, numThreads);
 				} else {
 					InvertedIndexBuilder.traverse(index, output);
