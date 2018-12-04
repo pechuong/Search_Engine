@@ -8,7 +8,6 @@ import opennlp.tools.stemmer.snowball.SnowballStemmer;
 public class WebCrawler {
 
 	private final ThreadSafeInvertedIndex index;
-	private final ReadWriteLock lock;
 	private final HashMap<String, URL> links;
 	private final int limit;
 
@@ -16,7 +15,6 @@ public class WebCrawler {
 		this.index = index;
 		this.links = new HashMap<>();
 		this.limit = limit;
-		this.lock = new ReadWriteLock();
 		crawl(Url, threads);
 	}
 
