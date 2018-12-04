@@ -38,20 +38,24 @@ public class WebCrawler {
 			System.out.println("Num of Links: " + webCrawl.links.size());
 			System.out.println("Limit: " + webCrawl.limit);
 			//System.out.println("hasSpace: " + webCrawl.hasSpace());
-			if (webCrawl.hasSpace() && !webCrawl.hasLink(url)) {
-				try {
-					String html = HTMLFetcher.fetchHTML(url, 3);
-					if (html != null) {
-						webCrawl.addLink(url);
-						for (URL link : LinkParser.listLinks(url, html)) {
-							queue.execute(new LinkWork(webCrawl, queue, link));
-						}
-						webCrawl.stemHTML(HTMLCleaner.stripHTML(html), url);
-					}
-				} catch (IOException e) {
-					System.out.println("Something went wrong with: " + url + System.lineSeparator() + e);
-				}
+			if (!webCrawl.hasSpace() || webCrawl.hasLink(url)) {
+				return;
 			}
+			webCrawl.addLink(url);
+
+			try {
+				String html = HTMLFetcher.fetchHTML(url, 3);
+				if (html != null) {
+
+					for (URL link : LinkParser.listLinks(url, html)) {
+						queue.execute(new LinkWork(webCrawl, queue, link));
+					}
+					webCrawl.stemHTML(HTMLCleaner.stripHTML(html), url);
+				}
+			} catch (IOException e) {
+				System.out.println("Something went wrong with: " + url + System.lineSeparator() + e);
+			}
+
 		}
 
 	}
@@ -68,30 +72,20 @@ public class WebCrawler {
 	}
 
 	private void addLink(URL url) {
-		lock.lockReadWrite();
-		try {
-			System.out.println("Added a link");
+		synchronized (links) {
 			links.put(url.toString(), url);
-		} finally {
-			lock.unlockReadWrite();
 		}
 	}
 
 	public boolean hasLink(URL url) {
-		lock.lockReadOnly();
-		try {
+		synchronized (links) {
 			return links.containsKey(url.toString());
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
 	public boolean hasSpace() {
-		lock.lockReadOnly();
-		try {
+		synchronized (links) {
 			return links.size() < limit;
-		} finally {
-			lock.unlockReadOnly();
 		}
 	}
 
