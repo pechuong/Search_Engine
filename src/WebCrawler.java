@@ -9,7 +9,7 @@ public class WebCrawler {
 
 	private final ThreadSafeInvertedIndex index;
 	private final HashMap<String, URL> links;
-	private final int limit;
+	private final int limit; // TODO Not final...
 
 	public WebCrawler(ThreadSafeInvertedIndex index, String Url, int limit, int threads) {
 		this.index = index;
@@ -18,7 +18,7 @@ public class WebCrawler {
 		crawl(Url, threads);
 	}
 
-	public static class LinkWork implements Runnable {
+	public static class LinkWork implements Runnable { // TODO Make non-static
 
 		private final WebCrawler webCrawl;
 		private final WorkQueue queue;
@@ -40,7 +40,10 @@ public class WebCrawler {
 			try {
 				String html = HTMLFetcher.fetchHTML(url, 3);
 				if (html != null) {
+					// TODO lock around the entire loop
 					for (URL link : LinkParser.listLinks(url, html)) {
+						// TODO Checking here if the link is unique and there is room (but then have to add to the set immediately)
+						// TODO add the link to the set, and then create a worker
 						queue.execute(new LinkWork(webCrawl, queue, link));
 					}
 					webCrawl.stemHTML(HTMLCleaner.stripHTML(html), url);
