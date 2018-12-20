@@ -1,3 +1,5 @@
+import javax.servlet.http.HttpServlet;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
@@ -15,13 +17,18 @@ public class SearchEngineServer {
 		connector.setPort(PORT);
 
 		ServletHandler handler = new ServletHandler();
-		handler.addServletWithMapping(..., "/");
+		handler.addServletWithMapping(HomeServlet.class, "/");
 
 		server.addConnector(connector);
+		server.setHandler(handler);
 
 
 		server.start();
 		server.join();
+	}
+
+	public static class HomeServlet extends HttpServlet {
+
 	}
 
 }
