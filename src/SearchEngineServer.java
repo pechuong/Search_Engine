@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,6 +44,7 @@ public class SearchEngineServer {
 		protected void doGet(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
 
+			//TODO Send the results to another servlet that displays the results
 			response.setContentType("text/html");
 
 			PrintWriter out = response.getWriter();
@@ -49,8 +52,15 @@ public class SearchEngineServer {
 			out.printf("<html>%n");
 			out.printf("<head><title>%s</title></head>%n", TITLE);
 			out.printf("<body>%n");
+			out.printf("<p>It is %s my dudes.</p>%n", dayOfWeek());
 
-			out.printf("<p>It is Wednesday my dudes.</p>%n");
+			out.printf("<h2>Welcome to my Search Engine</h2>%n");
+
+			// search query to enter (form)
+			out.printf("<form method=\"POST\" action=\"/results\">%n");
+			out.printf("<input type=\"text\" name=\"query\" placeholder=\"Enter a query to search\">%n");
+			out.printf("<input type=\"submit\">%n");
+			out.printf("</form>%n");
 
 			out.printf("</body>%n");
 			out.printf("</html>%n");
@@ -58,6 +68,10 @@ public class SearchEngineServer {
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
 
+	}
+
+	public static String dayOfWeek() {
+		return Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
 	}
 
 }
