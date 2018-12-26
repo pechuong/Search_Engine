@@ -26,6 +26,7 @@ public class SearchEngineServer {
 
 		ServletHandler handler = new ServletHandler();
 		handler.addServletWithMapping(HomeServlet.class, "/");
+		handler.addServletWithMapping(SearchResultServlet.class, "/results");
 
 		server.addConnector(connector);
 		server.setHandler(handler);
@@ -72,6 +73,59 @@ public class SearchEngineServer {
 
 	public static String dayOfWeek() {
 		return Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+	}
+
+	public static class SearchResultServlet extends HttpServlet {
+
+		private static final String TITLE = "Results";
+
+		@Override
+		protected void doPost(HttpServletRequest request, HttpServletResponse response)
+				throws ServletException, IOException {
+			response.setContentType("text/html");
+
+			/*
+			PrintWriter out = response.getWriter();
+
+			out.printf("<html>%n");
+			out.printf("<head><title>%s</title></head>%n", TITLE);
+			out.printf("<body>%n");
+			out.printf("<p>It is %s my dudes.</p>%n", dayOfWeek());
+
+			out.printf("<h2>Welcome to my Search Engine</h2>%n");
+			 */
+			// TODO Show the results
+
+			//out.printf("</body>%n");
+			//out.printf("</html>%n");
+		}
+
+		static void printSucessResult(HttpServletResponse response) throws IOException {
+			PrintWriter out = response.getWriter();
+
+			out.printf("<html>%n");
+			out.printf("<head><title>%s</title></head>%n", TITLE);
+			out.printf("<body>%n");
+
+			// Print the
+			out.printf("");
+
+
+		}
+
+		static void printFailedResult(HttpServletResponse response) throws IOException {
+			PrintWriter out = response.getWriter();
+
+			out.printf("<html>%n");
+			out.printf("<head><title>%s</title></head>%n", TITLE);
+			out.printf("<body>%n");
+
+			// Print the query word and then that there are no results
+			out.printf("");
+
+
+		}
+
 	}
 
 }
