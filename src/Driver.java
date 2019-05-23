@@ -21,7 +21,7 @@ public class Driver {
 		ThreadSafeInvertedIndex threadSafe = null;
 		Query queryMap;
 
-		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url");
+		boolean multiThread = argMap.hasFlag("-threads") || argMap.hasFlag("-url") || argMap.hasFlag("port");
 		int numThreads = argMap.hasValue("-threads") ? Integer.parseInt(argMap.getString("-threads")) : 5;
 		int limit;
 
@@ -66,7 +66,6 @@ public class Driver {
 			}
 		}
 
-
 		/**
 		 * Outputs inverted index to Json
 		 */
@@ -92,6 +91,21 @@ public class Driver {
 					log.debug("Something went wrong with searching: " + searchFile);
 				}
 			}
+		}
+
+		//TODO port flag
+		if (argMap.hasFlag("-port")) {
+			int PORT = (argMap.hasValue("-port")) ? Integer.parseInt(argMap.getString("-port")) : 8080;
+			//TODO start server
+			try {
+				SearchEngineServer server = new SearchEngineServer(threadSafe, PORT);
+			} catch (InterruptedException e) {
+				log.debug("Caught InterruptedException: %s", e);
+			} catch (Exception e) {
+				log.debug("Caught Exception: %s", e);
+			}
+			System.out.println("Nooooo!");
+
 		}
 
 		/**

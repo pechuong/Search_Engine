@@ -14,26 +14,28 @@ import org.eclipse.jetty.servlet.ServletHandler;
 
 public class SearchEngineServer {
 
-	private static final int PORT = 8080;
+	private final ThreadSafeInvertedIndex index;
+	private final Server server;
 
-	public static void main(String[] args) throws Exception {
+	public SearchEngineServer(ThreadSafeInvertedIndex index, int port) throws Exception {
+		this.index = index;
+		this.server = new Server();
 
-		Server server = new Server();
-
-		ServerConnector connector = new ServerConnector(server);
+		ServerConnector connector = new ServerConnector(this.server);
 		connector.setHost("localhost");
-		connector.setPort(PORT);
+		connector.setPort(port);
 
 		ServletHandler handler = new ServletHandler();
 		handler.addServletWithMapping(HomeServlet.class, "/");
 		handler.addServletWithMapping(SearchResultServlet.class, "/results");
 
-		server.addConnector(connector);
-		server.setHandler(handler);
+		this.server.addConnector(connector);
+		this.server.setHandler(handler);
+		this.server.start();
+	}
 
-
-		server.start();
-		server.join();
+	public void close() throws InterruptedException {
+		this.server.join();
 	}
 
 	@SuppressWarnings("serial")
@@ -63,6 +65,8 @@ public class SearchEngineServer {
 			out.printf("<input type=\"submit\">%n");
 			out.printf("</form>%n");
 
+			//out.printf("%s", index.toString());
+
 			out.printf("</body>%n");
 			out.printf("</html>%n");
 
@@ -78,12 +82,22 @@ public class SearchEngineServer {
 	public static class SearchResultServlet extends HttpServlet {
 
 		private static final String TITLE = "Results";
+		private ThreadSafeInvertedIndex index;
+
+		public SearchResultServlet(ThreadSafeInvertedIndex index) {
+			this.index = index;
+		}
 
 		@Override
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
 			response.setContentType("text/html");
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.sendRedirect("/results");
 
+			//PrintWriter out = response.getWriter();
+			//out.printf("%s", index.toString());
+			//this.index.writeIndex();
 			/*
 			PrintWriter out = response.getWriter();
 
@@ -98,6 +112,25 @@ public class SearchEngineServer {
 
 			//out.printf("</body>%n");
 			//out.printf("</html>%n");
+			// TODO Redirect to get method for this servlet
+		}
+
+		@Override
+		protected void doGet(HttpServletRequest request, HttpServletResponse response)
+				throws ServletException, IOException {
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+
+			out.printf("<html>%n");
+			out.printf("<head><title>%s</title></head>%n", TITLE);
+			out.printf("<body>%n");
+			out.printf("<p>It is %s my dudes.</p>%n", dayOfWeek());
+			out.printf("<p>Index: %s", index.toString());
+			out.printf("<form method=\"POST\" action=\"/\">%n");
+			out.printf("<input type=\"submit\">< Go Back%n");
+			out.printf("</form>%n");
+
+			response.setStatus(HttpServletResponse.SC_OK);
 		}
 
 		static void printSucessResult(HttpServletResponse response) throws IOException {
@@ -107,8 +140,8 @@ public class SearchEngineServer {
 			out.printf("<head><title>%s</title></head>%n", TITLE);
 			out.printf("<body>%n");
 
-			// Print the
-			out.printf("");
+			// Print the results
+			//out.printf("");
 
 
 		}
