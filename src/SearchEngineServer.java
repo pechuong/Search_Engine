@@ -14,7 +14,7 @@ import org.eclipse.jetty.servlet.ServletHandler;
 
 public class SearchEngineServer {
 
-	private final ThreadSafeInvertedIndex index;
+	private static ThreadSafeInvertedIndex index;
 	private final Server server;
 
 	public SearchEngineServer(ThreadSafeInvertedIndex index, int port) throws Exception {
@@ -72,11 +72,6 @@ public class SearchEngineServer {
 	public static class SearchResultServlet extends HttpServlet {
 
 		private static final String TITLE = "Results";
-		private ThreadSafeInvertedIndex index;
-
-		public SearchResultServlet(ThreadSafeInvertedIndex index) {
-			this.index = index;
-		}
 
 		@Override
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)
