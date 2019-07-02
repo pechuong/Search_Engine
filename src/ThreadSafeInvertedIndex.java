@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
 		lock.lockReadOnly();
 		try {
 			super.writeIndex(path);
+		} finally {
+			lock.unlockReadOnly();
+		}
+	}
+
+	@Override
+	public void writeIndex(Writer writer) {
+		lock.lockReadOnly();
+		try {
+			super.writeIndex(writer);
 		} finally {
 			lock.unlockReadOnly();
 		}
