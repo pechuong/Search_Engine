@@ -117,6 +117,16 @@ public class TreeJSONWriter {
 		}
 	}
 
+	public static String asDoubleNestedObject(TreeMap<String, TreeMap<String, TreeSet<Integer>>> elements, Writer writer) {
+		try {
+			asDoubleNestedObject(elements, writer, 0);
+			return writer.toString();
+		}
+		catch (IOException e) {
+			return null;
+		}
+	}
+
 	/**
 	 * Writes the map of elements formatted as a pretty JSON object to
 	 * the specified file.
