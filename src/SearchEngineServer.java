@@ -83,7 +83,7 @@ public class SearchEngineServer {
 			out.printf("<head><title>%s</title></head>%n", TITLE);
 			out.printf("<body>%n");
 			out.printf("<pre>%n");
-			out.printf(index.toString());
+			index.writeIndex(out);
 			out.printf("</pre>%n");
 			out.printf("</body>%n");
 
