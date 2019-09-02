@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,10 @@ public class InvertedIndex {
 	 */
 	public void writeIndex(Path path) throws IOException {
 		TreeJSONWriter.asDoubleNestedObject(index, path);
+	}
+
+	public void writeIndex(Writer writer) {
+		TreeJSONWriter.asDoubleNestedObject(index, writer);
 	}
 
 	/**
